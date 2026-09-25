@@ -31,7 +31,6 @@ Here are the features that will be developed, at least until the MVP.
 **Functional**
 - Multiple boards, organized into groups
 - Nested boards: a task can be a board
-- Multi-homing: one card can appear on several boards
 - WIP limits per column
 - Progress bars that roll up from child boards to parent cards
 - Board and card templates
