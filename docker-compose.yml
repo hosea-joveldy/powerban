@@ -1,0 +1,41 @@
+services:
+  web:
+    build:
+      context: .
+      args:
+        UID: 1001
+        GID: 100
+    ports:
+      - "80:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./apache-projects.conf:/etc/apache2/conf-enabled/apache-projects.conf
+    depends_on:
+      - db
+
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+    volumes:
+      - db_data:/var/lib/postgresql
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PG_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${DB_PASS}
+    ports:
+      - "19790:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - db
+
+volumes:
+  db_data:
+  pgadmin_data:

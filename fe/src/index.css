@@ -1,0 +1,131 @@
+@import "./themes.css";
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .mono {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+button, input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+button {
+  background: var(--bg-pane-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+}
+button:hover { border-color: var(--text-dim); }
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+button.primary {
+  background: var(--accent);
+  color: var(--accent-text);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
+button.danger-text {
+  background: transparent;
+  border-color: transparent;
+  color: var(--text-dim);
+}
+button.danger-text:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+input, textarea {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-2);
+}
+input:focus, textarea:focus { border-color: var(--accent); }
+
+.error-text {
+  color: var(--danger);
+  font-size: 13px;
+}
+
+.statusline {
+  border-top: 1px solid var(--border);
+  padding: var(--space-2) var(--space-4);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  display: flex;
+  gap: var(--space-4);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border);
+}
+.topbar .wordmark {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.topbar .actions {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+.icon-btn {
+  background: transparent;
+  border-color: transparent;
+  padding: var(--space-1) var(--space-2);
+  font-size: 16px;
+  line-height: 1;
+}
+.icon-btn:hover { border-color: var(--border); }
+
+.page {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.page-main {
+  flex: 1;
+  overflow: auto;
+}
+
+/* block-character progress bar: reserved for board summary tiles and the
+   board header, not scattered everywhere (see design plan) */
+.progress {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+.progress .bar { color: var(--accent); }

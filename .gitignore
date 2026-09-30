@@ -1,0 +1,19 @@
+# Environment
+.env
+be/.env
+
+# PHP
+vendor/
+
+# Frontend (once it exists)
+node_modules/
+dist/
+.vite/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+
+# Logs
+*.log

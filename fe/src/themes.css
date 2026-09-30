@@ -1,0 +1,84 @@
+/* Every theme defines the same token set. Adding a theme = adding a block
+   here plus one entry in THEMES (src/themes.js) — nothing else changes. */
+
+:root {
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-sans: "Inter", -apple-system, "Segoe UI", sans-serif;
+  --radius: 3px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+}
+
+[data-theme="gruvbox-dark"] {
+  --bg: #1d2021;
+  --bg-pane: #282828;
+  --bg-pane-2: #32302f;
+  --border: #3c3836;
+  --text: #ebdbb2;
+  --text-dim: #a89984;
+  --accent: #fe8019;
+  --accent-text: #1d2021;
+  --danger: #fb4934;
+  --success: #b8bb26;
+  --warning: #fabd2f;
+}
+
+[data-theme="catppuccin-mocha"] {
+  --bg: #1e1e2e;
+  --bg-pane: #181825;
+  --bg-pane-2: #11111b;
+  --border: #313244;
+  --text: #cdd6f4;
+  --text-dim: #a6adc8;
+  --accent: #cba6f7;
+  --accent-text: #1e1e2e;
+  --danger: #f38ba8;
+  --success: #a6e3a1;
+  --warning: #f9e2af;
+}
+
+[data-theme="nord"] {
+  --bg: #2e3440;
+  --bg-pane: #3b4252;
+  --bg-pane-2: #434c5e;
+  --border: #4c566a;
+  --text: #eceff4;
+  --text-dim: #d8dee9;
+  --accent: #88c0d0;
+  --accent-text: #2e3440;
+  --danger: #bf616a;
+  --success: #a3be8c;
+  --warning: #ebcb8b;
+}
+
+[data-theme="ayu-dark"] {
+  --bg: #0a0e14;
+  --bg-pane: #0d1017;
+  --bg-pane-2: #131721;
+  --border: #1c212b;
+  --text: #b3b1ad;
+  --text-dim: #626a73;
+  --accent: #ffb454;
+  --accent-text: #0a0e14;
+  --danger: #ff3333;
+  --success: #c2d94c;
+  --warning: #ffb454;
+}
+
+[data-theme="everforest-dark"] {
+  --bg: #2d353b;
+  --bg-pane: #343f44;
+  --bg-pane-2: #3d484d;
+  --border: #475258;
+  --text: #d3c6aa;
+  --text-dim: #859289;
+  --accent: #a7c080;
+  --accent-text: #2d353b;
+  --danger: #e67e80;
+  --success: #a7c080;
+  --warning: #dbbc7f;
+}
