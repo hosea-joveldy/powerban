@@ -19,7 +19,6 @@ class AuthController
       throw new HttpException(422, "Invalid email");
     }
     $password = $in["password"] ?? null;
-    // bcrypt only looks at the first 72 bytes
     if (
       !is_string($password) ||
       strlen($password) < 8 ||

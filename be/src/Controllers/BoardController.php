@@ -52,7 +52,6 @@ class BoardController
     Http::json(Board::summaries([$board["id"]])[$board["id"]]["progress"]);
   }
 
-  // Copies this board as a template. The original is untouched.
   public function saveAsTemplate(array $p): void
   {
     $uid = Auth::requireUser();
