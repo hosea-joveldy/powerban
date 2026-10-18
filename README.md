@@ -38,6 +38,33 @@ Here are the features that will be developed, at least until the MVP.
 **Customization**
 - Themes: Gruvbox, Catppuccin, and more
 
-## License
 
+## Setup
+ 
+Requires Docker and Node.js.
+ 
+One `.env` at the project root is required, filled in **before** starting
+the containers (`docker-compose.yml` reads it at startup, and the PHP
+backend reads the same file directly — see [SETUP.md](SETUP.md) for the
+exact keys).
+ 
+```bash
+# fill in powerban/.env first, then:
+ 
+# backend: start containers, create the database, load schema + templates
+docker compose up -d
+docker exec -i <db-container> psql -U <DB_USER> -d postgres < be/db/schema.sql
+docker exec -i <db-container> psql -U <DB_USER> -d powerban < be/db/seed.sql
+ 
+# frontend
+cd fe
+npm install
+npm run dev
+```
+ 
+See [SETUP.md](SETUP.md) for the full walkthrough, Apache configuration,
+and troubleshooting.
+ 
+## License
+ 
 This project is licensed under the [MIT License](LICENSE).
