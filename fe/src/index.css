@@ -143,3 +143,86 @@ input:focus, textarea:focus, select:focus { border-color: var(--border-strong); 
   white-space: nowrap;
 }
 .progress .bar { color: var(--btn-primary-bg); }
+
+/* Global Pill Buttons matching DESIGN_SYSTEM.md */
+.btn-pill-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  padding: 10px 22px;
+  font-weight: 600;
+  font-size: var(--text-base);
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border: 1px solid var(--btn-primary-bg);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+}
+.btn-pill-primary:hover {
+  background: var(--btn-primary-hover);
+  border-color: var(--btn-primary-hover);
+  text-decoration: none;
+}
+.btn-pill-primary.danger {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #ffffff;
+}
+.btn-pill-primary.danger:hover {
+  background: #991b1b;
+  border-color: #991b1b;
+}
+
+.btn-pill-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  padding: 10px 22px;
+  font-weight: 500;
+  font-size: var(--text-base);
+  background: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+  border: 1px solid var(--border-default);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+.btn-pill-secondary:hover {
+  background: var(--btn-secondary-hover);
+  border-color: var(--border-strong);
+  text-decoration: none;
+}
+
+.btn-pill-lime {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  padding: 12px 26px;
+  font-weight: 600;
+  font-size: var(--text-base);
+  background: var(--accent-lime);
+  color: var(--accent-lime-text);
+  border: 1px solid var(--accent-lime);
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.btn-pill-lime:hover {
+  opacity: 0.92;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.btn-status-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  margin-left: 8px;
+}
+

@@ -80,12 +80,12 @@
       "id": "T3",
       "title": "Landing Page Entry Route and Interactive Hero Effect",
       "type": "build",
-      "status": "todo",
+      "status": "ongoing",
       "features": [
         {
           "id": "T3.1",
           "title": "Landing page layout and showcase sections matching references",
-          "done": false,
+          "done": true,
           "done_when": [
             "Route / renders landing page for unauthenticated visitors and redirects authenticated users to /dashboard",
             "Top navigation displays brand mark, navigation links, and primary CTA pill button leading to /login",

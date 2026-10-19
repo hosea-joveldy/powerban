@@ -14,3 +14,4 @@
 [builder] T8: fixed modal focus restoration (B1); captured triggerElement and restored focus on close/Escape.
 [qa] T8 round 1: verified fix for B1; all 12 e2e modal and theme tests pass across desktop and mobile; marked finished.
 [qa] T2 round 2: verified T2.2 and T2.3; full gate passes cleanly; T2 marked finished.
+[builder] T3.1 verified: built landing page route (/), top nav with CTA, sections 2 & 3 matching references.
