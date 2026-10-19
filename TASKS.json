@@ -55,7 +55,7 @@
         {
           "id": "T2.2",
           "title": "Reusable accessible in-app modal system",
-          "done": true,
+          "done": false,
           "done_when": [
             "Modal system implements message, confirm, prompt, and task detail dialog variants",
             "Modals have role=\"dialog\", aria-modal=\"true\", and trap keyboard focus",
@@ -67,7 +67,7 @@
         {
           "id": "T2.3",
           "title": "Elimination of native browser dialogs in existing components",
-          "done": true,
+          "done": false,
           "done_when": [
             "no alert(/confirm(/prompt( remains in any file in fe/src",
             "Board deletion, card deletion, group creation, board creation, and card creation use in-app modals",
@@ -243,6 +243,14 @@
       "title": "Full-App QA Pass and Visual Verification",
       "type": "qa",
       "status": "todo",
+      "features": []
+    },
+    {
+      "id": "T8",
+      "title": "Fix B1: Modal focus restoration to trigger element on close/Escape",
+      "type": "fix",
+      "status": "todo",
+      "source": "QA_REPORT.md#B1",
       "features": []
     }
   ]

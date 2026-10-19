@@ -10,3 +10,4 @@
 [builder] T2.1 verified: stone-light and forest-dark CSS variables, themes.js, and FOUT prevention applied.
 [builder] T2.2 verified: created accessible modal dialog system (MessageModal, ConfirmModal, PromptModal, TaskDetailModal, ModalContext).
 [builder] T2.3 verified: eliminated all native alert/confirm/prompt in fe/src; wired in-app modals for board/card/group actions.
+[qa] T2 round 1: verified T2.1; T2.2 failed focus restoration on Escape (B1); appended fix task T8.
