@@ -206,12 +206,12 @@
       "id": "T6",
       "title": "Documentation, API Reference, and MIT License",
       "type": "docs",
-      "status": "todo",
+      "status": "ongoing",
       "features": [
         {
           "id": "T6.1",
           "title": "Add MIT License file",
-          "done": false,
+          "done": true,
           "done_when": [
             "LICENSE file exists in project root containing standard MIT License text"
           ]
