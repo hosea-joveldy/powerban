@@ -219,7 +219,7 @@
         {
           "id": "T6.2",
           "title": "Complete rewrite of root README.md",
-          "done": false,
+          "done": true,
           "done_when": [
             "README.md accurately reflects true implementation (multiple boards, groups, linked boards, WIP on ongoing cards, flat progress, templates)",
             "All links and references to nonexistent SETUP.md are removed",
