@@ -9,6 +9,8 @@ vendor/
 node_modules/
 dist/
 .vite/
+test-results/
+playwright-report/
 
 # Editor / OS
 .vscode/

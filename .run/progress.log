@@ -4,3 +4,4 @@
 [planner] Wrote DESIGN_SYSTEM.md specifying tokens, components, hero orbit effect, and modals.
 [planner] Wrote TASKS.json with tasks T1-T7 covering gate setup, redesign, modals, QA, and docs.
 [builder] T1.1 verified: npm install and npm run build succeed cleanly producing fe/dist.
+[builder] T1.2 verified: typecheck (tsc), unit tests (vitest), e2e (playwright) scripts configured and passing.

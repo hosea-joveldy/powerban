@@ -18,7 +18,7 @@
         {
           "id": "T1.2",
           "title": "Frontend gate scripts for typecheck, unit testing, and e2e testing",
-          "done": false,
+          "done": true,
           "done_when": [
             "cd fe && npm run typecheck executes tsc --noEmit and exits with code 0",
             "cd fe && npm test executes Vitest unit tests and exits with code 0",
