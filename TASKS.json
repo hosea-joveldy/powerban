@@ -229,7 +229,7 @@
         {
           "id": "T6.3",
           "title": "Comprehensive backend API documentation",
-          "done": false,
+          "done": true,
           "done_when": [
             "API documentation covers all endpoints for auth, groups, boards, cards, tasks, and templates",
             "Headers, JSON request bodies, query parameters, response schemas, and HTTP error status codes are fully documented",
