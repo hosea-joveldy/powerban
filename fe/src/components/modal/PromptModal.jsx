@@ -12,6 +12,7 @@ export default function PromptModal({
   label = "",
   confirmText = "Submit",
   cancelText = "Cancel",
+  triggerElement,
 }) {
   const [value, setValue] = useState(defaultValue);
   const descId = "prompt-modal-desc";
@@ -33,6 +34,7 @@ export default function PromptModal({
       isOpen={isOpen}
       onClose={onClose}
       title={title}
+      triggerElement={triggerElement}
       ariaDescribedBy={message ? descId : undefined}
     >
       <form onSubmit={handleSubmit} className="modal-body" style={{ margin: 0 }}>

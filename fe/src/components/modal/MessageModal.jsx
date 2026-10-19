@@ -6,6 +6,7 @@ export default function MessageModal({
   title = "Notice",
   message,
   dismissText = "Understood",
+  triggerElement,
 }) {
   const descId = "message-modal-desc";
 
@@ -14,6 +15,7 @@ export default function MessageModal({
       isOpen={isOpen}
       onClose={onClose}
       title={title}
+      triggerElement={triggerElement}
       ariaDescribedBy={descId}
     >
       <div id={descId} className="modal-body">

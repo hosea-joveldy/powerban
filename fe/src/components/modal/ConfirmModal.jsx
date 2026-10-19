@@ -9,6 +9,7 @@ export default function ConfirmModal({
   confirmText = "Confirm",
   cancelText = "Cancel",
   danger = false,
+  triggerElement,
 }) {
   const descId = "confirm-modal-desc";
 
@@ -22,6 +23,7 @@ export default function ConfirmModal({
       isOpen={isOpen}
       onClose={onClose}
       title={title}
+      triggerElement={triggerElement}
       ariaDescribedBy={descId}
     >
       <div id={descId} className="modal-body">

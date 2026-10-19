@@ -20,11 +20,12 @@ export function ModalProvider({ children }) {
 
   const showAlert = useCallback(
     ({ title = "Notice", message, dismissText = "Understood" }) => {
+      const trigger = document.activeElement;
       return new Promise((resolve) => {
         resolveRef.current = resolve;
         setModalState({
           type: "message",
-          props: { title, message, dismissText },
+          props: { title, message, dismissText, triggerElement: trigger },
         });
       });
     },
@@ -39,11 +40,12 @@ export function ModalProvider({ children }) {
       cancelText = "Cancel",
       danger = false,
     }) => {
+      const trigger = document.activeElement;
       return new Promise((resolve) => {
         resolveRef.current = resolve;
         setModalState({
           type: "confirm",
-          props: { title, message, confirmText, cancelText, danger },
+          props: { title, message, confirmText, cancelText, danger, triggerElement: trigger },
         });
       });
     },
@@ -60,6 +62,7 @@ export function ModalProvider({ children }) {
       confirmText = "Submit",
       cancelText = "Cancel",
     }) => {
+      const trigger = document.activeElement;
       return new Promise((resolve) => {
         resolveRef.current = resolve;
         setModalState({
@@ -72,6 +75,7 @@ export function ModalProvider({ children }) {
             label,
             confirmText,
             cancelText,
+            triggerElement: trigger,
           },
         });
       });
@@ -81,9 +85,10 @@ export function ModalProvider({ children }) {
 
   const openTaskDetail = useCallback(
     ({ task, boards, currentBoardId, locked, onSave, onDelete }) => {
+      const trigger = document.activeElement;
       setModalState({
         type: "task-detail",
-        props: { task, boards, currentBoardId, locked, onSave, onDelete },
+        props: { task, boards, currentBoardId, locked, onSave, onDelete, triggerElement: trigger },
       });
     },
     []

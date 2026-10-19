@@ -40,7 +40,7 @@
       "id": "T2",
       "title": "Design System Tokens, Themes, and In-App Modal System",
       "type": "build",
-      "status": "ongoing",
+      "status": "todo",
       "features": [
         {
           "id": "T2.1",
@@ -249,7 +249,7 @@
       "id": "T8",
       "title": "Fix B1: Modal focus restoration to trigger element on close/Escape",
       "type": "fix",
-      "status": "todo",
+      "status": "ongoing",
       "source": "QA_REPORT.md#B1",
       "features": []
     }

@@ -12,6 +12,7 @@ export default function TaskDetailModal({
   locked = false,
   onSave,
   onDelete,
+  triggerElement,
 }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -79,6 +80,7 @@ export default function TaskDetailModal({
       isOpen={isOpen}
       onClose={onClose}
       title="Task Details"
+      triggerElement={triggerElement}
       className="task-detail"
     >
       <form onSubmit={handleSubmit} className="modal-body" style={{ margin: 0 }}>
