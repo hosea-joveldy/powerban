@@ -20,3 +20,4 @@
 [builder] T4.1 verified: rebuilt Login page matching references/login.png with stacked inputs, visibility toggle, and split pill button.
 [builder] T4.2 verified: restyled Register page with stacked inputs, visibility toggle, split action pill, and error displays.
 [builder] T4.3 verified: implemented failed login tracking in login_attempts table; 5 failed attempts within 15 min returns 429.
+[qa] T4 round 1: verified login, register, and 429 rate limiting; gate passes; marked finished.

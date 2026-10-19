@@ -70,6 +70,16 @@ req "$A" GET /me;                                        expect "me after login 
 req "$A" PATCH /me '{"theme":"stone-light"}';            has "theme updated and persisted" "stone-light"
 req "$B" POST /auth/register "{\"email\":\"$EMAIL_B\",\"password\":\"password123\"}"; expect "register user B" 201
 
+# Rate limiting verification (T4.3)
+EMAIL_RL="rl_${STAMP}@test.dev"
+req "$TMP/rl.jar" POST /auth/register "{\"email\":\"$EMAIL_RL\",\"password\":\"password123\"}"; expect "register user for rate limiting" 201
+for i in 1 2 3 4; do
+  req "$TMP/rl.jar" POST /auth/login "{\"email\":\"$EMAIL_RL\",\"password\":\"badpass$i\"}" >/dev/null 2>&1
+done
+req "$TMP/rl.jar" POST /auth/login "{\"email\":\"$EMAIL_RL\",\"password\":\"badpass5\"}"; expect "5th failed login is 401" 401
+req "$TMP/rl.jar" POST /auth/login "{\"email\":\"$EMAIL_RL\",\"password\":\"badpass6\"}"; expect "6th failed login is 429 rate limited" 429
+has "rate limit error message present" "Too many failed login attempts"
+
 echo "== 2. Groups and Boards =="
 req "$A" POST /groups '{"name":"Work"}';                 expect "create group" 201
 GROUP=$(first_id)

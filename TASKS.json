@@ -112,7 +112,7 @@
       "id": "T4",
       "title": "Authentication Pages Rebuild (Login and Register)",
       "type": "build",
-      "status": "ongoing",
+      "status": "finished",
       "features": [
         {
           "id": "T4.1",

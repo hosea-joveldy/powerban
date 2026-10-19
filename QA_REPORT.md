@@ -1,17 +1,17 @@
 # QA Report
 
 ## Summary
-- Task: T3 (Landing Page Entry Route and Interactive Hero Effect)
-- Result: PASS (Gate passed cleanly, all 16 E2E tests pass, landing page matches references)
+- Task: T4 (Authentication Pages Rebuild (Login and Register))
+- Result: PASS (Full gate passed cleanly, all 22 E2E tests pass, all 57 backend API tests pass, login matches reference)
 - Verified on branch: `dev`
 - QA Round: 1
 
 ## Gate Status
 - Type check (`cd fe && npm run typecheck`): PASS (`tsc --noEmit` exited with code 0)
-- Unit tests (`cd fe && npm test`): PASS (11 test files passed, 22 tests passed in Vitest)
+- Unit tests (`cd fe && npm test`): PASS (12 test files passed, 22 tests passed in Vitest)
 - Build (`cd fe && npm run build`): PASS (`vite build` succeeded, produced `fe/dist/index.html` and bundled assets)
-- Backend API tests (`bash be/tests/run_tests.sh`): PASS (53 passed, 0 failed, validated all constraints in AGENTS.md section 3)
-- E2E tests (`cd fe && npm run test:e2e`): PASS (16 passed, 0 failed across Chromium and Mobile)
+- Backend API tests (`bash be/tests/run_tests.sh`): PASS (57 passed, 0 failed, validated rate limiting and AGENTS.md section 3 rules)
+- E2E tests (`cd fe && npm run test:e2e`): PASS (22 passed, 0 failed across Chromium and Mobile)
 
 ## Features Verified
 1. **T2.1: Design system tokens and theme architecture**
@@ -47,6 +47,31 @@
    - Smooth 3D tilt perspective damping (lerp 0.06) on desktop cursor movement.
    - Static fallback without animation loop when `prefers-reduced-motion: reduce` is active.
    - Static fallback without mouse listeners when `hover: none` matches.
+   - Status: VERIFIED
+
+6. **T4.1: Rebuild Login page to match reference**
+   - Card layout matches `references/login.png` with floating elevated surface card and centered "Log in" heading.
+   - Stacked input container with uppercase `EMAIL` and `PASSWORD` micro-labels.
+   - Password input includes interactive visibility toggle icon.
+   - Action button is a split pill button `[ Log in ] [ → ]`.
+   - Invalid credentials show inline error message without native dialogs.
+   - Responsive at desktop (1280px) and phone (375px) viewports (`.run/screenshots/login-desktop.png`, `login-phone.png`).
+   - Grep confirms no `alert(`/`confirm(`/`prompt(` remains.
+   - Status: VERIFIED
+
+7. **T4.2: Restyle Register page to authentication design language**
+   - Register screen matches authentication design language with floating surface card, stacked inputs, and uppercase micro-labels.
+   - Split pill button `[ Register ] [ → ]` and password visibility toggle.
+   - Seamless link to `/login`.
+   - Inline error display for short passwords or registration conflicts.
+   - Responsive at desktop (1280px) and phone (375px) viewports (`.run/screenshots/register-desktop.png`, `register-phone.png`).
+   - Status: VERIFIED
+
+8. **T4.3: Application-level rate limiting on repeated failed logins**
+   - PostgreSQL `login_attempts` tracks failed authentication attempts.
+   - Exceeding 5 failed attempts within a 15-minute window immediately returns HTTP 429 Too Many Requests with JSON error.
+   - Successful login purges failed attempt records.
+   - Login UI displays 429 rate limit error message inline without dialogs.
    - Status: VERIFIED
 
 ## Findings
