@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Auth;
+use App\Db;
 use App\Http;
 use App\HttpException;
 use App\Input;
@@ -48,14 +49,44 @@ class AuthController
       throw new HttpException(422, "password is required");
     }
 
+    $ip = $_SERVER["REMOTE_ADDR"] ?? null;
+    $db = Db::connection();
+
+    // Check failed login attempts in the last 15 minutes
+    $stmt = $db->prepare(
+      "SELECT COUNT(*) FROM login_attempts WHERE email = :email AND attempted_at >= now() - interval '15 minutes'"
+    );
+    $stmt->execute([":email" => $email]);
+    $failedCount = (int)$stmt->fetchColumn();
+
+    if ($failedCount >= 5) {
+      throw new HttpException(
+        429,
+        "Too many failed login attempts. Please try again in 15 minutes."
+      );
+    }
+
     $row = User::findByEmail($email);
     if (!$row) {
       password_hash($password, PASSWORD_DEFAULT);
+      $ins = $db->prepare(
+        "INSERT INTO login_attempts (email, ip_address, attempted_at) VALUES (:email, :ip, now())"
+      );
+      $ins->execute([":email" => $email, ":ip" => $ip]);
       throw new HttpException(401, "Invalid email or password");
     }
+
     if (!password_verify($password, $row["password_hash"])) {
+      $ins = $db->prepare(
+        "INSERT INTO login_attempts (email, ip_address, attempted_at) VALUES (:email, :ip, now())"
+      );
+      $ins->execute([":email" => $email, ":ip" => $ip]);
       throw new HttpException(401, "Invalid email or password");
     }
+
+    // Successful login clears prior failed attempts
+    $del = $db->prepare("DELETE FROM login_attempts WHERE email = :email");
+    $del->execute([":email" => $email]);
 
     Auth::login($row["id"]);
     unset($row["password_hash"]);

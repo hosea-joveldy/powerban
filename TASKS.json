@@ -144,7 +144,7 @@
         {
           "id": "T4.3",
           "title": "Application-level rate limiting on repeated failed logins",
-          "done": false,
+          "done": true,
           "done_when": [
             "POST /api/auth/login tracks failed attempts in PostgreSQL",
             "Exceeding 5 failed attempts in 15 minutes returns HTTP 429 Too Many Requests with JSON error",

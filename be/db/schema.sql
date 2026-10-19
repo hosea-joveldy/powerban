@@ -57,3 +57,12 @@ CREATE INDEX idx_boards_group_id ON boards(group_id);
 CREATE INDEX idx_cards_board_id ON cards(board_id);
 CREATE INDEX idx_tasks_card_id ON tasks(card_id);
 CREATE INDEX idx_tasks_linked_board_id ON tasks(linked_board_id);
+
+CREATE TABLE login_attempts (
+    id SERIAL PRIMARY KEY,
+    email TEXT NOT NULL,
+    ip_address TEXT,
+    attempted_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX idx_login_attempts_email_time ON login_attempts (email, attempted_at);
