@@ -97,7 +97,7 @@
         {
           "id": "T3.2",
           "title": "Hero celestial orbit particle mesh mouse-interaction effect",
-          "done": false,
+          "done": true,
           "done_when": [
             "Hero section renders celestial concentric stippled orbit particle mesh matching references/landing-page-section1.png",
             "Moving mouse on desktop tilts orbit mesh in 3D perspective with smooth damping",
