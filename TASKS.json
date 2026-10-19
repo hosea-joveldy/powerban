@@ -55,7 +55,7 @@
         {
           "id": "T2.2",
           "title": "Reusable accessible in-app modal system",
-          "done": false,
+          "done": true,
           "done_when": [
             "Modal system implements message, confirm, prompt, and task detail dialog variants",
             "Modals have role=\"dialog\", aria-modal=\"true\", and trap keyboard focus",
