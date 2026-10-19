@@ -5,3 +5,4 @@
 [planner] Wrote TASKS.json with tasks T1-T7 covering gate setup, redesign, modals, QA, and docs.
 [builder] T1.1 verified: npm install and npm run build succeed cleanly producing fe/dist.
 [builder] T1.2 verified: typecheck (tsc), unit tests (vitest), e2e (playwright) scripts configured and passing.
+[builder] T1.3 verified: backend API test suite (be/tests/run_tests.sh) validates 53 AGENTS.md section 3 constraints.

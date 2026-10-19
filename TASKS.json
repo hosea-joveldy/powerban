@@ -28,7 +28,7 @@
         {
           "id": "T1.3",
           "title": "Backend gate test suite runner",
-          "done": false,
+          "done": true,
           "done_when": [
             "bash be/tests/run_tests.sh executes and exits with code 0",
             "Test suite validates all constraints in AGENTS.md section 3 (auth, WIP limits on ongoing cards only, completed cards auto-finishing tasks, 409 on deleting non-empty cards without force, linked boards, and ownership)"
