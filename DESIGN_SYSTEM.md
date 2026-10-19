@@ -6,7 +6,7 @@ The design language is extracted directly from the four reference images in `ref
 - **`landing-page-section1.png` (Hero)**: Warm light-stone neutral canvas (`#E5E7E2`), editorial serif display headings, sans-serif body, pill buttons with a right-hand circular status dot (`•`), and delicate celestial concentric particle/orbit geometries.
 - **`landing-page-section2.png` (Product Showcase)**: Muted sage surface cards (`#DADBCE`), uppercase/pill category badges, dual action pills, and perspective dot-funnel visuals.
 - **`landing-page-section3.png` (Dark Showcase Banner)**: Deep forest-obsidian card (`#16240F`), luminous lime-chartreuse accent pill (`#C8DB57`), crisp white typography, and circular visual apertures.
-- **`login.png` (Authentication Card)**: Minimalist elevated card (`#EFF1EC`) with rounded corners (`18px`), centered typography, social OAuth buttons with subtle borders, stacked input container with uppercase micro-labels (`EMAIL`, `PASSWORD`), visibility toggle, and split action pill `[ Log in ] [ -> ]`.
+- **`login.png` (Authentication Card)**: Minimalist elevated card (`#EFF1EC`) with rounded corners (`18px`), centered typography, stacked input container with uppercase micro-labels (`EMAIL`, `PASSWORD`), visibility toggle, and split action pill `[ Log in ] [ -> ]` (omitting third-party OAuth in favor of focused email/password auth).
 
 All screens in Powerban—including those without direct references (Register, Dashboard, Board kanban, Card columns, Task items, WIP indicators, Modals, and Settings)—derive strictly from this unified language.
 

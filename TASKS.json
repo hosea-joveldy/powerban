@@ -121,7 +121,7 @@
           "done_when": [
             "Screen matches its reference at phone and desktop widths",
             "Card layout matches references/login.png with floating elevated surface card and centered Log in heading",
-            "Features Google and GitHub social buttons and stacked input container with uppercase EMAIL and PASSWORD micro-labels",
+            "Stacked input container with uppercase EMAIL and PASSWORD micro-labels without external social login buttons",
             "Password input includes interactive visibility toggle icon",
             "Action button is a split pill button [ Log in ] [ -> ]",
             "Invalid credentials show inline error message without native dialogs",
@@ -138,6 +138,18 @@
             "Navigation link to /login works smoothly",
             "Registration errors display inline without native dialogs",
             "no alert(/confirm(/prompt( remains",
+            "Full gate passes"
+          ]
+        },
+        {
+          "id": "T4.3",
+          "title": "Application-level rate limiting on repeated failed logins",
+          "done": false,
+          "done_when": [
+            "POST /api/auth/login tracks failed attempts in PostgreSQL",
+            "Exceeding 5 failed attempts in 15 minutes returns HTTP 429 Too Many Requests with JSON error",
+            "Successful login clears prior failed attempts",
+            "Login UI displays 429 rate limit error message inline",
             "Full gate passes"
           ]
         }

@@ -7,7 +7,7 @@ Powerban is a focused, high-efficiency kanban board for power users built for a 
 ### 1.1 Objectives for this Phase
 1. **Frontend Redesign**: Discard the previous MVP demo design, old palettes, and the five previous themes. Implement a modern, cohesive design system derived strictly from the reference designs in `references/` (`landing-page-section1.png`, `landing-page-section2.png`, `landing-page-section3.png`, and `login.png`).
 2. **Landing Page Entry Route**: Build an entry route at `/` that presents the product using the visual style from `references/landing-page-section*.png`. Include an interactive mouse-movement effect in the hero (Celestial Orbit Particle Mesh) with reduced-motion and touch fallbacks. Unauthenticated users see this page; authenticated users redirect to the dashboard. The primary call-to-action leads to `/login`.
-3. **Authentication Rebuild**: Rebuild the Login page to match `references/login.png` (floating surface card, stacked email/password field with visibility toggle, split action button `[ Log in ] [ -> ]`, and sign up links). Restyle the Register page using the exact same visual language.
+3. **Authentication Rebuild**: Rebuild the Login page to match `references/login.png` without social OAuth buttons (floating surface card, stacked email/password field with visibility toggle, split action button `[ Log in ] [ -> ]`, and sign up links). Restyle the Register page using the exact same visual language.
 4. **Accessible In-App Modal System**: Completely remove all native browser dialogs (`alert(`, `confirm(`, `prompt(`). Replace them with an accessible, mobile-responsive in-app modal system supporting message dialogs, confirmation dialogs, single-input prompt dialogs, and a task detail modal (title, multi-line description, linked board picker).
 5. **Documentation & Licensing**: Rewrite the root `README.md` to match current code reality (accurate features, setup guide, removed dead links to nonexistent `SETUP.md`). Add an official MIT `LICENSE` file. Write comprehensive API documentation for all backend endpoints.
 6. **Frontend Robustness & Gate Setup**: Configure missing gate runners (type checking, Vitest unit tests, Playwright E2E tests, build script confirmation, and backend API test suite) so automated gates protect every change.
@@ -27,9 +27,11 @@ Powerban is a focused, high-efficiency kanban board for power users built for a 
 - **Groups**: Deleting a group sets `group_id = NULL` on its boards (boards become standalone).
 - **Templates**: Users can save any board as a template (`POST /api/boards/{id}/save-as-template`) and instantiate new boards from templates (`POST /api/boards/from-template/{id}`). Built-in system templates (`system@powerban.local`) are visible to all users.
 - **Progress Calculation**: Flat computation: `{done, total, percent}` where `percent = round((completed_tasks / total_tasks) * 100)`. Empty boards return 0%.
+- **Rate Limiting on Failed Logins**: Repeated failed login attempts are tracked at the application level in PostgreSQL (`login_attempts` table recording `email`, `ip_address`, and timestamp). Exceeding 5 failed attempts in 15 minutes causes `POST /api/auth/login` to return HTTP 429 Too Many Requests (`{"error": "Too many failed login attempts. Please try again in 15 minutes."}`). Successful login clears prior failed attempts.
 
 ### 1.4 Out of Scope (AGENTS.md Section 2)
 The following items remain strictly out of scope for this phase:
+- Google OAuth, GitHub login, and external third-party social auth providers (confirmed by human).
 - One task assigned to multiple boards simultaneously.
 - Deep hierarchical or recursive progress rollup across linked boards.
 - Archive / soft delete systems.
@@ -48,12 +50,12 @@ Before any QA sign-off or merge, all gate commands must pass cleanly:
 | **Type check** | `cd fe && npm run typecheck` | Validates JavaScript / JSX typing and syntax via `tsc --noEmit` |
 | **Unit tests** | `cd fe && npm test` | Runs deterministic Vitest unit tests for frontend utilities, helpers, and components |
 | **Build** | `cd fe && npm run build` | Produces production Vite asset bundle in `fe/dist/` |
-| **Backend API tests** | `bash be/tests/run_tests.sh` | Executes full API integration test suite covering auth, groups, boards, cards, tasks, WIP limits, templates, and ownership |
+| **Backend API tests** | `bash be/tests/run_tests.sh` | Executes full API integration test suite covering auth, rate limiting, groups, boards, cards, tasks, WIP limits, templates, and ownership |
 | **E2E tests** | `cd fe && npm run test:e2e` | Headless Playwright tests validating end-to-end user flows, responsive layouts, and modal interactions |
 
 ---
 
-## 3. Open Questions
+## 3. Decisions & Human Approvals
 
-- `TODO(human): Confirm whether social login buttons ("Continue with Google", "Continue with GitHub") on the Login and Register cards should remain visual demo/mock buttons or if OAuth integrations are planned for a later phase.`
-- `TODO(human): Confirm whether the rate-limiting requirement for repeated failed logins (AGENTS.md section 1) should be handled via database attempt counters in PHP or Apache mod_ratelimit/fail2ban.`
+1. **Third-party OAuth Omission**: Google and GitHub OAuth buttons shown in the reference `references/login.png` are excluded; authentication exclusively uses email and password.
+2. **Application-Level Login Rate Limiting**: Application-level tracking via PostgreSQL is adopted over server-level configuration because it respects the rule against changing container/environment configuration (AGENTS.md rule 7), distinguishes between targeted accounts versus shared NAT IPs, returns consistent JSON API errors, and is directly testable within automated gate suites.
