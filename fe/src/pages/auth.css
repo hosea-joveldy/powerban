@@ -1,0 +1,182 @@
+/* Authentication pages (Login & Register) styles matching references/login.png */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-canvas);
+  padding: var(--space-5);
+  position: relative;
+}
+
+.auth-topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-6);
+}
+
+.auth-card {
+  width: min(440px, 92vw);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-7) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  text-align: center;
+}
+
+.auth-title {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: 500;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* Stacked input container matching references/login.png */
+.input-group-stacked {
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-surface-elevated);
+  text-align: left;
+  overflow: hidden;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input-group-stacked:focus-within {
+  border-color: var(--border-strong);
+  box-shadow: 0 0 0 1px var(--border-strong);
+}
+
+.stacked-field {
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+}
+
+.stacked-field + .stacked-field {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.stacked-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  margin: 0;
+}
+
+.stacked-input-row {
+  display: flex;
+  align-items: center;
+}
+
+.stacked-input {
+  border: none !important;
+  background: transparent !important;
+  color: var(--text-primary) !important;
+  font-size: var(--text-base) !important;
+  font-family: var(--font-sans) !important;
+  padding: 0 !important;
+  outline: none !important;
+  width: 100% !important;
+  box-shadow: none !important;
+}
+
+.stacked-input:focus {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.password-toggle-btn {
+  background: transparent !important;
+  border: none !important;
+  color: var(--text-muted);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: var(--radius-xs);
+  transition: color 0.15s ease;
+}
+
+.password-toggle-btn:hover {
+  color: var(--text-primary);
+  border: none !important;
+}
+
+/* Split Action Button matching references/login.png */
+.btn-split-pill {
+  display: inline-flex;
+  align-items: stretch;
+  border-radius: var(--radius-pill);
+  background-color: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border: none;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  margin: 0 auto;
+  transition: background-color 0.15s ease;
+}
+
+.btn-split-pill:hover {
+  background-color: var(--btn-primary-hover);
+}
+
+.btn-split-pill:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.split-pill-label {
+  padding: 10px 22px;
+  font-weight: 600;
+  font-size: var(--text-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.split-pill-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 16px;
+}
+
+.auth-terms {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  line-height: var(--leading-normal);
+  margin: 0;
+}
+
+.auth-footer-link {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.auth-footer-link a {
+  color: var(--text-primary);
+  font-weight: 600;
+}

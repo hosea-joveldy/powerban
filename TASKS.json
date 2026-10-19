@@ -112,12 +112,12 @@
       "id": "T4",
       "title": "Authentication Pages Rebuild (Login and Register)",
       "type": "build",
-      "status": "todo",
+      "status": "ongoing",
       "features": [
         {
           "id": "T4.1",
           "title": "Rebuild Login page to match reference",
-          "done": false,
+          "done": true,
           "done_when": [
             "Screen matches its reference at phone and desktop widths",
             "Card layout matches references/login.png with floating elevated surface card and centered Log in heading",
