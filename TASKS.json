@@ -40,7 +40,7 @@
       "id": "T2",
       "title": "Design System Tokens, Themes, and In-App Modal System",
       "type": "build",
-      "status": "todo",
+      "status": "finished",
       "features": [
         {
           "id": "T2.1",
@@ -55,7 +55,7 @@
         {
           "id": "T2.2",
           "title": "Reusable accessible in-app modal system",
-          "done": false,
+          "done": true,
           "done_when": [
             "Modal system implements message, confirm, prompt, and task detail dialog variants",
             "Modals have role=\"dialog\", aria-modal=\"true\", and trap keyboard focus",
@@ -67,7 +67,7 @@
         {
           "id": "T2.3",
           "title": "Elimination of native browser dialogs in existing components",
-          "done": false,
+          "done": true,
           "done_when": [
             "no alert(/confirm(/prompt( remains in any file in fe/src",
             "Board deletion, card deletion, group creation, board creation, and card creation use in-app modals",
@@ -249,7 +249,7 @@
       "id": "T8",
       "title": "Fix B1: Modal focus restoration to trigger element on close/Escape",
       "type": "fix",
-      "status": "ongoing",
+      "status": "finished",
       "source": "QA_REPORT.md#B1",
       "features": []
     }

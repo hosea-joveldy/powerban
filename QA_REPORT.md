@@ -1,17 +1,17 @@
 # QA Report
 
 ## Summary
-- Task: T2 (Design System Tokens, Themes, and In-App Modal System)
-- Result: FAILED (Gate failed on E2E focus restoration)
+- Task: T8 (Fix B1: Modal focus restoration to trigger element on close/Escape) & T2 (Design System Tokens, Themes, and In-App Modal System)
+- Result: PASS (Gate passed, defect B1 resolved, all E2E focus checks passing)
 - Verified on branch: `dev`
-- QA Round: 1
+- QA Round: 2
 
 ## Gate Status
 - Type check (`cd fe && npm run typecheck`): PASS (`tsc --noEmit` exited with code 0)
 - Unit tests (`cd fe && npm test`): PASS (10 test files passed, 22 tests passed in Vitest)
 - Build (`cd fe && npm run build`): PASS (`vite build` succeeded, produced `fe/dist/index.html` and bundled assets)
 - Backend API tests (`bash be/tests/run_tests.sh`): PASS (53 passed, 0 failed, validated all constraints in AGENTS.md section 3)
-- E2E tests (`cd fe && npm run test:e2e`): FAIL (10 passed, 2 failed on focus restoration to trigger element after Escape in `modal.spec.js`)
+- E2E tests (`cd fe && npm run test:e2e`): PASS (12 passed, 0 failed across Chromium and Mobile)
 
 ## Features Verified
 1. **T2.1: Design system tokens and theme architecture**
@@ -25,18 +25,20 @@
    - Modals have `role="dialog"`, `aria-modal="true"`, and focus trapping via Tab key navigation.
    - Backdrop clicking cancels without triggering actions.
    - Responsive and usable at desktop (1280px) and phone (375px) widths.
-   - Defect: Escape key closes active modal, but focus is lost to `document.body` instead of returning to the triggering element.
-   - Status: FAILED (Defect B1)
+   - Focus restoration to triggering element verified on Escape and close.
+   - Status: VERIFIED
 
 3. **T2.3: Elimination of native browser dialogs in existing components**
    - Grep verification confirms zero occurrences of `alert(`, `confirm(`, or `prompt(` in `fe/src`.
    - Board deletion, card deletion, 409 force deletion, group creation, board creation, and task detail editing all utilize in-app modals.
-   - Full gate does not pass due to defect B1 in E2E tests.
-   - Status: FAILED (blocked by B1)
+   - Full gate passes cleanly.
+   - Status: VERIFIED
 
 ## Findings
+None currently open.
 
-### B1: Modal fails to restore keyboard focus to triggering element upon close / Escape
+### B1: Modal fails to restore keyboard focus to triggering element upon close / Escape [RESOLVED in T8]
+- **Status**: RESOLVED (Verified in QA Round 2 via `e2e/modal.spec.js`)
 - **Task & Feature**: T2, T2.2 & T2.3
 - **What was done**: In `modal.spec.js`, focused and clicked the `+ group` button to open `PromptModal`. With dialog open, pressed `Escape` to close the modal, then asserted `await expect(newGroupBtn).toBeFocused()`.
 - **Expected**: Active modal closes and keyboard focus returns to the triggering element (`+ group` button), as required by AGENTS.md section 10 and T2.2 `done_when` ("Escape key closes active modal and returns focus to the triggering element").
