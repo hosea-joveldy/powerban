@@ -192,7 +192,7 @@
         {
           "id": "T5.3",
           "title": "Restyle Settings and theme switching persistence",
-          "done": false,
+          "done": true,
           "done_when": [
             "Settings page presents stone-light and forest-dark theme options",
             "Selecting a theme updates document theme immediately and persists to backend via PATCH /api/me",

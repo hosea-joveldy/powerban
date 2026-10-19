@@ -2,70 +2,66 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../AuthContext.jsx";
 import { THEMES } from "../themes.js";
 import TopBar from "../components/TopBar.jsx";
+import "./settings.css";
+
+const THEME_DESCRIPTIONS = {
+  "stone-light": "Clean, editorial light environment with sage accents",
+  "forest-dark": "Deep nocturnal dark space with vibrant lime glow",
+};
 
 export default function Settings() {
   const { user, setTheme } = useAuth();
 
   return (
-    <div className="page">
+    <div className="settings-page page">
       <TopBar crumb="settings" />
-      <div className="page-main" style={{ padding: "var(--space-5)", maxWidth: 640 }}>
-        <h2 style={{ marginTop: 0 }}>Appearance</h2>
-        <p style={{ color: "var(--text-dim)", marginTop: "-8px" }}>
-          Pick a color scheme. Applies immediately and is saved to your account.
-        </p>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
-            gap: "var(--space-3)",
-            marginTop: "var(--space-4)",
-          }}
-        >
-          {THEMES.map((t) => {
-            const active = user?.theme === t.id;
-            return (
-              <button
-                key={t.id}
-                onClick={() => setTheme(t.id)}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "var(--space-2)",
-                  padding: "var(--space-3)",
-                  textAlign: "left",
-                  borderColor: active ? "var(--accent)" : "var(--border)",
-                  borderWidth: active ? 2 : 1,
-                  background: "var(--bg-pane)",
-                }}
-                aria-pressed={active}
-              >
-                <div style={{ display: "flex", gap: 4 }}>
-                  {t.swatch.map((c, i) => (
-                    <span
-                      key={i}
-                      style={{
-                        width: 20,
-                        height: 20,
-                        borderRadius: 2,
-                        background: c,
-                        border: "1px solid rgba(255,255,255,0.1)",
-                      }}
-                    />
-                  ))}
-                </div>
-                <span className="mono" style={{ fontSize: 13 }}>
-                  {t.label}
-                  {active && " ✓"}
-                </span>
-              </button>
-            );
-          })}
+      <main className="settings-container page-main">
+        <div className="settings-card">
+          <h1 className="settings-title">Appearance</h1>
+          <p className="settings-description">
+            Pick a color scheme. Applies immediately and is saved to your account.
+          </p>
+
+          <div className="theme-options-grid">
+            {THEMES.map((t) => {
+              const active = user?.theme === t.id;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => setTheme(t.id)}
+                  className={`theme-option-card ${active ? "active" : ""}`}
+                  aria-pressed={active}
+                >
+                  <div className="theme-swatches" aria-hidden="true">
+                    {t.swatch.map((c, i) => (
+                      <span
+                        key={i}
+                        className="theme-swatch-circle"
+                        style={{ backgroundColor: c }}
+                      />
+                    ))}
+                  </div>
+                  <div className="theme-card-info">
+                    <div className="theme-card-header">
+                      <span className="theme-card-name">{t.label}</span>
+                      {active && <span className="theme-active-tag">Active</span>}
+                    </div>
+                    <span className="theme-card-desc">
+                      {THEME_DESCRIPTIONS[t.id] || "Unified theme palette"}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          <div>
+            <Link to="/" className="settings-back-link">
+              ← Back to dashboard
+            </Link>
+          </div>
         </div>
-        <div style={{ marginTop: "var(--space-5)" }}>
-          <Link to="/">← back to dashboard</Link>
-        </div>
-      </div>
+      </main>
     </div>
   );
 }
