@@ -209,7 +209,6 @@ export default function Board() {
         <button
           className="btn-add-card-column"
           onClick={addCard}
-          aria-label="Add new column"
         >
           + add card
         </button>

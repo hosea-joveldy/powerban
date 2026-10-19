@@ -29,9 +29,8 @@ export default function CardColumn({
   }
 
   return (
-    <section
+    <div
       className={`card-column ${dragOver ? "drag-over" : ""}`}
-      aria-label={`Column ${card.name}`}
       onDragOver={(e) => {
         e.preventDefault();
         setDragOver(true);
@@ -105,6 +104,6 @@ export default function CardColumn({
           + add task
         </button>
       )}
-    </section>
+    </div>
   );
 }
