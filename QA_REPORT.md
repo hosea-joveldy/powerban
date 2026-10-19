@@ -1,8 +1,8 @@
 # QA Report
 
 ## Summary
-- Task: T5 (Dashboard, Board Kanban, and Settings Restyling)
-- Result: PASS (Full gate passed cleanly, all 28 E2E tests pass across Desktop & Mobile, all 57 backend API tests pass, 0 browser dialogs)
+- Task: T6 (Documentation, API Reference, and MIT License)
+- Result: PASS (Full gate passed cleanly, all 28 E2E tests pass, all 57 backend API tests pass, LICENSE, README.md, and docs/API.md verified)
 - Verified on branch: `dev`
 - QA Round: 1
 
@@ -98,6 +98,22 @@
     - Settings page presents stone-light and forest-dark theme options with preview swatches and descriptions.
     - Selecting a theme updates document theme immediately and persists to backend via PATCH /api/me.
     - Responsive at desktop (1280px) and phone (375px) viewports (`.run/screenshots/settings-desktop.png`, `settings-phone.png`).
+    - Full gate passes cleanly.
+    - Status: VERIFIED
+
+12. **T6.1: Add MIT License file**
+    - Root `LICENSE` file created containing standard MIT License terms and copyright.
+    - Status: VERIFIED
+
+13. **T6.2: Complete rewrite of root README.md**
+    - README accurately reflects true system capabilities and business rules (workspaces/groups, linked boards, ongoing WIP limits, flat progress, templates).
+    - Removed all dead links to non-existent `SETUP.md`.
+    - Setup instructions for Docker, PostgreSQL database seeding, and frontend dev/build verified and accurate.
+    - Status: VERIFIED
+
+14. **T6.3: Comprehensive backend API documentation**
+    - Created `docs/API.md` documenting all 23 backend endpoints across auth, groups, boards, templates, cards, and tasks.
+    - Detailed request headers, JSON bodies, query parameters, response schemas, and error codes.
     - Full gate passes cleanly.
     - Status: VERIFIED
 

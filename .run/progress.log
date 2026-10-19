@@ -25,3 +25,7 @@
 [builder] T5.2 verified: restyled Board kanban view, columns with WIP pills, completed card styles, and linked board badges.
 [builder] T5.3 verified: restyled Settings appearance page with theme option cards and instant persistence.
 [qa] T5 round 1: verified dashboard, board kanban, and settings; gate passes; marked finished.
+[builder] T6.1 verified: created root MIT LICENSE file.
+[builder] T6.2 verified: rewrote README.md covering architecture, true rules, and setup.
+[builder] T6.3 verified: wrote comprehensive API reference in docs/API.md.
+[qa] T6 round 1: verified LICENSE, README.md rewrite, and docs/API.md; full gate passes; marked finished.

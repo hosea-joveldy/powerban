@@ -52,6 +52,14 @@ if (!process.env.VITEST) {
       // Open again to test focus trap with Tab key
       await newGroupBtn.click();
       await expect(dialog).toBeVisible();
+      await expect(async () => {
+        const inside = await page.evaluate(() => {
+          const dialogEl = document.querySelector('[role="dialog"]');
+          return dialogEl?.contains(document.activeElement) ?? false;
+        });
+        expect(inside).toBe(true);
+      }).toPass();
+
       // Tab multiple times
       await page.keyboard.press("Tab");
       await page.keyboard.press("Tab");
