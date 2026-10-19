@@ -9,3 +9,4 @@
 [qa] T1 round 1: verified all gate commands and done_when criteria for T1.1-T1.3; all 53 backend tests and 8 unit tests passed; T1 marked finished.
 [builder] T2.1 verified: stone-light and forest-dark CSS variables, themes.js, and FOUT prevention applied.
 [builder] T2.2 verified: created accessible modal dialog system (MessageModal, ConfirmModal, PromptModal, TaskDetailModal, ModalContext).
+[builder] T2.3 verified: eliminated all native alert/confirm/prompt in fe/src; wired in-app modals for board/card/group actions.

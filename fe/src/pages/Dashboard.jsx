@@ -1,12 +1,14 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../api.js";
+import { useModal } from "../components/modal/index.js";
 import TopBar from "../components/TopBar.jsx";
 import BoardTile from "../components/BoardTile.jsx";
 import TemplateTile from "../components/TemplateTile.jsx";
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const modal = useModal();
   const [groups, setGroups] = useState([]);
   const [boards, setBoards] = useState([]);
   const [templates, setTemplates] = useState([]);
@@ -36,37 +38,83 @@ export default function Dashboard() {
   const byGroup = (groupId) => boards.filter((b) => b.group_id === groupId);
 
   async function newGroup() {
-    const name = prompt("Group name:");
-    if (!name) return;
-    await api.post("/groups", { name });
-    load();
+    const name = await modal.showPrompt({
+      title: "New Group",
+      label: "Group Name",
+      placeholder: "e.g. Work, Personal",
+      confirmText: "Create Group",
+    });
+    if (!name || !name.trim()) return;
+    try {
+      await api.post("/groups", { name: name.trim() });
+      load();
+    } catch (err) {
+      await modal.showAlert({ title: "Error Creating Group", message: err.message });
+    }
   }
 
   async function newBoard(groupId) {
-    const name = prompt("Board name:");
-    if (!name) return;
-    await api.post("/boards", { name, group_id: groupId ?? null });
-    load();
+    const name = await modal.showPrompt({
+      title: "New Board",
+      label: "Board Name",
+      placeholder: "e.g. Sprint Backlog",
+      confirmText: "Create Board",
+    });
+    if (!name || !name.trim()) return;
+    try {
+      await api.post("/boards", { name: name.trim(), group_id: groupId ?? null });
+      load();
+    } catch (err) {
+      await modal.showAlert({ title: "Error Creating Board", message: err.message });
+    }
   }
 
   async function saveAsTemplate(board) {
-    const name = prompt("Template name:", `${board.name} (template)`);
-    if (!name) return;
-    await api.post(`/boards/${board.id}/save-as-template`, { name });
-    load();
+    const name = await modal.showPrompt({
+      title: "Save as Template",
+      label: "Template Name",
+      defaultValue: `${board.name} (template)`,
+      confirmText: "Save Template",
+    });
+    if (!name || !name.trim()) return;
+    try {
+      await api.post(`/boards/${board.id}/save-as-template`, { name: name.trim() });
+      load();
+    } catch (err) {
+      await modal.showAlert({ title: "Error Saving Template", message: err.message });
+    }
   }
 
   async function deleteBoard(board) {
-    if (!confirm(`Delete "${board.name}"? This cannot be undone.`)) return;
-    await api.delete(`/boards/${board.id}`);
-    load();
+    const confirmed = await modal.showConfirm({
+      title: "Delete Board",
+      message: `Delete "${board.name}"? This cannot be undone.`,
+      confirmText: "Delete Board",
+      danger: true,
+    });
+    if (!confirmed) return;
+    try {
+      await api.delete(`/boards/${board.id}`);
+      load();
+    } catch (err) {
+      await modal.showAlert({ title: "Error Deleting Board", message: err.message });
+    }
   }
 
   async function useTemplate(template) {
-    const name = prompt("New board name:", template.name);
-    if (!name) return;
-    const board = await api.post(`/boards/from-template/${template.id}`, { name });
-    navigate(`/boards/${board.id}`);
+    const name = await modal.showPrompt({
+      title: "Create from Template",
+      label: "Board Name",
+      defaultValue: template.name,
+      confirmText: "Create Board",
+    });
+    if (!name || !name.trim()) return;
+    try {
+      const board = await api.post(`/boards/from-template/${template.id}`, { name: name.trim() });
+      navigate(`/boards/${board.id}`);
+    } catch (err) {
+      await modal.showAlert({ title: "Error Creating Board", message: err.message });
+    }
   }
 
   return (

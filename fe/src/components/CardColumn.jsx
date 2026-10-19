@@ -1,7 +1,18 @@
 import { useState } from "react";
 import TaskItem from "./TaskItem.jsx";
 
-export default function CardColumn({ card, boards, onDrop, onAddTask, onDeleteCard, onDeleteTask, onToggleTask, onLinkTask, onDragStart }) {
+export default function CardColumn({
+  card,
+  boards,
+  onDrop,
+  onAddTask,
+  onDeleteCard,
+  onDeleteTask,
+  onToggleTask,
+  onLinkTask,
+  onOpenTaskDetail,
+  onDragStart,
+}) {
   const [adding, setAdding] = useState(false);
   const [title, setTitle] = useState("");
   const [dragOver, setDragOver] = useState(false);
@@ -70,6 +81,7 @@ export default function CardColumn({ card, boards, onDrop, onAddTask, onDeleteCa
             onToggle={onToggleTask}
             onDelete={onDeleteTask}
             onLink={onLinkTask}
+            onOpenDetail={onOpenTaskDetail}
             onDragStart={onDragStart}
           />
         ))}

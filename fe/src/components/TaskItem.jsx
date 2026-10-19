@@ -2,20 +2,30 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { progressBar } from "../progress.js";
 
-export default function TaskItem({ task, boards, locked, onToggle, onDelete, onLink, onDragStart }) {
+export default function TaskItem({
+  task,
+  boards,
+  locked,
+  onToggle,
+  onDelete,
+  onLink,
+  onOpenDetail,
+  onDragStart,
+}) {
   const [linking, setLinking] = useState(false);
 
   return (
     <div
       draggable
       onDragStart={(e) => onDragStart(e, task.id)}
+      onClick={() => onOpenDetail?.(task)}
       style={{
         border: "1px solid var(--border)",
         borderRadius: "var(--radius)",
         background: "var(--bg)",
         padding: "var(--space-2)",
         marginBottom: "var(--space-2)",
-        cursor: "grab",
+        cursor: "pointer",
       }}
     >
       <div style={{ display: "flex", gap: "var(--space-2)", alignItems: "flex-start" }}>
@@ -23,7 +33,11 @@ export default function TaskItem({ task, boards, locked, onToggle, onDelete, onL
           type="checkbox"
           checked={task.is_finished}
           disabled={locked}
-          onChange={() => onToggle(task)}
+          onChange={(e) => {
+            e.stopPropagation();
+            onToggle(task);
+          }}
+          onClick={(e) => e.stopPropagation()}
           title={locked ? "Finished automatically in a completed card" : "Mark finished"}
         />
         <div style={{ flex: 1, minWidth: 0 }}>
@@ -54,6 +68,7 @@ export default function TaskItem({ task, boards, locked, onToggle, onDelete, onL
                 borderRadius: "var(--radius)",
                 color: "var(--text-dim)",
               }}
+              onClick={(e) => e.stopPropagation()}
               onMouseDown={(e) => e.stopPropagation()}
             >
               → {task.linked_board.name} {progressBar(task.linked_board.progress.percent, 3)}{" "}
@@ -66,7 +81,10 @@ export default function TaskItem({ task, boards, locked, onToggle, onDelete, onL
             className="icon-btn"
             style={{ fontSize: 12 }}
             title="Link to another board"
-            onClick={() => setLinking((v) => !v)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setLinking((v) => !v);
+            }}
           >
             🔗
           </button>
@@ -74,7 +92,10 @@ export default function TaskItem({ task, boards, locked, onToggle, onDelete, onL
             className="icon-btn"
             style={{ fontSize: 12 }}
             title="Delete task"
-            onClick={() => onDelete(task)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(task);
+            }}
           >
             ×
           </button>
@@ -84,7 +105,9 @@ export default function TaskItem({ task, boards, locked, onToggle, onDelete, onL
         <select
           autoFocus
           defaultValue={task.linked_board_id ?? ""}
+          onClick={(e) => e.stopPropagation()}
           onChange={(e) => {
+            e.stopPropagation();
             const v = e.target.value;
             onLink(task, v === "" ? null : Number(v));
             setLinking(false);

@@ -67,7 +67,7 @@
         {
           "id": "T2.3",
           "title": "Elimination of native browser dialogs in existing components",
-          "done": false,
+          "done": true,
           "done_when": [
             "no alert(/confirm(/prompt( remains in any file in fe/src",
             "Board deletion, card deletion, group creation, board creation, and card creation use in-app modals",
