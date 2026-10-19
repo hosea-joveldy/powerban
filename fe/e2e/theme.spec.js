@@ -35,7 +35,7 @@ if (!process.env.VITEST) {
       expect(styles.fontSans).toContain("Inter");
 
       // Screenshot stone-light theme
-      await page.screenshot({ path: ".run/screenshots/theme-stone-light-desktop.png" });
+      await page.screenshot({ path: "../.run/screenshots/theme-stone-light-desktop.png" });
     });
 
     test("applies forest-dark, persists to backend and localStorage, and avoids FOUT on reload", async ({
@@ -72,7 +72,7 @@ if (!process.env.VITEST) {
       expect(styles.accentLime).toBe("#c8db57");
 
       // Screenshot forest-dark theme
-      await page.screenshot({ path: ".run/screenshots/theme-forest-dark-desktop.png" });
+      await page.screenshot({ path: "../.run/screenshots/theme-forest-dark-desktop.png" });
 
       // Reload page and verify theme stays forest-dark without flashing default
       await page.reload();

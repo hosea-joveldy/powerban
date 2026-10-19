@@ -31,11 +31,11 @@ if (!process.env.VITEST) {
 
       // Screenshot PromptModal on desktop
       await page.setViewportSize({ width: 1280, height: 800 });
-      await page.screenshot({ path: ".run/screenshots/modal-prompt-desktop.png" });
+      await page.screenshot({ path: "../.run/screenshots/modal-prompt-desktop.png" });
 
       // Screenshot PromptModal on phone
       await page.setViewportSize({ width: 375, height: 667 });
-      await page.screenshot({ path: ".run/screenshots/modal-prompt-phone.png" });
+      await page.screenshot({ path: "../.run/screenshots/modal-prompt-phone.png" });
 
       // Reset to desktop viewport and submit
       await page.setViewportSize({ width: 1280, height: 800 });
@@ -96,9 +96,9 @@ if (!process.env.VITEST) {
 
       // Screenshot ConfirmModal on desktop & phone
       await page.setViewportSize({ width: 1280, height: 800 });
-      await page.screenshot({ path: ".run/screenshots/modal-confirm-desktop.png" });
+      await page.screenshot({ path: "../.run/screenshots/modal-confirm-desktop.png" });
       await page.setViewportSize({ width: 375, height: 667 });
-      await page.screenshot({ path: ".run/screenshots/modal-confirm-phone.png" });
+      await page.screenshot({ path: "../.run/screenshots/modal-confirm-phone.png" });
 
       // Click Delete Card in initial confirmation
       await page.setViewportSize({ width: 1280, height: 800 });

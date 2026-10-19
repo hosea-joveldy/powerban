@@ -1,17 +1,17 @@
 # QA Report
 
 ## Summary
-- Task: T4 (Authentication Pages Rebuild (Login and Register))
-- Result: PASS (Full gate passed cleanly, all 22 E2E tests pass, all 57 backend API tests pass, login matches reference)
+- Task: T5 (Dashboard, Board Kanban, and Settings Restyling)
+- Result: PASS (Full gate passed cleanly, all 28 E2E tests pass across Desktop & Mobile, all 57 backend API tests pass, 0 browser dialogs)
 - Verified on branch: `dev`
 - QA Round: 1
 
 ## Gate Status
 - Type check (`cd fe && npm run typecheck`): PASS (`tsc --noEmit` exited with code 0)
-- Unit tests (`cd fe && npm test`): PASS (12 test files passed, 22 tests passed in Vitest)
+- Unit tests (`cd fe && npm test`): PASS (13 test files passed, 22 tests passed in Vitest)
 - Build (`cd fe && npm run build`): PASS (`vite build` succeeded, produced `fe/dist/index.html` and bundled assets)
 - Backend API tests (`bash be/tests/run_tests.sh`): PASS (57 passed, 0 failed, validated rate limiting and AGENTS.md section 3 rules)
-- E2E tests (`cd fe && npm run test:e2e`): PASS (22 passed, 0 failed across Chromium and Mobile)
+- E2E tests (`cd fe && npm run test:e2e`): PASS (28 passed, 0 failed across Chromium and Mobile)
 
 ## Features Verified
 1. **T2.1: Design system tokens and theme architecture**
@@ -73,6 +73,33 @@
    - Successful login purges failed attempt records.
    - Login UI displays 429 rate limit error message inline without dialogs.
    - Status: VERIFIED
+
+9. **T5.1: Restyle Dashboard with unified design system**
+   - Topbar displays wordmark, breadcrumb, theme settings link, and logout button with SVG icons.
+   - Group sections, standalone boards, and template tiles render with clean surface cards.
+   - Board tiles display board title, progress track, metrics, save as template, and delete actions.
+   - Group and board creation trigger in-app prompt modals.
+   - Responsive at desktop (1280px) and phone (375px) viewports (`.run/screenshots/dashboard-desktop.png`, `dashboard-phone.png`).
+   - Grep verification confirms zero occurrences of `alert(`, `confirm(`, or `prompt(`.
+   - Status: VERIFIED
+
+10. **T5.2: Restyle Board kanban view, columns, and task interactions**
+    - Card columns render with rounded corners and uppercase headers.
+    - Ongoing cards display WIP indicator pill (e.g. 1/2) highlighted in warning colors at limit.
+    - Tasks in completed cards display finished styling (dimmed, strikethrough).
+    - Linked board badge shows target board name and flat progress bar; clicking navigates to that board.
+    - Task Detail modal allows editing title, multiline description, and linked board target.
+    - Drag and drop between columns updates task positions and card types.
+    - Responsive at desktop (1280px) and phone (375px) viewports (`.run/screenshots/board-desktop.png`, `board-phone.png`).
+    - Grep confirms zero occurrences of `alert(`, `confirm(`, or `prompt(`.
+    - Status: VERIFIED
+
+11. **T5.3: Restyle Settings and theme switching persistence**
+    - Settings page presents stone-light and forest-dark theme options with preview swatches and descriptions.
+    - Selecting a theme updates document theme immediately and persists to backend via PATCH /api/me.
+    - Responsive at desktop (1280px) and phone (375px) viewports (`.run/screenshots/settings-desktop.png`, `settings-phone.png`).
+    - Full gate passes cleanly.
+    - Status: VERIFIED
 
 ## Findings
 None currently open.

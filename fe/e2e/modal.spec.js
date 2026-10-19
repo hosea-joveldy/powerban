@@ -177,13 +177,13 @@ if (!process.env.VITEST) {
       // Capture desktop screenshot (1280px)
       await page.setViewportSize({ width: 1280, height: 800 });
       await page.screenshot({
-        path: ".run/screenshots/modal-task-detail-desktop.png",
+        path: "../.run/screenshots/modal-task-detail-desktop.png",
       });
 
       // Capture phone screenshot (375px)
       await page.setViewportSize({ width: 375, height: 667 });
       await page.screenshot({
-        path: ".run/screenshots/modal-task-detail-phone.png",
+        path: "../.run/screenshots/modal-task-detail-phone.png",
       });
 
       // Save changes

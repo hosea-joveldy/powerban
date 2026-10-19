@@ -55,7 +55,7 @@ if (!process.env.VITEST) {
 
       // Save desktop screenshot for visual comparison
       await page.screenshot({
-        path: ".run/screenshots/landing-desktop.png",
+        path: "../.run/screenshots/landing-desktop.png",
         fullPage: true,
       });
 
@@ -83,7 +83,7 @@ if (!process.env.VITEST) {
 
       // Save phone screenshot
       await page.screenshot({
-        path: ".run/screenshots/landing-phone.png",
+        path: "../.run/screenshots/landing-phone.png",
         fullPage: true,
       });
     });
