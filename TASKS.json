@@ -131,7 +131,7 @@
         {
           "id": "T4.2",
           "title": "Restyle Register page to authentication design language",
-          "done": false,
+          "done": true,
           "done_when": [
             "Register screen matches the same design system at phone and desktop widths",
             "Stacked input fields with uppercase micro-labels and split pill button [ Register ] [ -> ]",
