@@ -1,0 +1,237 @@
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Gate Tooling and Frontend Build Verification",
+      "type": "build",
+      "status": "todo",
+      "features": [
+        {
+          "id": "T1.1",
+          "title": "Frontend dependency installation and production build",
+          "done": false,
+          "done_when": [
+            "cd fe && npm install succeeds cleanly without error",
+            "cd fe && npm run build produces fe/dist/ and exits with code 0"
+          ]
+        },
+        {
+          "id": "T1.2",
+          "title": "Frontend gate scripts for typecheck, unit testing, and e2e testing",
+          "done": false,
+          "done_when": [
+            "cd fe && npm run typecheck executes tsc --noEmit and exits with code 0",
+            "cd fe && npm test executes Vitest unit tests and exits with code 0",
+            "cd fe && npm run test:e2e executes Playwright test runner and exits with code 0"
+          ]
+        },
+        {
+          "id": "T1.3",
+          "title": "Backend gate test suite runner",
+          "done": false,
+          "done_when": [
+            "bash be/tests/run_tests.sh executes and exits with code 0",
+            "Test suite validates all constraints in AGENTS.md section 3 (auth, WIP limits on ongoing cards only, completed cards auto-finishing tasks, 409 on deleting non-empty cards without force, linked boards, and ownership)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T2",
+      "title": "Design System Tokens, Themes, and In-App Modal System",
+      "type": "build",
+      "status": "todo",
+      "features": [
+        {
+          "id": "T2.1",
+          "title": "Design system tokens and theme architecture",
+          "done": false,
+          "done_when": [
+            "Old themes in themes.js and themes.css are replaced with stone-light and forest-dark tokens matching DESIGN_SYSTEM.md",
+            "CSS variables for colors, typography, spacing, radii, and shadows are defined in plain CSS",
+            "Theme applies on application load without a flash of unstyled theme"
+          ]
+        },
+        {
+          "id": "T2.2",
+          "title": "Reusable accessible in-app modal system",
+          "done": false,
+          "done_when": [
+            "Modal system implements message, confirm, prompt, and task detail dialog variants",
+            "Modals have role=\"dialog\", aria-modal=\"true\", and trap keyboard focus",
+            "Escape key closes active modal and returns focus to the triggering element",
+            "Clicking outside backdrop cancels dialog without triggering destructive actions",
+            "Modal dialog is usable and responsive at phone (375px) and desktop (1280px) widths"
+          ]
+        },
+        {
+          "id": "T2.3",
+          "title": "Elimination of native browser dialogs in existing components",
+          "done": false,
+          "done_when": [
+            "no alert(/confirm(/prompt( remains in any file in fe/src",
+            "Board deletion, card deletion, group creation, board creation, and card creation use in-app modals",
+            "Full gate passes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T3",
+      "title": "Landing Page Entry Route and Interactive Hero Effect",
+      "type": "build",
+      "status": "todo",
+      "features": [
+        {
+          "id": "T3.1",
+          "title": "Landing page layout and showcase sections matching references",
+          "done": false,
+          "done_when": [
+            "Route / renders landing page for unauthenticated visitors and redirects authenticated users to /dashboard",
+            "Top navigation displays brand mark, navigation links, and primary CTA pill button leading to /login",
+            "Section 2 matches references/landing-page-section2.png with feature cards and call-to-actions",
+            "Section 3 matches references/landing-page-section3.png with deep forest container, serif heading, and lime accent CTA",
+            "Screen matches its reference at phone and desktop widths"
+          ]
+        },
+        {
+          "id": "T3.2",
+          "title": "Hero celestial orbit particle mesh mouse-interaction effect",
+          "done": false,
+          "done_when": [
+            "Hero section renders celestial concentric stippled orbit particle mesh matching references/landing-page-section1.png",
+            "Moving mouse on desktop tilts orbit mesh in 3D perspective with smooth damping",
+            "Orbit animation disables and renders static fallback when prefers-reduced-motion: reduce is active",
+            "Touch devices with hover: none display static fallback without mouse listeners",
+            "Full gate passes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T4",
+      "title": "Authentication Pages Rebuild (Login and Register)",
+      "type": "build",
+      "status": "todo",
+      "features": [
+        {
+          "id": "T4.1",
+          "title": "Rebuild Login page to match reference",
+          "done": false,
+          "done_when": [
+            "Screen matches its reference at phone and desktop widths",
+            "Card layout matches references/login.png with floating elevated surface card and centered Log in heading",
+            "Features Google and GitHub social buttons and stacked input container with uppercase EMAIL and PASSWORD micro-labels",
+            "Password input includes interactive visibility toggle icon",
+            "Action button is a split pill button [ Log in ] [ -> ]",
+            "Invalid credentials show inline error message without native dialogs",
+            "no alert(/confirm(/prompt( remains"
+          ]
+        },
+        {
+          "id": "T4.2",
+          "title": "Restyle Register page to authentication design language",
+          "done": false,
+          "done_when": [
+            "Register screen matches the same design system at phone and desktop widths",
+            "Stacked input fields with uppercase micro-labels and split pill button [ Register ] [ -> ]",
+            "Navigation link to /login works smoothly",
+            "Registration errors display inline without native dialogs",
+            "no alert(/confirm(/prompt( remains",
+            "Full gate passes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T5",
+      "title": "Dashboard, Board Kanban, and Settings Restyling",
+      "type": "build",
+      "status": "todo",
+      "features": [
+        {
+          "id": "T5.1",
+          "title": "Restyle Dashboard with unified design system",
+          "done": false,
+          "done_when": [
+            "Dashboard topbar displays wordmark, breadcrumb, theme settings link, and logout button",
+            "Group sections, standalone boards, and template tiles render with clean surface cards",
+            "Board tiles display title, flat progress bar, and template/delete actions",
+            "Group and board creation trigger in-app prompt modals",
+            "Screen matches design system at phone and desktop widths",
+            "no alert(/confirm(/prompt( remains"
+          ]
+        },
+        {
+          "id": "T5.2",
+          "title": "Restyle Board kanban view, columns, and task interactions",
+          "done": false,
+          "done_when": [
+            "Card columns render with rounded corners and uppercase headers",
+            "Ongoing cards display WIP indicator pill (e.g. 3/5) highlighted in warning colors when at or above limit",
+            "Tasks in completed cards display finished styling (dimmed, strikethrough)",
+            "Linked board badge shows target board name and flat progress bar; clicking navigates to that board",
+            "Task Detail modal allows editing title, multiline description, and linked board target",
+            "Drag and drop between columns updates task positions and card types",
+            "Screen matches design system at phone and desktop widths",
+            "no alert(/confirm(/prompt( remains"
+          ]
+        },
+        {
+          "id": "T5.3",
+          "title": "Restyle Settings and theme switching persistence",
+          "done": false,
+          "done_when": [
+            "Settings page presents stone-light and forest-dark theme options",
+            "Selecting a theme updates document theme immediately and persists to backend via PATCH /api/me",
+            "Screen matches design system at phone and desktop widths",
+            "Full gate passes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T6",
+      "title": "Documentation, API Reference, and MIT License",
+      "type": "docs",
+      "status": "todo",
+      "features": [
+        {
+          "id": "T6.1",
+          "title": "Add MIT License file",
+          "done": false,
+          "done_when": [
+            "LICENSE file exists in project root containing standard MIT License text"
+          ]
+        },
+        {
+          "id": "T6.2",
+          "title": "Complete rewrite of root README.md",
+          "done": false,
+          "done_when": [
+            "README.md accurately reflects true implementation (multiple boards, groups, linked boards, WIP on ongoing cards, flat progress, templates)",
+            "All links and references to nonexistent SETUP.md are removed",
+            "Setup instructions for Docker, PostgreSQL database seeding, and frontend dev/build are verified"
+          ]
+        },
+        {
+          "id": "T6.3",
+          "title": "Comprehensive backend API documentation",
+          "done": false,
+          "done_when": [
+            "API documentation covers all endpoints for auth, groups, boards, cards, tasks, and templates",
+            "Headers, JSON request bodies, query parameters, response schemas, and HTTP error status codes are fully documented",
+            "Full gate passes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T7",
+      "title": "Full-App QA Pass and Visual Verification",
+      "type": "qa",
+      "status": "todo",
+      "features": []
+    }
+  ]
+}

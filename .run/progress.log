@@ -1,0 +1,5 @@
+[planner] Switched to dev branch.
+[planner] Analyzed reference images and designed stone-light & forest-dark design tokens.
+[planner] Wrote SPEC.md defining scope, gate commands, architecture, and open questions.
+[planner] Wrote DESIGN_SYSTEM.md specifying tokens, components, hero orbit effect, and modals.
+[planner] Wrote TASKS.json with tasks T1-T7 covering gate setup, redesign, modals, QA, and docs.

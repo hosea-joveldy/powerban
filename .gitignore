@@ -15,5 +15,8 @@ dist/
 .idea/
 .DS_Store
 
-# Logs
+# Logs and agent run state
 *.log
+!.run/progress.log
+.run/blocked.txt
+.run/screenshots/
