@@ -159,12 +159,12 @@
       "id": "T5",
       "title": "Dashboard, Board Kanban, and Settings Restyling",
       "type": "build",
-      "status": "todo",
+      "status": "ongoing",
       "features": [
         {
           "id": "T5.1",
           "title": "Restyle Dashboard with unified design system",
-          "done": false,
+          "done": true,
           "done_when": [
             "Dashboard topbar displays wordmark, breadcrumb, theme settings link, and logout button",
             "Group sections, standalone boards, and template tiles render with clean surface cards",

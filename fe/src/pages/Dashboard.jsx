@@ -5,6 +5,7 @@ import { useModal } from "../components/modal/index.js";
 import TopBar from "../components/TopBar.jsx";
 import BoardTile from "../components/BoardTile.jsx";
 import TemplateTile from "../components/TemplateTile.jsx";
+import "./dashboard.css";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -118,68 +119,90 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="page">
+    <div className="dashboard-page page">
       <TopBar />
-      <div className="page-main" style={{ padding: "var(--space-5)" }}>
-        {error && <div className="error-text" style={{ marginBottom: "var(--space-3)" }}>{error}</div>}
+      <main className="dashboard-container page-main">
+        {error && <div className="error-text" style={{ marginBottom: "var(--space-4)" }}>{error}</div>}
 
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <h2 style={{ margin: 0 }}>boards</h2>
-          <div style={{ display: "flex", gap: "var(--space-2)" }}>
-            <button onClick={newGroup}>+ group</button>
-            <button className="primary" onClick={() => newBoard(null)}>
+        <header className="dashboard-header">
+          <div className="dashboard-title-area">
+            <h1 className="dashboard-title">boards</h1>
+            <p className="dashboard-subtitle">Workspaces and project kanbans</p>
+          </div>
+          <div className="dashboard-actions">
+            <button className="btn-pill-secondary btn-sm" onClick={newGroup}>
+              + group
+            </button>
+            <button className="btn-pill-primary btn-sm primary" onClick={() => newBoard(null)}>
               + board
             </button>
           </div>
-        </div>
+        </header>
 
-        {groups.map((g) => (
-          <section key={g.id} style={{ marginTop: "var(--space-5)" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-              <h3 style={{ margin: 0, color: "var(--text-dim)" }}>{g.name}</h3>
-              <button style={{ fontSize: 12 }} onClick={() => newBoard(g.id)}>
-                + board here
-              </button>
-            </div>
-            <div style={{ display: "flex", gap: "var(--space-3)", flexWrap: "wrap", marginTop: "var(--space-2)" }}>
-              {byGroup(g.id).map((b) => (
-                <BoardTile key={b.id} board={b} onSaveAsTemplate={saveAsTemplate} onDelete={deleteBoard} />
-              ))}
-              {byGroup(g.id).length === 0 && (
-                <span style={{ color: "var(--text-dim)", fontSize: 13 }}>No boards here yet.</span>
-              )}
-            </div>
-          </section>
-        ))}
+        {groups.map((g) => {
+          const groupBoards = byGroup(g.id);
+          return (
+            <section key={g.id} className="dashboard-section" aria-labelledby={`group-title-${g.id}`}>
+              <div className="dashboard-section-header">
+                <h2 id={`group-title-${g.id}`} className="dashboard-section-title">
+                  {g.name}
+                  <span className="section-count-badge">{groupBoards.length}</span>
+                </h2>
+                <button className="btn-pill-secondary btn-xs" onClick={() => newBoard(g.id)}>
+                  + board here
+                </button>
+              </div>
+              <div className="boards-grid">
+                {groupBoards.map((b) => (
+                  <BoardTile key={b.id} board={b} onSaveAsTemplate={saveAsTemplate} onDelete={deleteBoard} />
+                ))}
+                {groupBoards.length === 0 && (
+                  <div className="empty-notice">No boards in this group yet.</div>
+                )}
+              </div>
+            </section>
+          );
+        })}
 
-        <section style={{ marginTop: "var(--space-5)" }}>
-          <h3 style={{ margin: 0, color: "var(--text-dim)" }}>standalone</h3>
-          <div style={{ display: "flex", gap: "var(--space-3)", flexWrap: "wrap", marginTop: "var(--space-2)" }}>
+        <section className="dashboard-section" aria-labelledby="section-title-standalone">
+          <div className="dashboard-section-header">
+            <h2 id="section-title-standalone" className="dashboard-section-title">
+              standalone
+              <span className="section-count-badge">{standalone.length}</span>
+            </h2>
+          </div>
+          <div className="boards-grid">
             {standalone.map((b) => (
               <BoardTile key={b.id} board={b} onSaveAsTemplate={saveAsTemplate} onDelete={deleteBoard} />
             ))}
             {standalone.length === 0 && (
-              <span style={{ color: "var(--text-dim)", fontSize: 13 }}>No standalone boards.</span>
+              <div className="empty-notice">No standalone boards.</div>
             )}
           </div>
         </section>
 
         {templates.length > 0 && (
-          <section style={{ marginTop: "var(--space-5)" }}>
-            <h3 style={{ margin: 0, color: "var(--text-dim)" }}>templates</h3>
-            <div style={{ display: "flex", gap: "var(--space-3)", flexWrap: "wrap", marginTop: "var(--space-2)" }}>
+          <section className="dashboard-section" aria-labelledby="section-title-templates">
+            <div className="dashboard-section-header">
+              <h2 id="section-title-templates" className="dashboard-section-title">
+                templates
+                <span className="section-count-badge">{templates.length}</span>
+              </h2>
+            </div>
+            <div className="boards-grid">
               {templates.map((t) => (
                 <TemplateTile key={t.id} template={t} onUse={useTemplate} />
               ))}
             </div>
           </section>
         )}
-      </div>
-      <div className="statusline">
+      </main>
+
+      <footer className="statusline">
         <span>{boards.length} boards</span>
         <span>{groups.length} groups</span>
         <span>{templates.length} templates</span>
-      </div>
+      </footer>
     </div>
   );
 }
