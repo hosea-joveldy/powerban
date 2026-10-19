@@ -8,18 +8,23 @@ html, body, #root {
 
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--text);
+  background: var(--bg-canvas);
+  color: var(--text-primary);
   font-family: var(--font-sans);
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, .mono {
-  font-family: var(--font-mono);
-  font-weight: 600;
+h1, h2, h3 {
+  font-family: var(--font-serif);
+  font-weight: 500;
   letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.mono {
+  font-family: var(--font-mono);
 }
 
 button, input, textarea, select {
@@ -28,59 +33,66 @@ button, input, textarea, select {
   color: inherit;
 }
 
-a { color: var(--accent); text-decoration: none; }
+a { color: var(--text-primary); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 button {
-  background: var(--bg-pane-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
   padding: var(--space-2) var(--space-3);
   cursor: pointer;
+  color: var(--text-primary);
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
-button:hover { border-color: var(--text-dim); }
-button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
+button:hover { border-color: var(--border-strong); }
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 2px solid var(--accent-lime);
+  outline-offset: 2px;
 }
 button:disabled { opacity: 0.5; cursor: not-allowed; }
 
 button.primary {
-  background: var(--accent);
-  color: var(--accent-text);
-  border-color: var(--accent);
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border-color: var(--btn-primary-bg);
   font-weight: 600;
+}
+button.primary:hover {
+  background: var(--btn-primary-hover);
+  border-color: var(--btn-primary-hover);
 }
 
 button.danger-text {
   background: transparent;
   border-color: transparent;
-  color: var(--text-dim);
+  color: var(--text-muted);
 }
 button.danger-text:hover {
   color: var(--danger);
   border-color: var(--danger);
 }
 
-input, textarea {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+input, textarea, select {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
   padding: var(--space-2);
+  color: var(--text-primary);
 }
-input:focus, textarea:focus { border-color: var(--accent); }
+input:focus, textarea:focus, select:focus { border-color: var(--border-strong); }
 
 .error-text {
   color: var(--danger);
-  font-size: 13px;
+  font-size: var(--text-sm);
 }
 
 .statusline {
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--border-default);
   padding: var(--space-2) var(--space-4);
   font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--text-dim);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
   display: flex;
   gap: var(--space-4);
 }
@@ -90,7 +102,8 @@ input:focus, textarea:focus { border-color: var(--accent); }
   align-items: center;
   justify-content: space-between;
   padding: var(--space-3) var(--space-4);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
 }
 .topbar .wordmark {
   font-weight: 700;
@@ -108,12 +121,13 @@ input:focus, textarea:focus { border-color: var(--accent); }
   font-size: 16px;
   line-height: 1;
 }
-.icon-btn:hover { border-color: var(--border); }
+.icon-btn:hover { border-color: var(--border-default); }
 
 .page {
   min-height: 100%;
   display: flex;
   flex-direction: column;
+  background: var(--bg-canvas);
 }
 .page-main {
   flex: 1;
@@ -124,8 +138,8 @@ input:focus, textarea:focus { border-color: var(--accent); }
    board header, not scattered everywhere (see design plan) */
 .progress {
   font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--text-dim);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
   white-space: nowrap;
 }
-.progress .bar { color: var(--accent); }
+.progress .bar { color: var(--btn-primary-bg); }

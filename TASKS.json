@@ -40,12 +40,12 @@
       "id": "T2",
       "title": "Design System Tokens, Themes, and In-App Modal System",
       "type": "build",
-      "status": "todo",
+      "status": "ongoing",
       "features": [
         {
           "id": "T2.1",
           "title": "Design system tokens and theme architecture",
-          "done": false,
+          "done": true,
           "done_when": [
             "Old themes in themes.js and themes.css are replaced with stone-light and forest-dark tokens matching DESIGN_SYSTEM.md",
             "CSS variables for colors, typography, spacing, radii, and shadows are defined in plain CSS",

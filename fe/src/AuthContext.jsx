@@ -9,7 +9,11 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   const applyTheme = (theme) => {
-    document.documentElement.dataset.theme = isValidTheme(theme) ? theme : DEFAULT_THEME;
+    const chosen = isValidTheme(theme) ? theme : DEFAULT_THEME;
+    document.documentElement.dataset.theme = chosen;
+    try {
+      localStorage.setItem("powerban_theme", chosen);
+    } catch (e) {}
   };
 
   useEffect(() => {

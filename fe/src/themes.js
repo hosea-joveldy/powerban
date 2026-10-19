@@ -2,14 +2,11 @@
 // themes.css and the value stored in users.theme), a label, and three swatch
 // colors for the settings picker.
 export const THEMES = [
-  { id: "gruvbox-dark", label: "Gruvbox Dark", swatch: ["#1d2021", "#282828", "#fe8019"] },
-  { id: "catppuccin-mocha", label: "Catppuccin Mocha", swatch: ["#1e1e2e", "#181825", "#cba6f7"] },
-  { id: "nord", label: "Nord", swatch: ["#2e3440", "#3b4252", "#88c0d0"] },
-  { id: "ayu-dark", label: "Ayu Dark", swatch: ["#0a0e14", "#0d1017", "#ffb454"] },
-  { id: "everforest-dark", label: "Everforest Dark", swatch: ["#2d353b", "#343f44", "#a7c080"] },
+  { id: "stone-light", label: "Stone Light", swatch: ["#E5E7E2", "#EFF1EC", "#1B2818"] },
+  { id: "forest-dark", label: "Forest Dark", swatch: ["#121C0E", "#1B2916", "#C8DB57"] },
 ];
 
-export const DEFAULT_THEME = "gruvbox-dark";
+export const DEFAULT_THEME = "stone-light";
 
 export function isValidTheme(id) {
   return THEMES.some((t) => t.id === id);
