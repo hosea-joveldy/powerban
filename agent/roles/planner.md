@@ -10,15 +10,15 @@ You run once. You write no application code.
 2. Write `SPEC.md`:
    - Goal and scope, taken from AGENTS.md sections 1 to 3. Invent no facts; mark unknowns `TODO(human): ...`.
    - "Gate": the final command for every gate item that AGENTS.md section 6 marks TODO(human).
-   - "Open questions" for the human.
+   - "Assumptions" and "Open questions". No human reviews the plan, so state every assumption.
 3. Write `DESIGN_SYSTEM.md` before any code, following AGENTS.md section 10. Keep it short, concrete and checkable: tokens, component rules, states (loading, empty, error, full WIP), mobile rules, accessibility rules.
 4. Write `TASKS.json` in the shape from AGENTS.md section 5.
 5. Append at most 5 lines to `.run/progress.log`.
-6. Commit your files (manual mode) with message `plan: spec, design system, tasks`. Then stop and wait for human approval. Do not start any task.
+6. Commit your files (manual mode) with message `plan: spec, design system, tasks`. Then end the Planner phase; the run loop starts the first task.
 
 ## Task design
 - Order tasks so the gate works first: any task that sets up a missing gate command (type check, unit tests, e2e tooling, a working frontend build) comes before feature work.
-- One `build` task per coherent slice of the open work in AGENTS.md section 1. Keep each task small enough for one fresh session.
+- One `build` task per coherent slice of the open work in AGENTS.md section 1. Keep each task small enough for one Builder phase.
 - Every feature has a title and `done_when` items that can be checked by a command or by observing the UI. No vague criteria.
 - Add `qa` tasks as whole-app passes at sensible milestones and one at the end.
 - Add `docs` tasks for README, setup docs and API docs.
