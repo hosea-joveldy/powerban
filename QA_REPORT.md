@@ -1,17 +1,17 @@
 # QA Report
 
 ## Summary
-- Task: T8 (Fix B1: Modal focus restoration to trigger element on close/Escape) & T2 (Design System Tokens, Themes, and In-App Modal System)
-- Result: PASS (Gate passed, defect B1 resolved, all E2E focus checks passing)
+- Task: T3 (Landing Page Entry Route and Interactive Hero Effect)
+- Result: PASS (Gate passed cleanly, all 16 E2E tests pass, landing page matches references)
 - Verified on branch: `dev`
-- QA Round: 2
+- QA Round: 1
 
 ## Gate Status
 - Type check (`cd fe && npm run typecheck`): PASS (`tsc --noEmit` exited with code 0)
-- Unit tests (`cd fe && npm test`): PASS (10 test files passed, 22 tests passed in Vitest)
+- Unit tests (`cd fe && npm test`): PASS (11 test files passed, 22 tests passed in Vitest)
 - Build (`cd fe && npm run build`): PASS (`vite build` succeeded, produced `fe/dist/index.html` and bundled assets)
 - Backend API tests (`bash be/tests/run_tests.sh`): PASS (53 passed, 0 failed, validated all constraints in AGENTS.md section 3)
-- E2E tests (`cd fe && npm run test:e2e`): PASS (12 passed, 0 failed across Chromium and Mobile)
+- E2E tests (`cd fe && npm run test:e2e`): PASS (16 passed, 0 failed across Chromium and Mobile)
 
 ## Features Verified
 1. **T2.1: Design system tokens and theme architecture**
@@ -32,6 +32,21 @@
    - Grep verification confirms zero occurrences of `alert(`, `confirm(`, or `prompt(` in `fe/src`.
    - Board deletion, card deletion, 409 force deletion, group creation, board creation, and task detail editing all utilize in-app modals.
    - Full gate passes cleanly.
+   - Status: VERIFIED
+
+4. **T3.1: Landing page layout and showcase sections matching references**
+   - Unauthenticated visitors on `/` receive landing page.
+   - Top navigation displays brand mark, nav links, and "Get started •" pill CTA linking to `/login`.
+   - Section 2 showcases "Workspaces & Groups" and "Linked Boards & Progress" cards with dot-funnel graphic.
+   - Section 3 renders deep forest container, serif headline, and lime accent CTA pill button.
+   - Responsive at desktop (1280px) and phone (375px) viewports (screenshots captured).
+   - Status: VERIFIED
+
+5. **T3.2: Hero celestial orbit particle mesh mouse-interaction effect**
+   - Renders celestial concentric stippled orbit particle mesh with planetary nodes matching references/landing-page-section1.png.
+   - Smooth 3D tilt perspective damping (lerp 0.06) on desktop cursor movement.
+   - Static fallback without animation loop when `prefers-reduced-motion: reduce` is active.
+   - Static fallback without mouse listeners when `hover: none` matches.
    - Status: VERIFIED
 
 ## Findings

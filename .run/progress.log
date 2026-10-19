@@ -16,3 +16,4 @@
 [qa] T2 round 2: verified T2.2 and T2.3; full gate passes cleanly; T2 marked finished.
 [builder] T3.1 verified: built landing page route (/), top nav with CTA, sections 2 & 3 matching references.
 [builder] T3.2 verified: implemented HeroOrbitCanvas celestial orbit particle mesh with 3D tilt, reduced-motion & touch fallbacks.
+[qa] T3 round 1: verified T3.1 & T3.2; landing page matches references at desktop & phone; full gate passes; marked finished.
