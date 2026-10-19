@@ -29,7 +29,9 @@ export default function CardColumn({
   }
 
   return (
-    <div
+    <section
+      className={`card-column ${dragOver ? "drag-over" : ""}`}
+      aria-label={`Column ${card.name}`}
       onDragOver={(e) => {
         e.preventDefault();
         setDragOver(true);
@@ -40,38 +42,33 @@ export default function CardColumn({
         setDragOver(false);
         onDrop(e);
       }}
-      style={{
-        width: 260,
-        flexShrink: 0,
-        border: `1px solid ${dragOver ? "var(--accent)" : "var(--border)"}`,
-        borderRadius: "var(--radius)",
-        background: "var(--bg-pane)",
-        padding: "var(--space-3)",
-        display: "flex",
-        flexDirection: "column",
-      }}
     >
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-        <span className="mono" style={{ fontWeight: 600, textTransform: "uppercase", fontSize: 12 }}>
-          {card.name}
-        </span>
-        <div style={{ display: "flex", gap: "var(--space-2)", alignItems: "center" }}>
+      <header className="card-column-header">
+        <div className="card-column-title-group">
+          <h3 className="card-column-title">{card.name}</h3>
           {card.wip_limit !== null && (
             <span
-              className="mono"
-              style={{ fontSize: 11, color: atLimit ? "var(--danger)" : "var(--text-dim)" }}
+              className={`wip-indicator-pill ${atLimit ? "at-limit" : ""}`}
+              title={atLimit ? "WIP limit reached" : `WIP limit: ${card.wip_limit}`}
             >
               {count}/{card.wip_limit}
             </span>
           )}
-          <button className="icon-btn" style={{ fontSize: 12 }} onClick={() => onDeleteCard(card)}>
+        </div>
+        <div className="card-column-actions">
+          <button
+            className="icon-btn"
+            style={{ fontSize: 12 }}
+            title="Delete card column"
+            aria-label="Delete card column"
+            onClick={() => onDeleteCard(card)}
+          >
             ×
           </button>
         </div>
-      </div>
-      <hr style={{ border: "none", borderTop: "1px solid var(--border)", margin: "var(--space-2) 0" }} />
+      </header>
 
-      <div style={{ flex: 1, minHeight: 40 }}>
+      <div className="tasks-container">
         {card.tasks.map((t) => (
           <TaskItem
             key={t.id}
@@ -88,26 +85,26 @@ export default function CardColumn({
       </div>
 
       {adding ? (
-        <form onSubmit={submitTask} style={{ display: "flex", gap: 4, marginTop: "var(--space-2)" }}>
+        <form onSubmit={submitTask} className="add-task-form">
           <input
             autoFocus
-            placeholder="task title"
+            placeholder="Task title..."
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             onBlur={() => !title && setAdding(false)}
-            style={{ flex: 1 }}
+            className="add-task-input"
           />
         </form>
       ) : (
         <button
-          style={{ fontSize: 12, marginTop: "var(--space-2)", background: "transparent", borderStyle: "dashed" }}
+          className="btn-add-task"
           onClick={() => setAdding(true)}
           disabled={atLimit}
-          title={atLimit ? "WIP limit reached" : undefined}
+          title={atLimit ? `WIP limit reached (${count}/${card.wip_limit})` : undefined}
         >
           + add task
         </button>
       )}
-    </div>
+    </section>
   );
 }

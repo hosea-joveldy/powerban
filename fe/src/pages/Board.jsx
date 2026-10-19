@@ -5,6 +5,7 @@ import { progressBar } from "../progress.js";
 import { useModal } from "../components/modal/index.js";
 import TopBar from "../components/TopBar.jsx";
 import CardColumn from "../components/CardColumn.jsx";
+import "./board.css";
 
 export default function Board() {
   const { id } = useParams();
@@ -176,7 +177,7 @@ export default function Board() {
 
   if (error) {
     return (
-      <div className="page">
+      <div className="board-page page">
         <TopBar />
         <div style={{ padding: "var(--space-5)" }} className="error-text">
           {error}
@@ -187,12 +188,9 @@ export default function Board() {
   if (!board) return null;
 
   return (
-    <div className="page">
+    <div className="board-page page">
       <TopBar crumb={board.name} />
-      <div
-        className="page-main"
-        style={{ display: "flex", gap: "var(--space-3)", padding: "var(--space-4)", alignItems: "flex-start" }}
-      >
+      <main className="board-columns-container page-main" role="region" aria-label={`Kanban board for ${board.name}`}>
         {board.cards.map((card) => (
           <CardColumn
             key={card.id}
@@ -209,25 +207,20 @@ export default function Board() {
           />
         ))}
         <button
+          className="btn-add-card-column"
           onClick={addCard}
-          style={{
-            width: 140,
-            flexShrink: 0,
-            background: "transparent",
-            borderStyle: "dashed",
-            height: 40,
-          }}
+          aria-label="Add new column"
         >
           + add card
         </button>
-      </div>
-      <div className="statusline">
+      </main>
+      <footer className="statusline">
         <span>{board.name}</span>
         <span>
           {progressBar(board.progress.percent)} {board.progress.percent}%
         </span>
         <span>{board.progress.done}/{board.progress.total} tasks done</span>
-      </div>
+      </footer>
     </div>
   );
 }

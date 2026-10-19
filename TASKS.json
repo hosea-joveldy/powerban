@@ -177,7 +177,7 @@
         {
           "id": "T5.2",
           "title": "Restyle Board kanban view, columns, and task interactions",
-          "done": false,
+          "done": true,
           "done_when": [
             "Card columns render with rounded corners and uppercase headers",
             "Ongoing cards display WIP indicator pill (e.g. 3/5) highlighted in warning colors when at or above limit",

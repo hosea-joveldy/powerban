@@ -19,18 +19,12 @@ export default function TaskItem({
       draggable
       onDragStart={(e) => onDragStart(e, task.id)}
       onClick={() => onOpenDetail?.(task)}
-      style={{
-        border: "1px solid var(--border)",
-        borderRadius: "var(--radius)",
-        background: "var(--bg)",
-        padding: "var(--space-2)",
-        marginBottom: "var(--space-2)",
-        cursor: "pointer",
-      }}
+      className={`task-card ${task.is_finished ? "is-finished" : ""}`}
     >
-      <div style={{ display: "flex", gap: "var(--space-2)", alignItems: "flex-start" }}>
+      <div className="task-card-content">
         <input
           type="checkbox"
+          className="task-checkbox"
           checked={task.is_finished}
           disabled={locked}
           onChange={(e) => {
@@ -40,47 +34,36 @@ export default function TaskItem({
           onClick={(e) => e.stopPropagation()}
           title={locked ? "Finished automatically in a completed card" : "Mark finished"}
         />
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div
-            style={{
-              textDecoration: task.is_finished ? "line-through" : "none",
-              color: task.is_finished ? "var(--text-dim)" : "var(--text)",
-              wordBreak: "break-word",
-            }}
-          >
+        <div className="task-details">
+          <div className="task-card-title">
             {task.title}
           </div>
           {task.description && (
-            <div style={{ fontSize: 12, color: "var(--text-dim)", marginTop: 2 }}>
+            <div className="task-card-desc">
               {task.description}
             </div>
           )}
           {task.linked_board && (
             <Link
               to={`/boards/${task.linked_board.id}`}
-              className="mono"
-              style={{
-                display: "inline-block",
-                marginTop: 4,
-                fontSize: 11,
-                padding: "1px 6px",
-                border: "1px solid var(--border)",
-                borderRadius: "var(--radius)",
-                color: "var(--text-dim)",
-              }}
+              className="linked-board-badge"
               onClick={(e) => e.stopPropagation()}
               onMouseDown={(e) => e.stopPropagation()}
             >
-              → {task.linked_board.name} {progressBar(task.linked_board.progress.percent, 3)}{" "}
-              {task.linked_board.progress.percent}%
+              <span>→ {task.linked_board.name}</span>
+              <span className="mono">
+                {progressBar(task.linked_board.progress.percent, 3)}{" "}
+                {task.linked_board.progress.percent}%
+              </span>
             </Link>
           )}
         </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <div className="task-card-actions">
           <button
             className="icon-btn"
             style={{ fontSize: 12 }}
             title="Link to another board"
+            aria-label="Link to another board"
             onClick={(e) => {
               e.stopPropagation();
               setLinking((v) => !v);
@@ -92,6 +75,7 @@ export default function TaskItem({
             className="icon-btn"
             style={{ fontSize: 12 }}
             title="Delete task"
+            aria-label="Delete task"
             onClick={(e) => {
               e.stopPropagation();
               onDelete(task);
@@ -104,6 +88,7 @@ export default function TaskItem({
       {linking && (
         <select
           autoFocus
+          className="modal-select"
           defaultValue={task.linked_board_id ?? ""}
           onClick={(e) => e.stopPropagation()}
           onChange={(e) => {
@@ -112,11 +97,11 @@ export default function TaskItem({
             onLink(task, v === "" ? null : Number(v));
             setLinking(false);
           }}
-          style={{ marginTop: "var(--space-2)", width: "100%" }}
+          style={{ marginTop: "var(--space-2)", width: "100%", fontSize: "var(--text-xs)" }}
         >
           <option value="">(no link)</option>
           {boards
-            .filter((b) => b.id !== task.board_id)
+            .filter((b) => b.id !== task.board_id && !b.is_template)
             .map((b) => (
               <option key={b.id} value={b.id}>
                 {b.name}
