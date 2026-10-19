@@ -4,12 +4,12 @@
       "id": "T1",
       "title": "Gate Tooling and Frontend Build Verification",
       "type": "build",
-      "status": "todo",
+      "status": "ongoing",
       "features": [
         {
           "id": "T1.1",
           "title": "Frontend dependency installation and production build",
-          "done": false,
+          "done": true,
           "done_when": [
             "cd fe && npm install succeeds cleanly without error",
             "cd fe && npm run build produces fe/dist/ and exits with code 0"
