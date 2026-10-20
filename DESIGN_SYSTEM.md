@@ -210,19 +210,27 @@ Powerban ships with two official themes derived from the references:
 
 ### 3.4 Kanban Board, Columns, and Tasks
 - **Card Column (`.card-column`)**:
-  - Width: `280px` on desktop; flex shrink `0`.
+  - Width: `340px` on desktop (responsive `min(85vw, 340px)`); flex shrink `0`.
   - Background: `var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-4);`.
-  - Header: Card title in bold sans/mono, card type indicator, WIP limit pill.
+  - Header: Card title in bold sans/mono (15px), three-dots menu dropdown button, card type indicator, WIP limit pill.
+  - Three-dots Menu: Dropdown containing Set Card Type (Todo, Ongoing, Completed), Set WIP Limit, Add Task as a Card, Add Task as a Board, Turn Vertically & Hide Tasks, Delete Card.
+- **Vertical Focus Column (`.card-column.is-vertical`)**:
+  - Width: `54px`; min-width: `54px`; max-width: `54px`.
+  - All tasks inside hidden (`display: none`).
+  - Column title rotated 180° with vertical writing mode (`writing-mode: vertical-rl; transform: rotate(180deg);`) so text reads upwards with letters facing to the left.
+  - Clicking uncollapses the card back to standard horizontal layout.
 - **WIP Indicator Pill**:
+  - Available on all non-completed cards (both `todo` and `ongoing`).
   - Standard state: `background: var(--wip-normal-bg); color: var(--wip-normal-text); border-radius: var(--radius-pill); padding: 2px 8px; font-size: var(--text-xs); font-family: var(--font-mono);`.
   - Capacity reached / exceeded: `background: var(--wip-full-bg); color: var(--wip-full-text); border: 1px solid var(--wip-full-border); font-weight: 700;`.
 - **Task Item (`.task-card`)**:
-  - Background: `var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: var(--space-3); margin-bottom: var(--space-2); box-shadow: var(--shadow-sm); cursor: grab;`.
-  - Completed column task: `opacity: 0.75; text-decoration: line-through; color: var(--text-muted);`.
-- **Linked Board Widget**:
-  - Subtle badge with board name and mini linear progress bar:
-  - `display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px; border-radius: var(--radius-pill); font-size: var(--text-xs); background: var(--bg-surface-subtle); color: var(--text-secondary);`.
-  - Clicking navigates immediately to the linked board (`/boards/:id`).
+  - Background: `var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: var(--space-3) var(--space-4); margin-bottom: var(--space-2); box-shadow: var(--shadow-sm); cursor: grab;`.
+  - Task title font size: `16px`; task description: `13px-14px`.
+  - No manual checkbox button; completed column tasks automatically display finished styling (`opacity: 0.72; text-decoration: line-through; color: var(--text-muted);`).
+  - Nested card / board task: displays `[Card]` or `[Board]` badge with subitems count. Moving to a completed card is blocked if subitems > 0.
+- **Drag and Drop Isolation**:
+  - Cards dragged via header/drag handle with `type: card`; tasks dragged with `type: task` and `e.stopPropagation()`.
+  - Conflict-free drop zones prevent simultaneous movement.
 
 ---
 

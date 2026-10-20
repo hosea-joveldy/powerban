@@ -1,43 +1,39 @@
-# SPEC.md: Powerban Phase 2 Specification
+# SPEC.md: Powerban Specification & Phase 3 Enhancements
 
 ## 1. Goal and Scope
 
-Powerban is a focused, high-efficiency kanban board for power users built for a school assignment under the MIT license. It enables users to create multiple boards, organize them into groups, link tasks directly to other boards to display progress, and save boards as reusable templates.
+Powerban is a focused, high-efficiency kanban board for power users built under the MIT license. Users organize boards, group them, nest cards and boards, enforce WIP limits, and save reusable templates.
 
 ### 1.1 Objectives for this Phase
-1. **Frontend Redesign**: Discard the previous MVP demo design, old palettes, and the five previous themes. Implement a modern, cohesive design system derived strictly from the reference designs in `references/` (`landing-page-section1.png`, `landing-page-section2.png`, `landing-page-section3.png`, and `login.png`).
-2. **Landing Page Entry Route**: Build an entry route at `/` that presents the product using the visual style from `references/landing-page-section*.png`. Include an interactive mouse-movement effect in the hero (Celestial Orbit Particle Mesh) with reduced-motion and touch fallbacks. Unauthenticated users see this page; authenticated users redirect to the dashboard. The primary call-to-action leads to `/login`.
-3. **Authentication Rebuild**: Rebuild the Login page to match `references/login.png` without social OAuth buttons (floating surface card, stacked email/password field with visibility toggle, split action button `[ Log in ] [ -> ]`, and sign up links). Restyle the Register page using the exact same visual language.
-4. **Accessible In-App Modal System**: Completely remove all native browser dialogs (`alert(`, `confirm(`, `prompt(`). Replace them with an accessible, mobile-responsive in-app modal system supporting message dialogs, confirmation dialogs, single-input prompt dialogs, and a task detail modal (title, multi-line description, linked board picker).
-5. **Documentation & Licensing**: Rewrite the root `README.md` to match current code reality (accurate features, setup guide, removed dead links to nonexistent `SETUP.md`). Add an official MIT `LICENSE` file. Write comprehensive API documentation for all backend endpoints.
-6. **Frontend Robustness & Gate Setup**: Configure missing gate runners (type checking, Vitest unit tests, Playwright E2E tests, build script confirmation, and backend API test suite) so automated gates protect every change.
+1. **Logo & Navigation**: Add the Powerban SVG wordmark from `assets/logo.svg` to the root `README.md` and into the web application navbar. Add smooth animated scrolling when navbar anchor links (such as `#workflow`) are clicked.
+2. **Landing Page Expansion**: Add 2 new sections to the landing page, prominently featuring a modern Bento Box layout highlighting hierarchical workflows, vertical card focus, WIP capacity limits, and multi-entity drag-and-drop.
+3. **Repository Links**: Redirect footer and navbar GitHub links to `https://github.com/hosea-joveldy/powerban`. Add a GitHub icon button directly to the left of the "Get Started" CTA button in the navbar.
+4. **Auth Reference Surrounding Elements**: Recreate the floating 3D ambient sculptural pebbles and faint developer workspace/terminal backdrop from `references/login.png` around the login and register modal cards.
+5. **Username Identity**: Add `username` to the PostgreSQL `users` table, user models, registration flow, and login flow (supporting login by username or email).
+6. **Dashboard Draggable Boards**: Enable drag-and-drop on the dashboard to move board tiles between groups or into the standalone boards section.
+7. **Board Kanban & Card System Evolution**:
+   - Remove manual checklist buttons from tasks; tasks in completed cards automatically receive finished styling.
+   - Three-dots menu on card column headers offering:
+     * Card Type selector (`todo`, `ongoing`, `completed`).
+     * Set WIP Limit (available on all cards except `completed` cards).
+     * Add Task as a Card (nested card).
+     * Add Task as a Board (board task).
+     * Turn Vertically & Hide tasks (collapses card into a vertical spine; typography rotated so letters face left).
+     * Delete Card.
+   - Nested Card / Board rule: a task representing a card or board cannot be moved to a completed card if it still contains items. Once empty, it can be completed.
+   - Card Reordering: Drag-and-drop for cards to reorder columns with isolated hitboxes from task dragging.
+   - Sizing & Readability: Increase card column width and task typography for crisp legibility.
 
 ### 1.2 Technology Stack & Boundaries
-- **Backend**: PHP 8.4 (native autoloader, no Composer), PostgreSQL. Served via Apache under `/qibar/powerban/api`. Prepared statements for all queries; ownership enforcement on all user entities; JSON responses (`{"error": ...}` on failure).
+- **Backend**: PHP 8.4 (native autoloader, no Composer), PostgreSQL. Served via Apache under `/qibar/powerban/api`. Prepared statements for all queries; ownership enforcement on all user entities; JSON responses.
 - **Frontend**: React 18, Vite 5, React Router 6, vanilla CSS using CSS custom properties (no external UI framework).
-- **Network / Auth**: Same-origin architecture with Vite dev proxy to `http://localhost/qibar/powerban/api`. Authentication via PHP session cookies (`powerban_session`, HttpOnly, SameSite, Secure on HTTPS).
-- **Theme Persistence**: Saved per user in `users.theme` via `PATCH /api/me`. Two cohesive themes are provided: `stone-light` (default, derived from sections 1-2 & login) and `forest-dark` (derived from section 3). Theme applies immediately on load without flash.
+- **Network / Auth**: Same-origin architecture with Vite dev proxy to `http://localhost/qibar/powerban/api`. Authentication via PHP session cookies (`powerban_session`).
 
-### 1.3 Business & Domain Rules (AGENTS.md Section 3)
-- **Cards & Types**: Boards start with three default cards: `todo`, `ongoing`, and `completed`. Multiple `completed` cards are supported.
-- **WIP Limits**: Applied strictly to `ongoing` cards. Attempting to set WIP limits on `todo` or `completed` cards returns HTTP 422. Exceeding limit blocks adding new tasks but does not mutate existing tasks.
-- **Task Completion Rules**: Moving a task into a `completed` card automatically sets `is_finished = true`. Moving a task out unfinishes it (`is_finished = false`). Changing a card from `completed` to another type unfinishes all its tasks. In other cards, `is_finished` can be toggled manually.
+### 1.3 Updated Business & Domain Rules
+- **WIP Limits on Non-Completed Cards**: WIP limits can be set on any card that is not `completed` (both `todo` and `ongoing`). Completed cards cannot have a WIP limit (HTTP 422 if attempted).
+- **Task Completion Rules**: Moving a task into a `completed` card automatically sets `is_finished = true`. Moving a task out unfinishes it (`is_finished = false`).
+- **Nested Card & Board Rules**: Tasks with `item_type` `'card'` or `'board'` track subitems. Moving a nested card or board task into a completed card is prohibited while it still contains items (returns HTTP 422 on backend and displays an alert in the UI).
 - **Card Deletion**: Deleting a card with tasks returns HTTP 409 Conflict unless `?force=1` is provided.
-- **Linked Boards**: A task can link to any non-template board owned by the user except its own parent board. Deleting the target board nullifies the link (`ON DELETE SET NULL`). Linked tasks render the target board name and flat progress indicator.
-- **Groups**: Deleting a group sets `group_id = NULL` on its boards (boards become standalone).
-- **Templates**: Users can save any board as a template (`POST /api/boards/{id}/save-as-template`) and instantiate new boards from templates (`POST /api/boards/from-template/{id}`). Built-in system templates (`system@powerban.local`) are visible to all users.
-- **Progress Calculation**: Flat computation: `{done, total, percent}` where `percent = round((completed_tasks / total_tasks) * 100)`. Empty boards return 0%.
-- **Rate Limiting on Failed Logins**: Repeated failed login attempts are tracked at the application level in PostgreSQL (`login_attempts` table recording `email`, `ip_address`, and timestamp). Exceeding 5 failed attempts in 15 minutes causes `POST /api/auth/login` to return HTTP 429 Too Many Requests (`{"error": "Too many failed login attempts. Please try again in 15 minutes."}`). Successful login clears prior failed attempts.
-
-### 1.4 Out of Scope (AGENTS.md Section 2)
-The following items remain strictly out of scope for this phase:
-- Google OAuth, GitHub login, and external third-party social auth providers (confirmed by human).
-- One task assigned to multiple boards simultaneously.
-- Deep hierarchical or recursive progress rollup across linked boards.
-- Archive / soft delete systems.
-- Labels, due dates, and user assignees on tasks.
-- Multi-user board sharing or collaborative editing.
-- Task-level templates.
 
 ---
 
@@ -50,12 +46,5 @@ Before any QA sign-off or merge, all gate commands must pass cleanly:
 | **Type check** | `cd fe && npm run typecheck` | Validates JavaScript / JSX typing and syntax via `tsc --noEmit` |
 | **Unit tests** | `cd fe && npm test` | Runs deterministic Vitest unit tests for frontend utilities, helpers, and components |
 | **Build** | `cd fe && npm run build` | Produces production Vite asset bundle in `fe/dist/` |
-| **Backend API tests** | `bash be/tests/run_tests.sh` | Executes full API integration test suite covering auth, rate limiting, groups, boards, cards, tasks, WIP limits, templates, and ownership |
+| **Backend API tests** | `bash be/tests/run_tests.sh` | Executes full API integration test suite covering auth, username, rate limiting, groups, boards, cards, WIP limits, templates, and ownership |
 | **E2E tests** | `cd fe && npm run test:e2e` | Headless Playwright tests validating end-to-end user flows, responsive layouts, and modal interactions |
-
----
-
-## 3. Decisions & Human Approvals
-
-1. **Third-party OAuth Omission**: Google and GitHub OAuth buttons shown in the reference `references/login.png` are excluded; authentication exclusively uses email and password.
-2. **Application-Level Login Rate Limiting**: Application-level tracking via PostgreSQL is adopted over server-level configuration because it respects the rule against changing container/environment configuration (AGENTS.md rule 7), distinguishes between targeted accounts versus shared NAT IPs, returns consistent JSON API errors, and is directly testable within automated gate suites.

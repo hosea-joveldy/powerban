@@ -252,6 +252,159 @@
       "status": "finished",
       "source": "QA_REPORT.md#B1",
       "features": []
+    },
+    {
+      "id": "T9",
+      "title": "Landing Page, Logo, Bento Box, and GitHub Navigation",
+      "type": "build",
+      "status": "todo",
+      "features": [
+        {
+          "id": "T9.1",
+          "title": "Add Powerban SVG logo to README.md and navbar with smooth scrolling links",
+          "done": false,
+          "done_when": [
+            "Powerban logo from assets/logo.svg is prominently rendered in root README.md",
+            "Powerban logo is displayed in the landing navbar and topbar alongside brand name",
+            "Clicking navbar links (such as Workflow, Features) smoothly animates scroll to target sections"
+          ]
+        },
+        {
+          "id": "T9.2",
+          "title": "Landing page bento box section and expanded product features",
+          "done": false,
+          "done_when": [
+            "Landing page includes a modern Bento Box layout grid showcasing nested cards, vertical cards, WIP discipline, and fluid drag-and-drop",
+            "Landing page includes an additional power-user architecture section",
+            "Bento cards and layouts are responsive down to 375px mobile viewport"
+          ]
+        },
+        {
+          "id": "T9.3",
+          "title": "GitHub repository redirection and navbar GitHub icon button",
+          "done": false,
+          "done_when": [
+            "Footer GitHub link redirects to https://github.com/hosea-joveldy/powerban",
+            "Navbar contains a GitHub icon button directly to the left of the Get Started button redirecting to https://github.com/hosea-joveldy/powerban"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T10",
+      "title": "Authentication Polish and Username System",
+      "type": "build",
+      "status": "todo",
+      "features": [
+        {
+          "id": "T10.1",
+          "title": "Surrounding floating 3D ambient elements and backdrop for Login and Register",
+          "done": false,
+          "done_when": [
+            "Login and Register pages render 3D floating ambient sculptural elements and faint developer workspace backdrop matching references/login.png",
+            "Surrounding elements adapt gracefully to light and dark themes without breaking layout"
+          ]
+        },
+        {
+          "id": "T10.2",
+          "title": "Username input and database persistence in Register and Login",
+          "done": false,
+          "done_when": [
+            "users table in PostgreSQL supports unique username column",
+            "Register page includes Username input field alongside Email and Password",
+            "Login page supports logging in with username or email",
+            "User profile and session endpoints return username",
+            "Backend tests validate username registration and login"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T11",
+      "title": "Dashboard Draggable Boards",
+      "type": "build",
+      "status": "todo",
+      "features": [
+        {
+          "id": "T11.1",
+          "title": "Drag-and-drop boards into groups and standalone sections",
+          "done": false,
+          "done_when": [
+            "Board tiles on dashboard are draggable",
+            "Dragging a board into a group section updates its group_id to that group",
+            "Dragging a board into the standalone section updates its group_id to null",
+            "Visual drop zones highlight during drag over"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T12",
+      "title": "Board Kanban Evolution, Sizing, and Nested Cards/Boards",
+      "type": "build",
+      "status": "todo",
+      "features": [
+        {
+          "id": "T12.1",
+          "title": "Task checklist button removal and auto-complete styling",
+          "done": false,
+          "done_when": [
+            "Checklist checkbox buttons are removed from task cards",
+            "Tasks located inside completed cards automatically display finished styling"
+          ]
+        },
+        {
+          "id": "T12.2",
+          "title": "Card column three-dots menu with type switcher and universal WIP limits",
+          "done": false,
+          "done_when": [
+            "Card column header contains a three-dots menu button",
+            "Menu allows setting card type to Todo, Ongoing, or Completed",
+            "Menu allows setting WIP limit on any non-completed card (todo and ongoing)",
+            "Completed cards disallow setting WIP limit",
+            "Setting card type to completed marks tasks finished; leaving unfinishes them"
+          ]
+        },
+        {
+          "id": "T12.3",
+          "title": "Nested card and board tasks with empty-check completion constraint",
+          "done": false,
+          "done_when": [
+            "Three-dots menu includes Add Task as a Card and Add Task as a Board",
+            "Tasks created as cards or boards display dedicated badges and sub-items manager",
+            "Nested cards and boards cannot be moved to a completed card unless empty (0 items)",
+            "Once empty, nested cards and boards can be moved into completed cards"
+          ]
+        },
+        {
+          "id": "T12.4",
+          "title": "Vertical card collapse with left-facing rotated typography",
+          "done": false,
+          "done_when": [
+            "Three-dots menu includes Turn Vertically & Hide Tasks option",
+            "Card collapses into a narrow vertical spine hiding all tasks inside",
+            "Card title rotates so words face to the left in vertical mode",
+            "Clicking vertical card or expand toggle restores horizontal layout"
+          ]
+        },
+        {
+          "id": "T12.5",
+          "title": "Conflict-free card reordering and increased typography sizing",
+          "done": false,
+          "done_when": [
+            "Cards can be dragged to reorder columns without conflicting with task hitboxes",
+            "Card width and typography for card headers and tasks are increased for high legibility",
+            "Board view remains responsive across viewports"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T13",
+      "title": "Comprehensive QA Verification and Gate Sign-off",
+      "type": "qa",
+      "status": "todo",
+      "features": []
     }
   ]
 }
