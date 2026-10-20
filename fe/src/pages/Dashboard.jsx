@@ -14,6 +14,46 @@ export default function Dashboard() {
   const [boards, setBoards] = useState([]);
   const [templates, setTemplates] = useState([]);
   const [error, setError] = useState(null);
+  const [dragOverSection, setDragOverSection] = useState(null);
+
+  const handleDragOver = (e, sectionKey) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    if (dragOverSection !== sectionKey) {
+      setDragOverSection(sectionKey);
+    }
+  };
+
+  const handleDragLeave = (e) => {
+    if (e.currentTarget.contains(e.relatedTarget)) return;
+    setDragOverSection(null);
+  };
+
+  const handleDropOnGroup = async (e, groupId) => {
+    e.preventDefault();
+    setDragOverSection(null);
+    const boardId = e.dataTransfer.getData("text/board-id");
+    if (!boardId) return;
+    try {
+      await api.patch(`/boards/${boardId}`, { group_id: groupId });
+      load();
+    } catch (err) {
+      await modal.showAlert({ title: "Move Failed", message: err.message });
+    }
+  };
+
+  const handleDropOnStandalone = async (e) => {
+    e.preventDefault();
+    setDragOverSection(null);
+    const boardId = e.dataTransfer.getData("text/board-id");
+    if (!boardId) return;
+    try {
+      await api.patch(`/boards/${boardId}`, { group_id: null });
+      load();
+    } catch (err) {
+      await modal.showAlert({ title: "Move Failed", message: err.message });
+    }
+  };
 
   const load = useCallback(async () => {
     setError(null);
@@ -142,7 +182,14 @@ export default function Dashboard() {
         {groups.map((g) => {
           const groupBoards = byGroup(g.id);
           return (
-            <section key={g.id} className="dashboard-section" aria-labelledby={`group-title-${g.id}`}>
+            <section
+              key={g.id}
+              className={`dashboard-section ${dragOverSection === `group-${g.id}` ? "drag-over" : ""}`}
+              aria-labelledby={`group-title-${g.id}`}
+              onDragOver={(e) => handleDragOver(e, `group-${g.id}`)}
+              onDragLeave={handleDragLeave}
+              onDrop={(e) => handleDropOnGroup(e, g.id)}
+            >
               <div className="dashboard-section-header">
                 <h2 id={`group-title-${g.id}`} className="dashboard-section-title">
                   {g.name}
@@ -157,14 +204,20 @@ export default function Dashboard() {
                   <BoardTile key={b.id} board={b} onSaveAsTemplate={saveAsTemplate} onDelete={deleteBoard} />
                 ))}
                 {groupBoards.length === 0 && (
-                  <div className="empty-notice">No boards in this group yet.</div>
+                  <div className="empty-notice">No boards in this group yet. (Drop a board here to add it)</div>
                 )}
               </div>
             </section>
           );
         })}
 
-        <section className="dashboard-section" aria-labelledby="section-title-standalone">
+        <section
+          className={`dashboard-section ${dragOverSection === "standalone" ? "drag-over" : ""}`}
+          aria-labelledby="section-title-standalone"
+          onDragOver={(e) => handleDragOver(e, "standalone")}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDropOnStandalone}
+        >
           <div className="dashboard-section-header">
             <h2 id="section-title-standalone" className="dashboard-section-title">
               standalone
@@ -176,7 +229,7 @@ export default function Dashboard() {
               <BoardTile key={b.id} board={b} onSaveAsTemplate={saveAsTemplate} onDelete={deleteBoard} />
             ))}
             {standalone.length === 0 && (
-              <div className="empty-notice">No standalone boards.</div>
+              <div className="empty-notice">No standalone boards. (Drop a board here to make it standalone)</div>
             )}
           </div>
         </section>

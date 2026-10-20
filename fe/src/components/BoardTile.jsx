@@ -1,11 +1,26 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { progressBar } from "../progress.js";
 
 export default function BoardTile({ board, onSaveAsTemplate, onDelete }) {
+  const [dragging, setDragging] = useState(false);
+
   return (
-    <div className="board-tile">
+    <div
+      className={`board-tile ${dragging ? "is-dragging" : ""}`}
+      draggable
+      onDragStart={(e) => {
+        e.dataTransfer.setData("text/board-id", String(board.id));
+        e.dataTransfer.effectAllowed = "move";
+        setDragging(true);
+      }}
+      onDragEnd={() => setDragging(false)}
+    >
       <div className="board-tile-header">
         <Link to={`/boards/${board.id}`} className="board-tile-title">
+          <span className="drag-handle-icon" title="Drag board to move into group or standalone" style={{ cursor: "grab", marginRight: "6px", opacity: 0.6 }}>
+            ⠿
+          </span>
           {board.name}
         </Link>
       </div>

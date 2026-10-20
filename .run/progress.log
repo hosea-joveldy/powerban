@@ -33,3 +33,4 @@
 [planner] Phase 3 plan: spec, design system, and tasks T9-T13 defined for user features 1-14.
 [builder] T9: Logo added to README/nav, smooth scroll, Bento grid, and GitHub redirection verified.
 [builder] T10: Surrounding elements on auth and username database persistence implemented.
+[builder] T11: Dashboard board dragging into groups and standalone sections implemented.

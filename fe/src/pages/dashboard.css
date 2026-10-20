@@ -54,6 +54,16 @@
 
 .dashboard-section {
   margin-top: var(--space-6);
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.dashboard-section.drag-over {
+  border-color: var(--accent-lime);
+  background: var(--bg-surface-elevated);
+  box-shadow: var(--shadow-md);
 }
 
 .dashboard-section-header {

@@ -323,12 +323,12 @@
       "id": "T11",
       "title": "Dashboard Draggable Boards",
       "type": "build",
-      "status": "todo",
+      "status": "finished",
       "features": [
         {
           "id": "T11.1",
           "title": "Drag-and-drop boards into groups and standalone sections",
-          "done": false,
+          "done": true,
           "done_when": [
             "Board tiles on dashboard are draggable",
             "Dragging a board into a group section updates its group_id to that group",
