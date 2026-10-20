@@ -34,3 +34,4 @@
 [builder] T9: Logo added to README/nav, smooth scroll, Bento grid, and GitHub redirection verified.
 [builder] T10: Surrounding elements on auth and username database persistence implemented.
 [builder] T11: Dashboard board dragging into groups and standalone sections implemented.
+[builder] T12: Card 3-dots menu, type switch, WIP limit, nested card/board items, vertical card mode, and drag reordering verified.

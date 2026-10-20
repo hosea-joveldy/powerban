@@ -12,7 +12,7 @@ export default function Board() {
   const navigate = useNavigate();
   const modal = useModal();
   const [board, setBoard] = useState(null);
-  const [boards, setBoards] = useState([]); // for the link-to-board picker
+  const [boards, setBoards] = useState([]);
   const [error, setError] = useState(null);
 
   const load = useCallback(async () => {
@@ -35,15 +35,38 @@ export default function Board() {
   }, [load]);
 
   function dragStart(e, taskId) {
+    e.dataTransfer.setData("text/task-id", String(taskId));
     e.dataTransfer.setData("text/plain", String(taskId));
+    e.dataTransfer.setData("powerban-drag-type", "task");
   }
 
-  // Each column gets its own handler, closed over that card's id, so it can
-  // read the dragged task's id straight off the drop event.
   function makeDropHandler(cardId) {
     return async (e) => {
-      const taskId = e?.dataTransfer?.getData("text/plain");
+      const taskId = e?.dataTransfer?.getData("text/task-id") || e?.dataTransfer?.getData("text/plain");
       if (!taskId) return;
+
+      const targetCard = board?.cards?.find((c) => c.id === cardId);
+      if (targetCard && targetCard.card_type === "completed") {
+        let draggedTask = null;
+        for (const c of board.cards) {
+          const found = c.tasks.find((t) => String(t.id) === String(taskId));
+          if (found) {
+            draggedTask = found;
+            break;
+          }
+        }
+        if (draggedTask && (draggedTask.item_type === "card" || draggedTask.item_type === "board")) {
+          const subitems = Array.isArray(draggedTask.subitems) ? draggedTask.subitems : [];
+          if (subitems.length > 0) {
+            await modal.showAlert({
+              title: "Cannot Complete",
+              message: `Cannot move nested ${draggedTask.item_type} to Completed: it still contains ${subitems.length} child item(s). Empty all items inside first.`,
+            });
+            return;
+          }
+        }
+      }
+
       try {
         await api.post(`/tasks/${taskId}/move`, { card_id: cardId });
         load();
@@ -53,9 +76,68 @@ export default function Board() {
     };
   }
 
+  async function reorderCard(sourceCardId, targetCardId) {
+    const targetIdx = board.cards.findIndex((c) => c.id === targetCardId);
+    if (targetIdx < 0) return;
+    try {
+      await api.patch(`/cards/${sourceCardId}`, { position: targetIdx });
+      load();
+    } catch (err) {
+      await modal.showAlert({ title: "Reorder Failed", message: err.message });
+    }
+  }
+
+  async function changeCardType(card, card_type) {
+    try {
+      await api.patch(`/cards/${card.id}`, { card_type });
+      load();
+    } catch (err) {
+      await modal.showAlert({ title: "Update Failed", message: err.message });
+    }
+  }
+
+  async function setWipLimit(card) {
+    const val = await modal.showPrompt({
+      title: "Set WIP Limit",
+      label: `WIP limit for "${card.name}" (blank or 0 to clear):`,
+      placeholder: "e.g. 3",
+      defaultValue: card.wip_limit ? String(card.wip_limit) : "",
+      confirmText: "Save Limit",
+    });
+    if (val === null) return;
+    const num = val.trim() === "" || Number(val) <= 0 ? null : Number(val);
+    try {
+      await api.patch(`/cards/${card.id}`, { wip_limit: num });
+      load();
+    } catch (err) {
+      await modal.showAlert({ title: "Failed to set WIP limit", message: err.message });
+    }
+  }
+
   async function addTask(cardId, title) {
     try {
       await api.post(`/cards/${cardId}/tasks`, { title });
+      load();
+    } catch (err) {
+      await modal.showAlert({ title: "Cannot Add Task", message: err.message });
+    }
+  }
+
+  async function addNestedTask(cardId, type) {
+    const entity = type === "board" ? "Board" : "Card";
+    const title = await modal.showPrompt({
+      title: `Add Task as a ${entity}`,
+      label: `${entity} Title:`,
+      placeholder: `e.g. ${entity} B`,
+      confirmText: `Create ${entity}`,
+    });
+    if (!title || !title.trim()) return;
+    try {
+      await api.post(`/cards/${cardId}/tasks`, {
+        title: title.trim(),
+        item_type: type,
+        subitems: [],
+      });
       load();
     } catch (err) {
       await modal.showAlert({ title: "Cannot Add Task", message: err.message });
@@ -78,30 +160,14 @@ export default function Board() {
     }
   }
 
-  async function toggleTask(task) {
-    try {
-      await api.patch(`/tasks/${task.id}`, { is_finished: !task.is_finished });
-      load();
-    } catch (err) {
-      await modal.showAlert({ title: "Update Failed", message: err.message });
-    }
-  }
-
-  async function linkTask(task, linkedBoardId) {
-    try {
-      await api.patch(`/tasks/${task.id}`, { linked_board_id: linkedBoardId });
-      load();
-    } catch (err) {
-      await modal.showAlert({ title: "Link Failed", message: err.message });
-    }
-  }
-
   async function saveTask(taskData) {
     try {
       await api.patch(`/tasks/${taskData.id}`, {
         title: taskData.title,
         description: taskData.description,
         linked_board_id: taskData.linked_board_id,
+        item_type: taskData.item_type,
+        subitems: taskData.subitems,
         is_finished: taskData.is_finished,
       });
       load();
@@ -199,10 +265,12 @@ export default function Board() {
             onDrop={makeDropHandler(card.id)}
             onDragStart={dragStart}
             onAddTask={addTask}
+            onAddNestedTask={addNestedTask}
             onDeleteCard={deleteCard}
             onDeleteTask={deleteTask}
-            onToggleTask={toggleTask}
-            onLinkTask={linkTask}
+            onChangeCardType={changeCardType}
+            onSetWipLimit={setWipLimit}
+            onReorderCard={reorderCard}
             onOpenTaskDetail={(t) => openTaskDetailModal(t, card)}
           />
         ))}

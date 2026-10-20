@@ -10,7 +10,7 @@ use App\Positions;
 class Task
 {
   private const SELECT = "SELECT t.id, t.card_id, c.board_id, c.card_type, t.title, t.description,
-      t.position, t.is_finished, t.linked_board_id, t.created_at, t.updated_at
+      t.position, t.is_finished, t.linked_board_id, t.item_type, t.subitems, t.created_at, t.updated_at
     FROM tasks t JOIN cards c ON c.id = t.card_id";
 
   private static function present(array $rows): array
@@ -32,6 +32,9 @@ class Task
       $r["linked_board"] = $l
         ? ["id" => $l["id"], "name" => $l["name"], "progress" => $l["progress"]]
         : null;
+      $sub = $r["subitems"] ?? "[]";
+      $r["subitems"] = is_string($sub) ? json_decode($sub, true) : (is_array($sub) ? $sub : []);
+      $r["item_type"] = $r["item_type"] ?? "task";
     }
     unset($r);
     return $rows;
@@ -98,7 +101,7 @@ class Task
 
   private static function assertRoom(array $card): void
   {
-    if ($card["card_type"] !== "ongoing" || $card["wip_limit"] === null) {
+    if ($card["wip_limit"] === null) {
       return;
     }
     if (Card::taskCount($card["id"]) >= $card["wip_limit"]) {
@@ -118,25 +121,37 @@ class Task
       : null;
     self::assertLink($linked, $uid, $card["board_id"]);
 
+    $itemType = $in["item_type"] ?? "task";
+    if (!in_array($itemType, ["task", "card", "board"], true)) {
+      throw new HttpException(422, "item_type must be task, card, or board");
+    }
+    $subitems = array_key_exists("subitems", $in) && is_array($in["subitems"])
+      ? json_encode($in["subitems"])
+      : "[]";
+
     $id = Db::transaction(function ($pdo) use (
       $card,
       $title,
       $description,
       $linked,
+      $itemType,
+      $subitems,
       $index,
     ) {
       $locked = self::lockCard($card["id"]);
       self::assertRoom($locked);
 
       $stmt = $pdo->prepare(
-        "INSERT INTO tasks (card_id, title, description, position, is_finished, linked_board_id)
-         VALUES (:c, :t, :d, :p, :f, :l) RETURNING id",
+        "INSERT INTO tasks (card_id, title, description, position, item_type, subitems, is_finished, linked_board_id)
+         VALUES (:c, :t, :d, :p, :it, :si, :f, :l) RETURNING id",
       );
       $stmt->execute([
         "c" => $card["id"],
         "t" => $title,
         "d" => $description,
         "p" => Positions::next("tasks", "card_id", $card["id"]),
+        "it" => $itemType,
+        "si" => $subitems,
         "f" => Db::bool($locked["card_type"] === "completed"),
         "l" => $linked,
       ]);
@@ -157,6 +172,18 @@ class Task
     }
     if (array_key_exists("description", $in)) {
       $fields["description"] = Input::text($in, "description", 10000, false);
+    }
+    if (array_key_exists("item_type", $in)) {
+      if (!in_array($in["item_type"], ["task", "card", "board"], true)) {
+        throw new HttpException(422, "item_type must be task, card, or board");
+      }
+      $fields["item_type"] = $in["item_type"];
+    }
+    if (array_key_exists("subitems", $in)) {
+      if (!is_array($in["subitems"])) {
+        throw new HttpException(422, "subitems must be an array");
+      }
+      $fields["subitems"] = json_encode($in["subitems"]);
     }
     if (array_key_exists("linked_board_id", $in)) {
       $linked = Input::int($in, "linked_board_id", false, 1);
@@ -197,6 +224,19 @@ class Task
       $locked = self::lockCard($targetId);
       if ($targetId !== $task["card_id"]) {
         self::assertRoom($locked);
+      }
+
+      if ($locked["card_type"] === "completed") {
+        if (($task["item_type"] ?? "task") === "card" || ($task["item_type"] ?? "task") === "board") {
+          $rawSub = $task["subitems"] ?? "[]";
+          $subitems = is_string($rawSub) ? json_decode($rawSub, true) : (is_array($rawSub) ? $rawSub : []);
+          if (!empty($subitems)) {
+            throw new HttpException(
+              422,
+              "Cannot complete " . $task["item_type"] . ": all child items must be empty first."
+            );
+          }
+        }
       }
 
       $finished = $task["is_finished"];

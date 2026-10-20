@@ -36,7 +36,7 @@ CREATE TABLE cards (
     position INT NOT NULL DEFAULT 0,
     wip_limit INT,
     card_type TEXT NOT NULL DEFAULT 'todo' CHECK (card_type IN ('todo', 'ongoing', 'completed')),
-    CONSTRAINT wip_limit_only_for_ongoing CHECK (wip_limit IS NULL OR card_type = 'ongoing')
+    CONSTRAINT wip_limit_not_for_completed CHECK (wip_limit IS NULL OR card_type != 'completed')
 );
 
 CREATE TABLE tasks (
@@ -45,6 +45,8 @@ CREATE TABLE tasks (
     title TEXT NOT NULL,
     description TEXT,
     position INT NOT NULL DEFAULT 0,
+    item_type TEXT NOT NULL DEFAULT 'task' CHECK (item_type IN ('task', 'card', 'board')),
+    subitems JSONB NOT NULL DEFAULT '[]',
     is_template BOOLEAN NOT NULL DEFAULT FALSE,
     is_finished BOOLEAN NOT NULL DEFAULT FALSE,
     linked_board_id INT REFERENCES boards(id) ON DELETE SET NULL,

@@ -17,6 +17,8 @@ export default function TaskDetailModal({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [linkedBoardId, setLinkedBoardId] = useState("");
+  const [subitems, setSubitems] = useState([]);
+  const [newSubitem, setNewSubitem] = useState("");
   const [isFinished, setIsFinished] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -26,7 +28,9 @@ export default function TaskDetailModal({
     if (isOpen && task) {
       setTitle(task.title || "");
       setDescription(task.description || "");
-      setLinkedBoardId(task.linked_board_id !== null && task.linked_board_id !== undefined ? String(task.linked_board_id) : "");
+      setLinkedBoardId(task.linked_board_id != null ? String(task.linked_board_id) : "");
+      setSubitems(Array.isArray(task.subitems) ? [...task.subitems] : []);
+      setNewSubitem("");
       setIsFinished(Boolean(task.is_finished));
       setIsDeleting(false);
       setSaving(false);
@@ -36,13 +40,26 @@ export default function TaskDetailModal({
 
   if (!task) return null;
 
+  const isNested = task.item_type === "card" || task.item_type === "board";
+  const entityLabel = task.item_type === "board" ? "Board" : "Card";
   const availableBoards = (boards || []).filter(
-    (b) => b.id !== currentBoardId && !b.is_template
+    (b) => !b.is_template && b.id !== currentBoardId
   );
 
   const selectedBoard = linkedBoardId
     ? (boards || []).find((b) => String(b.id) === String(linkedBoardId))
     : null;
+
+  const addSubitem = (e) => {
+    e.preventDefault();
+    if (!newSubitem.trim()) return;
+    setSubitems([...subitems, newSubitem.trim()]);
+    setNewSubitem("");
+  };
+
+  const removeSubitem = (idx) => {
+    setSubitems(subitems.filter((_, i) => i !== idx));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,13 +67,20 @@ export default function TaskDetailModal({
     setSaving(true);
     setError(null);
     try {
-      await onSave({
+      const payload = {
         id: task.id,
         title: title.trim(),
         description: description.trim(),
         linked_board_id: linkedBoardId === "" ? null : Number(linkedBoardId),
         is_finished: locked ? true : isFinished,
-      });
+      };
+      if (task.item_type !== undefined) {
+        payload.item_type = task.item_type;
+      }
+      if (task.subitems !== undefined || (Array.isArray(subitems) && subitems.length > 0)) {
+        payload.subitems = subitems;
+      }
+      await onSave(payload);
       onClose();
     } catch (err) {
       setError(err.message || "Failed to save task");
@@ -79,7 +103,7 @@ export default function TaskDetailModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Task Details"
+      title={isNested ? `${entityLabel} Details` : "Task Details"}
       triggerElement={triggerElement}
       className="task-detail"
     >
@@ -96,7 +120,7 @@ export default function TaskDetailModal({
             className="modal-input"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Task title"
+            placeholder="Title"
             required
             autoFocus
           />
@@ -112,7 +136,7 @@ export default function TaskDetailModal({
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Add details, notes, or acceptance criteria..."
-            rows={4}
+            rows={3}
           />
         </div>
 
@@ -126,7 +150,7 @@ export default function TaskDetailModal({
             value={linkedBoardId}
             onChange={(e) => setLinkedBoardId(e.target.value)}
           >
-            <option value="">(None - standalone task)</option>
+            <option value="">(None)</option>
             {availableBoards.map((b) => (
               <option key={b.id} value={b.id}>
                 {b.name}
@@ -135,7 +159,7 @@ export default function TaskDetailModal({
           </select>
 
           {selectedBoard && (
-            <div className="linked-board-preview">
+            <div className="linked-board-preview" style={{ marginTop: "var(--space-2)", fontSize: "var(--text-xs)" }}>
               <span className="mono">
                 → {selectedBoard.name}{" "}
                 {selectedBoard.progress && (
@@ -145,11 +169,12 @@ export default function TaskDetailModal({
                   </>
                 )}
               </span>
+              {" "}
               <Link
                 to={`/boards/${selectedBoard.id}`}
                 target="_blank"
                 rel="noreferrer"
-                style={{ fontSize: "var(--text-xs)", textDecoration: "underline" }}
+                style={{ fontSize: "var(--text-xs)", textDecoration: "underline", marginLeft: "var(--space-2)" }}
               >
                 Open board ↗
               </Link>
@@ -157,25 +182,109 @@ export default function TaskDetailModal({
           )}
         </div>
 
-        <div className="modal-field" style={{ marginTop: "var(--space-1)" }}>
-          <label className="modal-checkbox-row">
+        <div className="modal-field modal-field-checkbox" style={{ display: "flex", alignItems: "center", gap: "8px", margin: "var(--space-2) 0" }}>
+          <label className="checkbox-label" htmlFor="task-finished-checkbox" style={{ display: "flex", alignItems: "center", gap: "8px", cursor: locked ? "not-allowed" : "pointer" }}>
             <input
+              id="task-finished-checkbox"
               type="checkbox"
               checked={locked ? true : isFinished}
               disabled={locked}
               onChange={(e) => setIsFinished(e.target.checked)}
             />
-            <span style={{ fontSize: "var(--text-sm)" }}>
-              Mark task as finished {locked && "(locked in completed column)"}
-            </span>
+            <span style={{ fontSize: "var(--text-sm)", color: "var(--text-primary)" }}>Mark as Completed</span>
           </label>
+          {locked && (
+            <span className="field-hint" style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
+              (Locked in Completed column)
+            </span>
+          )}
         </div>
+
+        {/* Nested Child Items Manager for Card or Board Tasks */}
+        {isNested && (
+          <div className="modal-field" style={{ background: "var(--bg-surface-subtle)", padding: "var(--space-3)", borderRadius: "var(--radius-sm)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--space-2)" }}>
+              <span className="modal-field-label" style={{ margin: 0 }}>
+                Child Items in this {entityLabel} ({subitems.length})
+              </span>
+              <span
+                className={`section-count-badge ${subitems.length === 0 ? "is-empty" : ""}`}
+                style={{ fontSize: "var(--text-xs)", color: subitems.length === 0 ? "var(--success)" : "var(--text-muted)" }}
+              >
+                {subitems.length === 0 ? "Empty ✓ Ready for Completed" : `${subitems.length} remaining`}
+              </span>
+            </div>
+
+            <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", margin: "0 0 var(--space-2) 0" }}>
+              Rule: A nested {entityLabel.toLowerCase()} cannot be moved to Completed while child items remain. Remove or clear all items to complete it.
+            </p>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "var(--space-2)", maxHeight: "140px", overflowY: "auto" }}>
+              {subitems.map((item, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    background: "var(--bg-surface)",
+                    padding: "6px 10px",
+                    borderRadius: "var(--radius-xs)",
+                    border: "1px solid var(--border-subtle)",
+                    fontSize: "var(--text-sm)",
+                  }}
+                >
+                  <span>• {item}</span>
+                  <button
+                    type="button"
+                    className="icon-btn"
+                    style={{ fontSize: "12px", color: "var(--danger)" }}
+                    onClick={() => removeSubitem(idx)}
+                    title="Remove item"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+              {subitems.length === 0 && (
+                <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontStyle: "italic", padding: "4px 0" }}>
+                  No child items. This {entityLabel.toLowerCase()} is empty.
+                </div>
+              )}
+            </div>
+
+            <div style={{ display: "flex", gap: "var(--space-2)" }}>
+              <input
+                type="text"
+                className="modal-input"
+                style={{ padding: "6px 10px", fontSize: "var(--text-xs)" }}
+                value={newSubitem}
+                onChange={(e) => setNewSubitem(e.target.value)}
+                placeholder={`Add item to ${entityLabel.toLowerCase()}...`}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    addSubitem(e);
+                  }
+                }}
+              />
+              <button
+                type="button"
+                className="btn-pill-secondary btn-xs"
+                onClick={addSubitem}
+                style={{ whiteSpace: "nowrap" }}
+              >
+                + add
+              </button>
+            </div>
+          </div>
+        )}
 
         <div
           className="modal-footer"
           style={{
             justifyContent: "space-between",
-            marginTop: "var(--space-3)",
+            marginTop: "var(--space-4)",
             borderTop: "1px solid var(--border-subtle)",
             paddingTop: "var(--space-3)",
           }}
@@ -191,7 +300,7 @@ export default function TaskDetailModal({
                 }}
                 onClick={() => setIsDeleting(true)}
               >
-                Delete Task
+                Delete {isNested ? entityLabel : "Task"}
               </button>
             )}
             {onDelete && isDeleting && (

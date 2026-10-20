@@ -58,10 +58,10 @@ class Card
     $type = $in["card_type"] ?? "todo";
     self::assertType($type);
     $wip = Input::int($in, "wip_limit", false, 1);
-    if ($wip !== null && $type !== "ongoing") {
+    if ($wip !== null && $type === "completed") {
       throw new HttpException(
         422,
-        "wip_limit is only allowed on ongoing cards",
+        "wip_limit is not allowed on completed cards",
       );
     }
     $index = array_key_exists("position", $in)
@@ -111,11 +111,11 @@ class Card
     if (array_key_exists("wip_limit", $in)) {
       $wip = Input::int($in, "wip_limit", false, 1);
     }
-    if ($type !== "ongoing") {
+    if ($type === "completed") {
       if (array_key_exists("wip_limit", $in) && $wip !== null) {
         throw new HttpException(
           422,
-          "wip_limit is only allowed on ongoing cards",
+          "wip_limit is not allowed on completed cards",
         );
       }
       $wip = null;

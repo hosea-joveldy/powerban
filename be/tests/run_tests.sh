@@ -70,6 +70,12 @@ req "$A" GET /me;                                        expect "me after login 
 req "$A" PATCH /me '{"theme":"stone-light"}';            has "theme updated and persisted" "stone-light"
 req "$B" POST /auth/register "{\"email\":\"$EMAIL_B\",\"password\":\"password123\"}"; expect "register user B" 201
 
+# Username registration and login
+UNAME_TEST="uname_${STAMP}"
+req "$TMP/u.jar" POST /auth/register "{\"username\":\"$UNAME_TEST\",\"email\":\"u_${STAMP}@test.dev\",\"password\":\"password123\"}"; expect "register with username" 201
+req "$TMP/u.jar" POST /auth/login "{\"username\":\"$UNAME_TEST\",\"password\":\"password123\"}"; expect "login with username" 200
+has "user object contains username" "$UNAME_TEST"
+
 # Rate limiting verification (T4.3)
 EMAIL_RL="rl_${STAMP}@test.dev"
 req "$TMP/rl.jar" POST /auth/register "{\"email\":\"$EMAIL_RL\",\"password\":\"password123\"}"; expect "register user for rate limiting" 201
@@ -96,7 +102,7 @@ req "$A" PATCH /boards/$OTHER "{\"group_id\":$GROUP}";   expect "move board into
 req "$A" PATCH /boards/$OTHER '{"group_id":null}';       expect "make board standalone again" 200
 
 echo "== 3. Cards & WIP Limits =="
-req "$A" PATCH /cards/$TODO '{"wip_limit":3}';           expect "wip limit on todo card is 422" 422
+req "$A" PATCH /cards/$TODO '{"wip_limit":3}';           expect "wip limit on todo card is 200" 200
 req "$A" PATCH /cards/$DONE '{"wip_limit":3}';           expect "wip limit on completed card is 422" 422
 req "$A" PATCH /cards/$ONGOING '{"wip_limit":1}';        expect "wip limit on ongoing card is 200" 200
 
@@ -112,6 +118,14 @@ has "task moved to completed forces is_finished=true" '"is_finished":true'
 req "$A" POST /tasks/$T3/move "{\"card_id\":$ONGOING}";  expect "ongoing has capacity now" 200
 req "$A" GET /boards/$BOARD/progress;                    has "flat progress computation is accurate" '"done":1,"total":2,"percent":50'
 req "$A" POST /tasks/$T1/move "{\"card_id\":$TODO}";     has "leaving completed card forces is_finished=false" '"is_finished":false'
+
+# Nested Card/Board empty constraint verification
+req "$A" POST /cards/$TODO/tasks '{"title":"Card B","item_type":"card","subitems":["child item 1"]}'; expect "create nested card task" 201
+NESTED=$(first_id)
+req "$A" POST /tasks/$NESTED/move "{\"card_id\":$DONE}"; expect "moving non-empty nested card to completed is 422" 422
+req "$A" PATCH /tasks/$NESTED '{"subitems":[]}';         expect "clear child items in nested card" 200
+req "$A" POST /tasks/$NESTED/move "{\"card_id\":$DONE}"; expect "moving empty nested card to completed is 200" 200
+req "$A" DELETE /tasks/$NESTED;                          expect "cleanup nested task" 204
 
 echo "== 5. Linked Boards =="
 req "$A" POST /cards/$TODO/tasks "{\"title\":\"linked task\",\"linked_board_id\":$OTHER}"; expect "task linked to another board" 201

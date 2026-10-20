@@ -342,12 +342,12 @@
       "id": "T12",
       "title": "Board Kanban Evolution, Sizing, and Nested Cards/Boards",
       "type": "build",
-      "status": "todo",
+      "status": "finished",
       "features": [
         {
           "id": "T12.1",
           "title": "Task checklist button removal and auto-complete styling",
-          "done": false,
+          "done": true,
           "done_when": [
             "Checklist checkbox buttons are removed from task cards",
             "Tasks located inside completed cards automatically display finished styling"
@@ -356,7 +356,7 @@
         {
           "id": "T12.2",
           "title": "Card column three-dots menu with type switcher and universal WIP limits",
-          "done": false,
+          "done": true,
           "done_when": [
             "Card column header contains a three-dots menu button",
             "Menu allows setting card type to Todo, Ongoing, or Completed",
@@ -368,7 +368,7 @@
         {
           "id": "T12.3",
           "title": "Nested card and board tasks with empty-check completion constraint",
-          "done": false,
+          "done": true,
           "done_when": [
             "Three-dots menu includes Add Task as a Card and Add Task as a Board",
             "Tasks created as cards or boards display dedicated badges and sub-items manager",
@@ -379,7 +379,7 @@
         {
           "id": "T12.4",
           "title": "Vertical card collapse with left-facing rotated typography",
-          "done": false,
+          "done": true,
           "done_when": [
             "Three-dots menu includes Turn Vertically & Hide Tasks option",
             "Card collapses into a narrow vertical spine hiding all tasks inside",
@@ -390,7 +390,7 @@
         {
           "id": "T12.5",
           "title": "Conflict-free card reordering and increased typography sizing",
-          "done": false,
+          "done": true,
           "done_when": [
             "Cards can be dragged to reorder columns without conflicting with task hitboxes",
             "Card width and typography for card headers and tasks are increased for high legibility",

@@ -1,79 +1,80 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { progressBar } from "../progress.js";
 
 export default function TaskItem({
   task,
-  boards,
+  boards = [],
   locked,
-  onToggle,
   onDelete,
-  onLink,
   onOpenDetail,
   onDragStart,
 }) {
-  const [linking, setLinking] = useState(false);
+  const isFinished = task.is_finished || locked;
+  const subitemCount = Array.isArray(task.subitems) ? task.subitems.length : 0;
+  const isEmpty = subitemCount === 0;
+  const linkedBoard = task.linked_board || (task.linked_board_id ? boards.find((b) => Number(b.id) === Number(task.linked_board_id)) : null);
 
   return (
     <div
       draggable
-      onDragStart={(e) => onDragStart(e, task.id)}
+      onDragStart={(e) => {
+        e.stopPropagation();
+        e.dataTransfer.setData("text/task-id", String(task.id));
+        e.dataTransfer.setData("text/plain", String(task.id));
+        e.dataTransfer.setData("powerban-drag-type", "task");
+        e.dataTransfer.effectAllowed = "move";
+        onDragStart?.(e, task.id);
+      }}
       onClick={() => onOpenDetail?.(task)}
-      className={`task-card ${task.is_finished ? "is-finished" : ""}`}
+      className={`task-card ${isFinished ? "is-finished" : ""}`}
     >
       <div className="task-card-content">
-        <input
-          type="checkbox"
-          className="task-checkbox"
-          checked={task.is_finished}
-          disabled={locked}
-          onChange={(e) => {
-            e.stopPropagation();
-            onToggle(task);
-          }}
-          onClick={(e) => e.stopPropagation()}
-          title={locked ? "Finished automatically in a completed card" : "Mark finished"}
-        />
+        {isFinished && (
+          <span className="task-done-badge" title="Completed automatically in a completed card">
+            ✓
+          </span>
+        )}
+
         <div className="task-details">
           <div className="task-card-title">
             {task.title}
           </div>
+
           {task.description && (
             <div className="task-card-desc">
               {task.description}
             </div>
           )}
-          {task.linked_board && (
-            <Link
-              to={`/boards/${task.linked_board.id}`}
-              className="linked-board-badge"
-              onClick={(e) => e.stopPropagation()}
-              onMouseDown={(e) => e.stopPropagation()}
-            >
-              <span>→ {task.linked_board.name}</span>
-              <span className="mono">
-                {progressBar(task.linked_board.progress.percent, 3)}{" "}
-                {task.linked_board.progress.percent}%
+
+          {linkedBoard && (
+            <div className="task-linked-badge" style={{ fontSize: "var(--text-xs)", color: "var(--accent)", marginTop: "4px" }}>
+              → {linkedBoard.name}
+            </div>
+          )}
+
+          {/* Nested Card or Board Indicator */}
+          {task.item_type === "card" && (
+            <div className="nested-item-badge card-badge">
+              <span className="badge-type">[Nested Card]</span>
+              <span className={`badge-count ${isEmpty ? "is-empty" : ""}`}>
+                {isEmpty ? "0 items (Empty ✓)" : `${subitemCount} item(s)`}
               </span>
-            </Link>
+            </div>
+          )}
+
+          {task.item_type === "board" && (
+            <div className="nested-item-badge board-badge">
+              <span className="badge-type">[Board]</span>
+              <span className={`badge-count ${isEmpty ? "is-empty" : ""}`}>
+                {isEmpty ? "0 items (Empty ✓)" : `${subitemCount} item(s)`}
+              </span>
+            </div>
           )}
         </div>
+
         <div className="task-card-actions">
           <button
             className="icon-btn"
-            style={{ fontSize: 12 }}
-            title="Link to another board"
-            aria-label="Link to another board"
-            onClick={(e) => {
-              e.stopPropagation();
-              setLinking((v) => !v);
-            }}
-          >
-            🔗
-          </button>
-          <button
-            className="icon-btn"
-            style={{ fontSize: 12 }}
+            style={{ fontSize: 13 }}
             title="Delete task"
             aria-label="Delete task"
             onClick={(e) => {
@@ -85,30 +86,6 @@ export default function TaskItem({
           </button>
         </div>
       </div>
-      {linking && (
-        <select
-          autoFocus
-          className="modal-select"
-          defaultValue={task.linked_board_id ?? ""}
-          onClick={(e) => e.stopPropagation()}
-          onChange={(e) => {
-            e.stopPropagation();
-            const v = e.target.value;
-            onLink(task, v === "" ? null : Number(v));
-            setLinking(false);
-          }}
-          style={{ marginTop: "var(--space-2)", width: "100%", fontSize: "var(--text-xs)" }}
-        >
-          <option value="">(no link)</option>
-          {boards
-            .filter((b) => b.id !== task.board_id && !b.is_template)
-            .map((b) => (
-              <option key={b.id} value={b.id}>
-                {b.name}
-              </option>
-            ))}
-        </select>
-      )}
     </div>
   );
 }
