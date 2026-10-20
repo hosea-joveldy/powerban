@@ -15,6 +15,12 @@ class AuthController
   public function register(): void
   {
     $in = Http::body();
+    $username = isset($in["username"]) && is_string($in["username"]) ? trim($in["username"]) : null;
+    if ($username !== null && $username !== "") {
+      if (strlen($username) < 3 || strlen($username) > 30 || !preg_match('/^[a-zA-Z0-9_-]+$/', $username)) {
+        throw new HttpException(422, "Username must be 3 to 30 characters (letters, numbers, _ or -)");
+      }
+    }
     $email = strtolower(Input::text($in, "email", 254));
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
       throw new HttpException(422, "Invalid email");
@@ -29,9 +35,12 @@ class AuthController
     }
 
     try {
-      $user = User::create($email, password_hash($password, PASSWORD_DEFAULT));
+      $user = User::create($username, $email, password_hash($password, PASSWORD_DEFAULT));
     } catch (PDOException $e) {
       if ($e->getCode() === "23505") {
+        if (str_contains($e->getMessage(), "username")) {
+          throw new HttpException(409, "Username already registered");
+        }
         throw new HttpException(409, "Email already registered");
       }
       throw $e;
@@ -43,7 +52,12 @@ class AuthController
   public function login(): void
   {
     $in = Http::body();
-    $email = strtolower(Input::text($in, "email", 254));
+    $identifier = $in["username"] ?? ($in["email"] ?? ($in["login"] ?? null));
+    if (!is_string($identifier) || trim($identifier) === "") {
+      throw new HttpException(422, "Username or email is required");
+    }
+    $identifier = trim($identifier);
+
     $password = $in["password"] ?? null;
     if (!is_string($password)) {
       throw new HttpException(422, "password is required");
@@ -56,7 +70,7 @@ class AuthController
     $stmt = $db->prepare(
       "SELECT COUNT(*) FROM login_attempts WHERE email = :email AND attempted_at >= now() - interval '15 minutes'"
     );
-    $stmt->execute([":email" => $email]);
+    $stmt->execute([":email" => strtolower($identifier)]);
     $failedCount = (int)$stmt->fetchColumn();
 
     if ($failedCount >= 5) {
@@ -66,13 +80,13 @@ class AuthController
       );
     }
 
-    $row = User::findByEmail($email);
+    $row = User::findByUsernameOrEmail($identifier);
     if (!$row) {
       password_hash($password, PASSWORD_DEFAULT);
       $ins = $db->prepare(
         "INSERT INTO login_attempts (email, ip_address, attempted_at) VALUES (:email, :ip, now())"
       );
-      $ins->execute([":email" => $email, ":ip" => $ip]);
+      $ins->execute([":email" => strtolower($identifier), ":ip" => $ip]);
       throw new HttpException(401, "Invalid email or password");
     }
 
@@ -80,13 +94,13 @@ class AuthController
       $ins = $db->prepare(
         "INSERT INTO login_attempts (email, ip_address, attempted_at) VALUES (:email, :ip, now())"
       );
-      $ins->execute([":email" => $email, ":ip" => $ip]);
+      $ins->execute([":email" => strtolower($identifier), ":ip" => $ip]);
       throw new HttpException(401, "Invalid email or password");
     }
 
     // Successful login clears prior failed attempts
-    $del = $db->prepare("DELETE FROM login_attempts WHERE email = :email");
-    $del->execute([":email" => $email]);
+    $del = $db->prepare("DELETE FROM login_attempts WHERE email = :email OR email = :username");
+    $del->execute([":email" => strtolower($row["email"]), ":username" => strtolower($row["username"] ?? "")]);
 
     Auth::login($row["id"]);
     unset($row["password_hash"]);

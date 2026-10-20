@@ -27,15 +27,27 @@ export function AuthProvider({ children }) {
       .finally(() => setLoading(false));
   }, []);
 
-  const login = useCallback(async (email, password) => {
-    const u = await api.post("/auth/login", { email, password });
+  const login = useCallback(async (identifier, password) => {
+    const u = await api.post("/auth/login", {
+      username: identifier,
+      email: identifier,
+      password,
+    });
     setUser(u);
     applyTheme(u.theme);
     return u;
   }, []);
 
-  const register = useCallback(async (email, password) => {
-    const u = await api.post("/auth/register", { email, password });
+  const register = useCallback(async (arg1, arg2, arg3) => {
+    let payload;
+    if (typeof arg1 === "object" && arg1 !== null) {
+      payload = arg1;
+    } else if (arg3 !== undefined) {
+      payload = { username: arg1, email: arg2, password: arg3 };
+    } else {
+      payload = { email: arg1, password: arg2 };
+    }
+    const u = await api.post("/auth/register", payload);
     setUser(u);
     applyTheme(u.theme);
     return u;

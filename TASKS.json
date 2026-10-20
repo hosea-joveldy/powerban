@@ -294,12 +294,12 @@
       "id": "T10",
       "title": "Authentication Polish and Username System",
       "type": "build",
-      "status": "todo",
+      "status": "finished",
       "features": [
         {
           "id": "T10.1",
           "title": "Surrounding floating 3D ambient elements and backdrop for Login and Register",
-          "done": false,
+          "done": true,
           "done_when": [
             "Login and Register pages render 3D floating ambient sculptural elements and faint developer workspace backdrop matching references/login.png",
             "Surrounding elements adapt gracefully to light and dark themes without breaking layout"
@@ -308,7 +308,7 @@
         {
           "id": "T10.2",
           "title": "Username input and database persistence in Register and Login",
-          "done": false,
+          "done": true,
           "done_when": [
             "users table in PostgreSQL supports unique username column",
             "Register page includes Username input field alongside Email and Password",

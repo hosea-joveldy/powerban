@@ -9,6 +9,146 @@
   background-color: var(--bg-canvas);
   padding: var(--space-5);
   position: relative;
+  overflow: hidden;
+}
+
+/* Surrounding Backdrop and 3D Floating Elements matching references/login.png */
+.auth-surround-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Backdrop Watermark (faint IDE sidebar & terminal text) */
+.auth-backdrop-watermark {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 70px 40px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  opacity: 0.22;
+  color: var(--text-primary);
+  user-select: none;
+}
+
+.auth-backdrop-sidebar {
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-line.brand {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.sidebar-section-title {
+  margin-top: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.sidebar-line.indent {
+  padding-left: 12px;
+}
+
+.sidebar-line.indent-2 {
+  padding-left: 24px;
+  color: var(--text-secondary);
+}
+
+.auth-backdrop-console {
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.console-line.highlight {
+  color: var(--accent-lime);
+  font-weight: 600;
+}
+
+.console-line.muted {
+  color: var(--text-muted);
+}
+
+.console-line.code {
+  color: var(--text-secondary);
+  font-size: 10px;
+}
+
+/* 3D Floating Sculptural Pebbles */
+.floating-rock {
+  position: absolute;
+  z-index: 5;
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 16px 24px rgba(0, 0, 0, 0.15));
+}
+
+.rock-top-right {
+  top: 40px;
+  right: 40px;
+  animation: floatSlow 8s ease-in-out infinite alternate;
+}
+
+.rock-mid-right {
+  top: 42%;
+  right: 20px;
+  animation: floatMedium 9s ease-in-out infinite alternate-reverse;
+}
+
+.rock-bottom-left {
+  bottom: 20px;
+  left: 30px;
+  animation: floatSlow 10s ease-in-out infinite alternate;
+}
+
+@keyframes floatSlow {
+  0% { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(-16px) rotate(3deg); }
+}
+
+@keyframes floatMedium {
+  0% { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(14px) rotate(-4deg); }
+}
+
+/* Social Buttons row matching references/login.png */
+.auth-social-row {
+  display: flex;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.btn-auth-social {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 8px 12px;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-auth-social:hover {
+  background: var(--bg-surface);
+  border-color: var(--border-strong);
 }
 
 .auth-topbar {
@@ -21,9 +161,12 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 var(--space-6);
+  z-index: 20;
 }
 
 .auth-card {
+  position: relative;
+  z-index: 10;
   width: min(440px, 92vw);
   background-color: var(--bg-surface);
   border: 1px solid var(--border-default);

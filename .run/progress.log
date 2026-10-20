@@ -32,3 +32,4 @@
 [qa] T7 whole-app QA pass complete: all gate checks pass, 28 e2e tests pass, 57 backend tests pass, zero browser dialogs, responsive across all viewports. Run complete.
 [planner] Phase 3 plan: spec, design system, and tasks T9-T13 defined for user features 1-14.
 [builder] T9: Logo added to README/nav, smooth scroll, Bento grid, and GitHub redirection verified.
+[builder] T10: Surrounding elements on auth and username database persistence implemented.

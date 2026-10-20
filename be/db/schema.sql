@@ -5,6 +5,7 @@ CREATE DATABASE powerban;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
+    username TEXT UNIQUE,
     email TEXT UNIQUE NOT NULL,
     password_hash TEXT NOT NULL,
     theme TEXT DEFAULT 'gruvbox',
