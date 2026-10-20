@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo.svg" alt="Powerban Logo" width="340" />
+</p>
+
 # Powerban
 
 Kanban board for power users. Create multiple boards, organize them into groups, link tasks to other boards with live progress badges, and save boards as reusable templates.

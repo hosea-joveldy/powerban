@@ -1,40 +1,65 @@
 import { Link } from "react-router-dom";
 import HeroOrbitCanvas from "../components/HeroOrbitCanvas.jsx";
+import logoSvg from "../assets/logo.svg";
 import "./landing.css";
 
 export default function LandingPage() {
+  const handleNavClick = (e, targetId) => {
+    e.preventDefault();
+    const el = document.getElementById(targetId);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+      window.history.pushState(null, "", `#${targetId}`);
+    }
+  };
+
   return (
     <div className="landing-page">
       {/* Top Navigation */}
       <header className="landing-nav">
         <Link to="/" className="brand-mark" aria-label="Powerban Home">
-          <span className="brand-icon" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <circle cx="7" cy="12" r="5" fill="currentColor" />
-              <circle cx="17" cy="12" r="5" stroke="currentColor" strokeWidth="2" strokeDasharray="3 3" />
-            </svg>
-          </span>
-          Powerban
+          <img
+            src={logoSvg}
+            alt="Powerban"
+            className="brand-logo-img"
+            style={{ height: "26px", width: "auto", display: "block" }}
+          />
+          <span className="brand-text">Powerban</span>
         </Link>
 
         <nav aria-label="Main Navigation">
           <ul className="nav-links">
             <li>
-              <a href="#features">Features</a>
+              <a href="#features" onClick={(e) => handleNavClick(e, "features")}>Features</a>
             </li>
             <li>
-              <a href="#workflow">Workflow</a>
+              <a href="#workflow" onClick={(e) => handleNavClick(e, "workflow")}>Workflow</a>
             </li>
             <li>
-              <a href="#templates">Templates</a>
+              <a href="#bento" onClick={(e) => handleNavClick(e, "bento")}>Highlights</a>
             </li>
             <li>
-              <a href="#about">About</a>
+              <a href="#templates" onClick={(e) => handleNavClick(e, "templates")}>Templates</a>
+            </li>
+            <li>
+              <a href="#architecture" onClick={(e) => handleNavClick(e, "architecture")}>Architecture</a>
             </li>
           </ul>
         </nav>
 
         <div className="nav-cta">
+          <a
+            href="https://github.com/hosea-joveldy/powerban"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-github-nav"
+            aria-label="GitHub Repository"
+            title="View Powerban on GitHub"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+            </svg>
+          </a>
           <Link to="/login" className="btn-pill-primary">
             Get started
             <span className="btn-status-dot" aria-hidden="true" />
@@ -65,7 +90,7 @@ export default function LandingPage() {
               Try it now
               <span className="btn-status-dot" aria-hidden="true" />
             </Link>
-            <a href="#features" className="btn-pill-secondary">
+            <a href="#features" onClick={(e) => handleNavClick(e, "features")} className="btn-pill-secondary">
               Learn more
               <span className="btn-status-dot" aria-hidden="true" />
             </a>
@@ -77,7 +102,7 @@ export default function LandingPage() {
       <section className="landing-section-2" id="features">
         <div className="showcase-grid">
           <div className="showcase-card">
-            <h2 className="showcase-card-title">Workspaces & Groups</h2>
+            <h2 className="showcase-card-title">Workspaces &amp; Groups</h2>
             <p className="showcase-card-text">
               Organize unlimited boards into logical workspaces and groups. Keep client
               deliverables, sprints, and personal milestones cleanly partitioned without
@@ -86,7 +111,7 @@ export default function LandingPage() {
           </div>
 
           <div className="showcase-card">
-            <h2 className="showcase-card-title">Linked Boards & Progress</h2>
+            <h2 className="showcase-card-title">Linked Boards &amp; Progress</h2>
             <p className="showcase-card-text">
               Link any task directly to another board to track execution in real time.
               Progress bars compute flat completion percentages across your entire project
@@ -101,7 +126,7 @@ export default function LandingPage() {
             <span className="spotlight-badge">Power user flow</span>
             <h2 className="spotlight-title">Build with Powerban</h2>
             <p className="spotlight-text">
-              Strict WIP limits on ongoing cards eliminate multitasking bottlenecks.
+              Strict WIP limits on active cards eliminate multitasking bottlenecks.
               Completed cards automatically mark tasks finished, and board templates enable
               instant repeatable workflows.
             </p>
@@ -168,6 +193,120 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Bento Box Highlights Section */}
+      <section className="landing-bento-section" id="bento">
+        <div className="bento-header">
+          <span className="bento-header-badge">Precision Engineering</span>
+          <h2 className="bento-header-title">Engineered for Velocity &amp; Deep Focus</h2>
+          <p className="bento-header-desc">
+            Powerban unifies strict kanban discipline with nested hierarchical cards and multi-entity dragging—eliminating cognitive clutter and bottlenecked sprints.
+          </p>
+        </div>
+
+        <div className="bento-grid">
+          {/* Bento Card 1 (Span 2) */}
+          <div className="bento-card span-2">
+            <div className="bento-card-meta">
+              <span className="bento-card-tag">Hierarchy</span>
+              <h3 className="bento-card-title">Nested Sub-Cards &amp; Sub-Boards</h3>
+              <p className="bento-card-desc">
+                Embed cards inside cards and boards inside cards. Enforce complete resolution: a nested card or board task can only transition to Completed when all its internal items are completely cleared.
+              </p>
+            </div>
+            <div className="bento-preview">
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span className="mono" style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>TASK ITEM: CARD B</span>
+                <span className="wip-indicator-pill" style={{ background: "var(--bg-surface-subtle)", color: "var(--text-secondary)" }}>Card Entity</span>
+              </div>
+              <div style={{ display: "flex", gap: "var(--space-2)", alignItems: "center" }}>
+                <span style={{ fontSize: "var(--text-sm)", fontWeight: 600 }}>Refactor Database Driver</span>
+                <span className="section-count-badge" style={{ marginLeft: "auto" }}>0 items (Empty ✓)</span>
+              </div>
+              <div style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)" }}>
+                Ready to move into Completed lane. All child constraints satisfied.
+              </div>
+            </div>
+          </div>
+
+          {/* Bento Card 2 */}
+          <div className="bento-card">
+            <div className="bento-card-meta">
+              <span className="bento-card-tag">Workspace</span>
+              <h3 className="bento-card-title">Vertical Focus Mode</h3>
+              <p className="bento-card-desc">
+                Collapse non-urgent columns into a slim 54px vertical spine with 90° rotated typography. Reclaim board real estate instantly.
+              </p>
+            </div>
+            <div className="bento-preview" style={{ alignItems: "center", justifyContent: "center", height: "100px" }}>
+              <div style={{ writingMode: "vertical-rl", transform: "rotate(180deg)", fontFamily: "var(--font-mono)", fontSize: "var(--text-xs)", fontWeight: 700, letterSpacing: "0.1em", color: "var(--text-muted)" }}>
+                COLLAPSED LANE
+              </div>
+            </div>
+          </div>
+
+          {/* Bento Card 3 */}
+          <div className="bento-card">
+            <div className="bento-card-meta">
+              <span className="bento-card-tag">Discipline</span>
+              <h3 className="bento-card-title">Universal WIP Limits</h3>
+              <p className="bento-card-desc">
+                Set custom capacity constraints on any active lane—not just ongoing. Protect attention and prevent bottlenecking before it happens.
+              </p>
+            </div>
+            <div className="bento-preview" style={{ alignItems: "center", justifyContent: "center" }}>
+              <span className="wip-indicator-pill at-limit" style={{ fontSize: "var(--text-sm)", padding: "4px 14px" }}>
+                3/3 CAP REACHED
+              </span>
+            </div>
+          </div>
+
+          {/* Bento Card 4 (Span 2) */}
+          <div className="bento-card span-2">
+            <div className="bento-card-meta">
+              <span className="bento-card-tag">Interaction</span>
+              <h3 className="bento-card-title">Conflict-Free Multi-Entity Drag &amp; Drop</h3>
+              <p className="bento-card-desc">
+                Reorder columns horizontally without accidental task dragging. Move boards across groups or detach into standalone workspaces on your dashboard with fluid collision feedback.
+              </p>
+            </div>
+            <div className="bento-preview">
+              <div style={{ display: "flex", gap: "var(--space-3)", alignItems: "center" }}>
+                <span className="mono" style={{ fontSize: "var(--text-xs)", padding: "4px 8px", background: "var(--bg-surface)", borderRadius: "var(--radius-xs)", border: "1px solid var(--border-default)" }}>⠿ Column Handle</span>
+                <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>→ Isolated drag hitbox</span>
+                <span className="mono" style={{ fontSize: "var(--text-xs)", padding: "4px 8px", background: "var(--bg-surface)", borderRadius: "var(--radius-xs)", border: "1px solid var(--border-default)", marginLeft: "auto" }}>Task Drag</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Architecture Highlights Section */}
+      <section className="landing-arch-section" id="architecture">
+        <div className="arch-grid">
+          <div className="arch-card">
+            <div className="arch-card-icon" aria-hidden="true">⌨️</div>
+            <h3 className="arch-card-title">Speed &amp; Keyboard First</h3>
+            <p className="arch-card-desc">
+              Zero modal traps, instant autofocus, Tab loop navigation, and escape closures. No loading delays between board switches.
+            </p>
+          </div>
+          <div className="arch-card">
+            <div className="arch-card-icon" aria-hidden="true">🔒</div>
+            <h3 className="arch-card-title">Secure &amp; Rate-Limited</h3>
+            <p className="arch-card-desc">
+              Application-level brute force protection in PostgreSQL. Same-origin session cookies with HttpOnly, SameSite, and zero third-party telemetry.
+            </p>
+          </div>
+          <div className="arch-card">
+            <div className="arch-card-icon" aria-hidden="true">⚡</div>
+            <h3 className="arch-card-title">Flat Progress Rollups</h3>
+            <p className="arch-card-desc">
+              Completion percentages computed efficiently in single SQL queries across all workspace boards without recursive overhead.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Section 3: Dark Showcase Banner (references/landing-page-section3.png) */}
       <section className="landing-section-3" id="templates">
         <div className="dark-banner">
@@ -229,9 +368,9 @@ export default function LandingPage() {
           <Link to="/login">Log in</Link>
           <Link to="/register">Register</Link>
           <a
-            href="https://github.com"
+            href="https://github.com/hosea-joveldy/powerban"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
           >
             GitHub
           </a>

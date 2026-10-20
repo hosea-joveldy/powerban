@@ -257,12 +257,12 @@
       "id": "T9",
       "title": "Landing Page, Logo, Bento Box, and GitHub Navigation",
       "type": "build",
-      "status": "todo",
+      "status": "finished",
       "features": [
         {
           "id": "T9.1",
           "title": "Add Powerban SVG logo to README.md and navbar with smooth scrolling links",
-          "done": false,
+          "done": true,
           "done_when": [
             "Powerban logo from assets/logo.svg is prominently rendered in root README.md",
             "Powerban logo is displayed in the landing navbar and topbar alongside brand name",
@@ -272,7 +272,7 @@
         {
           "id": "T9.2",
           "title": "Landing page bento box section and expanded product features",
-          "done": false,
+          "done": true,
           "done_when": [
             "Landing page includes a modern Bento Box layout grid showcasing nested cards, vertical cards, WIP discipline, and fluid drag-and-drop",
             "Landing page includes an additional power-user architecture section",
@@ -282,7 +282,7 @@
         {
           "id": "T9.3",
           "title": "GitHub repository redirection and navbar GitHub icon button",
-          "done": false,
+          "done": true,
           "done_when": [
             "Footer GitHub link redirects to https://github.com/hosea-joveldy/powerban",
             "Navbar contains a GitHub icon button directly to the left of the Get Started button redirecting to https://github.com/hosea-joveldy/powerban"
