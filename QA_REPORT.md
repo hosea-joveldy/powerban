@@ -1,8 +1,8 @@
 # QA Report
 
 ## Summary
-- Task: T7 (Full-App QA Pass and Visual Verification)
-- Result: PASS (Full application verification complete; all gate checks passing, 28/28 E2E tests pass, 57/57 backend API tests pass, zero browser dialogs, responsive across all viewports)
+- Task: T13 (Comprehensive QA Verification and Gate Sign-off for User Features 1-14)
+- Result: PASS (Full application verification complete; all gate checks passing, 28/28 E2E tests pass, 65/65 backend API tests pass, 22/22 unit tests pass, typecheck passes, production build succeeds cleanly, zero native browser dialogs, responsive across all viewports)
 - Verified on branch: `dev`
 - QA Round: 1
 
@@ -10,7 +10,7 @@
 - Type check (`cd fe && npm run typecheck`): PASS (`tsc --noEmit` exited with code 0)
 - Unit tests (`cd fe && npm test`): PASS (13 test files passed, 22 tests passed in Vitest)
 - Build (`cd fe && npm run build`): PASS (`vite build` succeeded, produced `fe/dist/index.html` and bundled assets)
-- Backend API tests (`bash be/tests/run_tests.sh`): PASS (57 passed, 0 failed, validated rate limiting and AGENTS.md section 3 rules)
+- Backend API tests (`bash be/tests/run_tests.sh`): PASS (65 passed, 0 failed, validated rate limiting, usernames, universal WIP limits, nested empty-check constraints, and AGENTS.md section 3 rules)
 - E2E tests (`cd fe && npm run test:e2e`): PASS (28 passed, 0 failed across Chromium and Mobile)
 
 ## Features Verified
@@ -115,6 +115,46 @@
     - Created `docs/API.md` documenting all 23 backend endpoints across auth, groups, boards, templates, cards, and tasks.
     - Detailed request headers, JSON bodies, query parameters, response schemas, and error codes.
     - Full gate passes cleanly.
+    - Status: VERIFIED
+
+15. **T9: Logo Integration, Bento Box Grid, and GitHub Navigation**
+    - Powerban SVG logo prominently displayed in `README.md`, landing navbar, and authenticated topbar.
+    - Clicking navbar links smoothly scrolls to page sections (`#workflow`, `#features`, `#bento`).
+    - Modern Bento Box layout grid showcases nested cards, vertical cards, WIP discipline, and fluid drag-and-drop.
+    - Architecture highlights section renders deep architectural details.
+    - GitHub icon button added in navbar; footer GitHub link correctly redirects to `https://github.com/hosea-joveldy/powerban`.
+    - Status: VERIFIED
+
+16. **T10: Authentication Polish and Username System**
+    - Surrounding floating 3D metallic sculptures and faint IDE backdrop matching `references/login.png` rendered on Login and Register pages.
+    - PostgreSQL `users.username` unique column created with prepared statement models and backend validation.
+    - Login supports both username and email authentication.
+    - Stacked inputs with uppercase micro-labels and password visibility toggles verified.
+    - Status: VERIFIED
+
+17. **T11: Dashboard Draggable Boards**
+    - Drag-and-drop enables moving board tiles between groups and standalone sections.
+    - Visual drop indicator highlights during dragover.
+    - Backend updates board `group_id` accordingly.
+    - Status: VERIFIED
+
+18. **T12: Board Kanban Evolution, Sizing, and Nested Cards/Boards**
+    - Checklist checkboxes removed from tasks; tasks in completed cards automatically receive finished styling.
+    - Three-dots menu on card column headers allows switching card type between Todo, Ongoing, and Completed.
+    - Universal WIP limit configurable for any non-completed card (blocked with 422 on completed cards).
+    - Nested card and board tasks supported via Three-dots menu ("Add Task as a Card", "Add Task as a Board").
+    - Nested empty-check constraint enforced: non-empty nested cards/boards cannot be moved to completed cards (returns 422 if child items remain).
+    - Vertical card collapse option turns card into a vertical spine with typography rotated so words face left (`writing-mode: vertical-rl; transform: rotate(180deg)`).
+    - Column dragging supported with isolated drag handles to eliminate hitbox conflict with task dragging.
+    - Card column and task typography increased for enhanced readability across viewports.
+    - Status: VERIFIED
+
+19. **T13: Comprehensive QA Verification and Full Gate Sign-off**
+    - TypeScript typecheck passed cleanly (`tsc --noEmit`).
+    - Vitest unit tests passed (22/22).
+    - Production Vite build passed.
+    - Backend API tests passed (65/65).
+    - Playwright E2E tests passed (28/28 across Desktop Chromium and Mobile).
     - Status: VERIFIED
 
 ## Findings
