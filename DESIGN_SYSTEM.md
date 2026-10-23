@@ -80,6 +80,21 @@ Powerban ships with two official themes derived from the references:
 1. `stone-light` (Default): Recreates the airy, editorial light stone environment of sections 1 & 2 and the login view.
 2. `forest-dark`: Recreates the rich deep-forest nocturnal environment of section 3.
 
+### 2.4 Logo & Brand Assets
+- **Dark Logo (`logo-dark.svg`)**: Text strokes in deep neutral `#121316` without dark-mode media query overrides. Used whenever the logo container or background is white or light.
+- **Light Logo (`logo.svg` / `logo-light.svg`)**: Text strokes in light cream/white `#F7F8F4` for dark containers (e.g. nocturnal banner).
+- **Brand Typography**: The SVG itself contains the complete wordmark. No redundant accompanying text is rendered next to the logo.
+
+### 2.5 Iconography & Visual Assets
+- **Strictly No Emojis**: Emojis are completely eliminated across all views.
+- **Lucide Icons**: Standardized crisp vector icons via `lucide-react` (e.g. `Check`, `Folder`, `FileText`, `Settings`, `History`, `Plus`, `Search`, `Layout`).
+- **Ambient Blobs**: Luminous floating shapes in warm peach-terracotta, soft amber, spring green, and lilac pastel, rendered with extended SVG filter bounds (`x="-100%" y="-100%" width="300%" height="300%"`) and visible overflow to avoid rectangular shadow clipping.
+
+### 2.6 Card Types
+- **Two Card Types**: `normal` (default) and `completed`.
+- `normal`: Active working cards. Supports WIP limit enforcement (`count/limit`).
+- `completed`: Terminal completion columns. Auto-marks tasks as finished; WIP limits disallowed.
+
 ```css
 /* Stone Light (Default Theme) */
 [data-theme="stone-light"], :root {

@@ -36,3 +36,4 @@
 [builder] T11: Dashboard board dragging into groups and standalone sections implemented.
 [builder] T12: Card 3-dots menu, type switch, WIP limit, nested card/board items, vertical card mode, and drag reordering verified.
 [qa] T13 whole-app QA pass complete: all gate checks pass (typecheck, 22 unit tests, build, 65 backend API tests, 28 E2E tests). All 14 user features verified. Run complete.
+[planner] Phase 4 plan: spec, design system, and tasks T14-T17 defined for user requests 1-6.

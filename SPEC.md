@@ -1,32 +1,37 @@
-# SPEC.md: Powerban Specification & Phase 3 Enhancements
+# SPEC.md: Powerban Specification & Phase 4 Enhancements
 
 ## 1. Goal and Scope
 
 Powerban is a focused, high-efficiency kanban board for power users built under the MIT license. Users organize boards, group them, nest cards and boards, enforce WIP limits, and save reusable templates.
 
-### 1.1 Objectives for this Phase
-1. **Logo & Navigation**: Add the Powerban SVG wordmark from `assets/logo.svg` to the root `README.md` and into the web application navbar. Add smooth animated scrolling when navbar anchor links (such as `#workflow`) are clicked.
-2. **Landing Page Expansion**: Add 2 new sections to the landing page, prominently featuring a modern Bento Box layout highlighting hierarchical workflows, vertical card focus, WIP capacity limits, and multi-entity drag-and-drop.
-3. **Repository Links**: Redirect footer and navbar GitHub links to `https://github.com/hosea-joveldy/powerban`. Add a GitHub icon button directly to the left of the "Get Started" CTA button in the navbar.
-4. **Auth Reference Surrounding Elements**: Recreate the floating 3D ambient sculptural pebbles and faint developer workspace/terminal backdrop from `references/login.png` around the login and register modal cards.
-5. **Username Identity**: Add `username` to the PostgreSQL `users` table, user models, registration flow, and login flow (supporting login by username or email).
-6. **Dashboard Draggable Boards**: Enable drag-and-drop on the dashboard to move board tiles between groups or into the standalone boards section.
-7. **Board Kanban & Card System Evolution**:
-   - Remove manual checklist buttons from tasks; tasks in completed cards automatically receive finished styling.
-   - Three-dots menu on card column headers offering:
-     * Card Type selector (`todo`, `ongoing`, `completed`).
-     * Set WIP Limit (available on all cards except `completed` cards).
-     * Add Task as a Card (nested card).
-     * Add Task as a Board (board task).
-     * Turn Vertically & Hide tasks (collapses card into a vertical spine; typography rotated so letters face left).
-     * Delete Card.
-   - Nested Card / Board rule: a task representing a card or board cannot be moved to a completed card if it still contains items. Once empty, it can be completed.
-   - Card Reordering: Drag-and-drop for cards to reorder columns with isolated hitboxes from task dragging.
-   - Sizing & Readability: Increase card column width and task typography for crisp legibility.
+### 1.1 Objectives for Phase 4
+1. **Black Text Logo & Brand Typography Cleanup**:
+   - Provide a black-text version of the logo (`logo-dark.svg`) where wordmark paths use `#121316` without dark-mode media query overrides.
+   - Use this dark logo across views and containers with white/light backgrounds (TopBar, Landing Page nav, Login header, Register header).
+   - Remove redundant "Powerban" text placed next to the logo image.
+2. **Social Auth Button Removal**:
+   - Remove non-functional "Continue with Google" and "Continue with Github" buttons and their containers from Login and Register pages.
+3. **Ambient Blobs & Visual Polish**:
+   - Brighten the colors of the floating 3D ambient blobs on Login and Register pages (luminous terracotta, warm amber, fresh sage, soft pastel violet).
+   - Fix square-shaped shadow clipping on ambient blobs by ensuring SVG filter bounding boxes, viewBox margins, and CSS filters do not clip blurred shadows.
+4. **Emoji Elimination & Lucide Icon Integration**:
+   - Eliminate all emojis throughout the application (Landing page, auth backdrop, task badges, card tags, modals).
+   - Remove the landing page 3-cards architecture highlights section.
+   - Integrate `lucide-react` icons for all graphical UI indicators.
+5. **Two Card Types (Normal & Completed)**:
+   - Simplify card types to exactly two: `normal` and `completed`.
+   - Remove `todo` and `ongoing` types. `normal` is the default type for all cards.
+   - Update PostgreSQL schema, database check constraints, default values, seeds, backend models (`Card`, `Board`, `Task`), and API test suite.
+   - WIP limits apply to `normal` cards; completed cards cannot have WIP limits.
+   - Moving a task to a `completed` card auto-finishes it (`is_finished = true`); moving to a `normal` card unfinishes it (`is_finished = false`).
+6. **Add Task as Existing Card or Board**:
+   - Instead of creating arbitrary new nested entities with raw text prompts, allow users to select from existing cards or existing boards.
+   - Cross-board card search displays matching card names along with originating board names (e.g. `Card Name (from board: Board Name)`) to resolve duplicate names across boards.
+   - Adding an existing card links/initializes subitems with the tasks from that card; adding an existing board sets `linked_board_id`.
 
 ### 1.2 Technology Stack & Boundaries
 - **Backend**: PHP 8.4 (native autoloader, no Composer), PostgreSQL. Served via Apache under `/qibar/powerban/api`. Prepared statements for all queries; ownership enforcement on all user entities; JSON responses.
-- **Frontend**: React 18, Vite 5, React Router 6, vanilla CSS using CSS custom properties (no external UI framework).
+- **Frontend**: React 18, Vite 5, React Router 6, vanilla CSS using CSS custom properties, Lucide React icons.
 - **Network / Auth**: Same-origin architecture with Vite dev proxy to `http://localhost/qibar/powerban/api`. Authentication via PHP session cookies (`powerban_session`).
 
 ### 1.3 Updated Business & Domain Rules

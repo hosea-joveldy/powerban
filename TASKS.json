@@ -405,6 +405,111 @@
       "type": "qa",
       "status": "finished",
       "features": []
+    },
+    {
+      "id": "T14",
+      "title": "Logo Brand Styling, Social Buttons Cleanup, and Visual Polish",
+      "type": "build",
+      "status": "todo",
+      "features": [
+        {
+          "id": "T14.1",
+          "title": "Black text logo version and redundant text removal",
+          "done": false,
+          "done_when": [
+            "assets/logo-dark.svg and fe/src/assets/logo-dark.svg are created with black wordmark text (#121316) without dark mode CSS override",
+            "TopBar, Landing Page nav, Login, and Register use logo-dark.svg when on white/light backgrounds",
+            "Redundant Powerban text next to logo is removed in TopBar, Landing Page, Login, and Register"
+          ]
+        },
+        {
+          "id": "T14.2",
+          "title": "Removal of non-working Google and GitHub social auth buttons",
+          "done": false,
+          "done_when": [
+            "Continue with Google and Continue with Github buttons are removed from Login and Register pages",
+            "Auth form layout remains clean and centered without broken social buttons"
+          ]
+        },
+        {
+          "id": "T14.3",
+          "title": "Brightened ambient blobs, square shadow fix, and emoji elimination with Lucide icons",
+          "done": false,
+          "done_when": [
+            "Floating blobs on Login and Register are brightened with luminous terracotta, amber, spring green, and lilac gradients",
+            "Square shadow clipping on ambient blobs is eliminated by expanding SVG filter regions and container bounds",
+            "Three-cards architecture section on Landing Page is removed",
+            "All emojis in fe/src are replaced with appropriate Lucide React icons"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T15",
+      "title": "Two Card Types (Normal & Completed) System",
+      "type": "build",
+      "status": "todo",
+      "features": [
+        {
+          "id": "T15.1",
+          "title": "Backend database schema, constraints, models, and tests for two card types",
+          "done": false,
+          "done_when": [
+            "PostgreSQL cards table check constraint permits only normal and completed",
+            "Default card_type is normal",
+            "Card model allows setting WIP limit on normal cards and disallows on completed cards",
+            "Board creation defaults to normal and completed cards",
+            "Moving task to completed marks finished; moving to normal unfinishes",
+            "Backend API tests updated and all pass"
+          ]
+        },
+        {
+          "id": "T15.2",
+          "title": "Frontend card type switcher, tag styling, and default normal type",
+          "done": false,
+          "done_when": [
+            "Card three-dots menu presents only Normal and Completed types",
+            "Default type for new cards is normal",
+            "Card headers and badges display normal or completed appropriately",
+            "WIP limit pill and modal work on normal cards"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T16",
+      "title": "Add Task as Existing Card or Board with Cross-Board Attribution",
+      "type": "build",
+      "status": "todo",
+      "features": [
+        {
+          "id": "T16.1",
+          "title": "Backend card listing endpoint with board metadata",
+          "done": false,
+          "done_when": [
+            "GET /api/cards returns all non-template cards owned by the authenticated user with board_id, board_name, and task_titles",
+            "Ownership is strictly enforced"
+          ]
+        },
+        {
+          "id": "T16.2",
+          "title": "Existing card and board picker modal with search and board attribution",
+          "done": false,
+          "done_when": [
+            "Clicking Add Task as a Card opens a modal allowing search across existing cards",
+            "Matching cards display card name and originating board name (e.g. Card Name (from board: Board Name))",
+            "Selecting a card creates a task with card name, item_type card, and initial subitems from that card",
+            "Clicking Add Task as a Board opens a modal allowing search across existing boards and creates task with linked_board_id"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T17",
+      "title": "Comprehensive QA Verification and Gate Sign-off",
+      "type": "qa",
+      "status": "todo",
+      "features": []
     }
   ]
 }
