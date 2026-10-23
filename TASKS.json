@@ -410,12 +410,12 @@
       "id": "T14",
       "title": "Logo Brand Styling, Social Buttons Cleanup, and Visual Polish",
       "type": "build",
-      "status": "todo",
+      "status": "finished",
       "features": [
         {
           "id": "T14.1",
           "title": "Black text logo version and redundant text removal",
-          "done": false,
+          "done": true,
           "done_when": [
             "assets/logo-dark.svg and fe/src/assets/logo-dark.svg are created with black wordmark text (#121316) without dark mode CSS override",
             "TopBar, Landing Page nav, Login, and Register use logo-dark.svg when on white/light backgrounds",
@@ -425,7 +425,7 @@
         {
           "id": "T14.2",
           "title": "Removal of non-working Google and GitHub social auth buttons",
-          "done": false,
+          "done": true,
           "done_when": [
             "Continue with Google and Continue with Github buttons are removed from Login and Register pages",
             "Auth form layout remains clean and centered without broken social buttons"
@@ -434,7 +434,7 @@
         {
           "id": "T14.3",
           "title": "Brightened ambient blobs, square shadow fix, and emoji elimination with Lucide icons",
-          "done": false,
+          "done": true,
           "done_when": [
             "Floating blobs on Login and Register are brightened with luminous terracotta, amber, spring green, and lilac gradients",
             "Square shadow clipping on ambient blobs is eliminated by expanding SVG filter regions and container bounds",

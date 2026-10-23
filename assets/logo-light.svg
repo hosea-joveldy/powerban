@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-5 -10 565 170" role="img" aria-label="powerban">
+  <style>
+    .t { fill: none; stroke: #f7f8f4; stroke-width: 10; stroke-linecap: round; stroke-linejoin: round; }
+    .a { fill: none; stroke: #ff8a3d; stroke-width: 10; stroke-linecap: round; stroke-linejoin: round; }
+  </style>
+  <!-- p -->
+  <path class="t" d="M10 45 V145"/>
+  <circle class="t" cx="35" cy="70" r="25"/>
+  <!-- o as power button -->
+  <path class="a" d="M119.34 49.52 A25 25 0 1 1 90.66 49.52"/>
+  <path class="a" d="M105 38 V68"/>
+  <!-- w -->
+  <path class="t" d="M148 45 L162 95 L180 58 L198 95 L212 45"/>
+  <!-- e -->
+  <path class="t" d="M232 70 H282 A25 25 0 1 0 276.15 86.07"/>
+  <!-- r -->
+  <path class="t" d="M307 95 V45 M307 70 C307 55 315 47 333 47"/>
+  <!-- b -->
+  <path class="t" d="M353 5 V95"/>
+  <circle class="t" cx="378" cy="70" r="25"/>
+  <!-- a -->
+  <circle class="t" cx="448" cy="70" r="25"/>
+  <path class="t" d="M473 45 V95"/>
+  <!-- n -->
+  <path class="t" d="M493 95 V45 M493 70 C493 52 505 45 518 45 C531 45 543 52 543 70 V95"/>
+</svg>

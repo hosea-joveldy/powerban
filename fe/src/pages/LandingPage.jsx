@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
+import { Check } from "lucide-react";
 import HeroOrbitCanvas from "../components/HeroOrbitCanvas.jsx";
-import logoSvg from "../assets/logo.svg";
+import logoDarkSvg from "../assets/logo-dark.svg";
 import "./landing.css";
 
 export default function LandingPage() {
@@ -19,12 +20,11 @@ export default function LandingPage() {
       <header className="landing-nav">
         <Link to="/" className="brand-mark" aria-label="Powerban Home">
           <img
-            src={logoSvg}
+            src={logoDarkSvg}
             alt="Powerban"
             className="brand-logo-img"
             style={{ height: "26px", width: "auto", display: "block" }}
           />
-          <span className="brand-text">Powerban</span>
         </Link>
 
         <nav aria-label="Main Navigation">
@@ -220,7 +220,9 @@ export default function LandingPage() {
               </div>
               <div style={{ display: "flex", gap: "var(--space-2)", alignItems: "center" }}>
                 <span style={{ fontSize: "var(--text-sm)", fontWeight: 600 }}>Refactor Database Driver</span>
-                <span className="section-count-badge" style={{ marginLeft: "auto" }}>0 items (Empty ✓)</span>
+                <span className="section-count-badge" style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 3 }}>
+                  0 items (Empty <Check size={12} />)
+                </span>
               </div>
               <div style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)" }}>
                 Ready to move into Completed lane. All child constraints satisfied.
@@ -276,33 +278,6 @@ export default function LandingPage() {
                 <span className="mono" style={{ fontSize: "var(--text-xs)", padding: "4px 8px", background: "var(--bg-surface)", borderRadius: "var(--radius-xs)", border: "1px solid var(--border-default)", marginLeft: "auto" }}>Task Drag</span>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Architecture Highlights Section */}
-      <section className="landing-arch-section" id="architecture">
-        <div className="arch-grid">
-          <div className="arch-card">
-            <div className="arch-card-icon" aria-hidden="true">⌨️</div>
-            <h3 className="arch-card-title">Speed &amp; Keyboard First</h3>
-            <p className="arch-card-desc">
-              Zero modal traps, instant autofocus, Tab loop navigation, and escape closures. No loading delays between board switches.
-            </p>
-          </div>
-          <div className="arch-card">
-            <div className="arch-card-icon" aria-hidden="true">🔒</div>
-            <h3 className="arch-card-title">Secure &amp; Rate-Limited</h3>
-            <p className="arch-card-desc">
-              Application-level brute force protection in PostgreSQL. Same-origin session cookies with HttpOnly, SameSite, and zero third-party telemetry.
-            </p>
-          </div>
-          <div className="arch-card">
-            <div className="arch-card-icon" aria-hidden="true">⚡</div>
-            <h3 className="arch-card-title">Flat Progress Rollups</h3>
-            <p className="arch-card-desc">
-              Completion percentages computed efficiently in single SQL queries across all workspace boards without recursive overhead.
-            </p>
           </div>
         </div>
       </section>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Check, X } from "lucide-react";
 
 export default function TaskItem({
   task,
@@ -30,7 +31,7 @@ export default function TaskItem({
       <div className="task-card-content">
         {isFinished && (
           <span className="task-done-badge" title="Completed automatically in a completed card">
-            ✓
+            <Check size={12} />
           </span>
         )}
 
@@ -56,7 +57,7 @@ export default function TaskItem({
             <div className="nested-item-badge card-badge">
               <span className="badge-type">[Nested Card]</span>
               <span className={`badge-count ${isEmpty ? "is-empty" : ""}`}>
-                {isEmpty ? "0 items (Empty ✓)" : `${subitemCount} item(s)`}
+                {isEmpty ? <>0 items (Empty <Check size={11} style={{ verticalAlign: "-1px" }} />)</> : `${subitemCount} item(s)`}
               </span>
             </div>
           )}
@@ -65,7 +66,7 @@ export default function TaskItem({
             <div className="nested-item-badge board-badge">
               <span className="badge-type">[Board]</span>
               <span className={`badge-count ${isEmpty ? "is-empty" : ""}`}>
-                {isEmpty ? "0 items (Empty ✓)" : `${subitemCount} item(s)`}
+                {isEmpty ? <>0 items (Empty <Check size={11} style={{ verticalAlign: "-1px" }} />)</> : `${subitemCount} item(s)`}
               </span>
             </div>
           )}
@@ -82,7 +83,7 @@ export default function TaskItem({
               onDelete(task);
             }}
           >
-            ×
+            <X size={13} />
           </button>
         </div>
       </div>

@@ -112,6 +112,20 @@ input:focus, textarea:focus, select:focus { border-color: var(--border-strong); 
 .topbar .wordmark {
   font-weight: 700;
   letter-spacing: -0.02em;
+  display: inline-flex;
+  align-items: center;
+}
+.topbar-logo-dark {
+  display: inline-block;
+}
+.topbar-logo-light {
+  display: none;
+}
+[data-theme="forest-dark"] .topbar-logo-dark {
+  display: none;
+}
+[data-theme="forest-dark"] .topbar-logo-light {
+  display: inline-block;
 }
 .topbar .actions {
   display: flex;

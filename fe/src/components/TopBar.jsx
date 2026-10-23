@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext.jsx";
-import logoSvg from "../assets/logo.svg";
+import logoDarkSvg from "../assets/logo-dark.svg";
+import logoLightSvg from "../assets/logo-light.svg";
 
 export default function TopBar({ crumb }) {
   const { logout } = useAuth();
@@ -11,11 +12,17 @@ export default function TopBar({ crumb }) {
       <div className="topbar-brand-area">
         <Link to="/" className="wordmark" aria-label="Powerban Dashboard">
           <img
-            src={logoSvg}
+            src={logoDarkSvg}
             alt="Powerban"
-            style={{ height: "20px", width: "auto", marginRight: "6px", display: "inline-block", verticalAlign: "middle" }}
+            className="topbar-logo topbar-logo-dark"
+            style={{ height: "22px", width: "auto", display: "inline-block", verticalAlign: "middle" }}
           />
-          powerban
+          <img
+            src={logoLightSvg}
+            alt="Powerban"
+            className="topbar-logo topbar-logo-light"
+            style={{ height: "22px", width: "auto", verticalAlign: "middle" }}
+          />
         </Link>
         {crumb && (
           <div className="topbar-crumb">

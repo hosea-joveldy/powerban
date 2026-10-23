@@ -1,4 +1,5 @@
 import { useEffect, useRef, useId } from "react";
+import { X } from "lucide-react";
 import "./modal.css";
 
 const FOCUSABLE_SELECTOR =
@@ -163,7 +164,7 @@ export default function Modal({
               }}
               aria-label="Close dialog"
             >
-              ✕
+              <X size={15} />
             </button>
           )}
         </div>

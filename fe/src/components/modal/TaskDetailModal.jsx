@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Check, X } from "lucide-react";
 import Modal from "./Modal.jsx";
 import { progressBar } from "../../progress.js";
 
@@ -209,9 +210,9 @@ export default function TaskDetailModal({
               </span>
               <span
                 className={`section-count-badge ${subitems.length === 0 ? "is-empty" : ""}`}
-                style={{ fontSize: "var(--text-xs)", color: subitems.length === 0 ? "var(--success)" : "var(--text-muted)" }}
+                style={{ fontSize: "var(--text-xs)", color: subitems.length === 0 ? "var(--success)" : "var(--text-muted)", display: "inline-flex", alignItems: "center", gap: 3 }}
               >
-                {subitems.length === 0 ? "Empty ✓ Ready for Completed" : `${subitems.length} remaining`}
+                {subitems.length === 0 ? <>Empty <Check size={11} /> Ready for Completed</> : `${subitems.length} remaining`}
               </span>
             </div>
 
@@ -242,7 +243,7 @@ export default function TaskDetailModal({
                     onClick={() => removeSubitem(idx)}
                     title="Remove item"
                   >
-                    ×
+                    <X size={12} />
                   </button>
                 </div>
               ))}

@@ -1,4 +1,5 @@
 import React from "react";
+import { History, Settings, Package, Folder, FileText, ArrowRight } from "lucide-react";
 
 export default function AuthSurroundBackdrop() {
   return (
@@ -7,21 +8,51 @@ export default function AuthSurroundBackdrop() {
       <div className="auth-backdrop-watermark">
         <div className="auth-backdrop-sidebar">
           <div className="sidebar-line brand">+ New Conversation</div>
-          <div className="sidebar-line">🕒 Conversation History</div>
-          <div className="sidebar-line">⚙️ Automations</div>
-          <div className="sidebar-line">📦 Customizations</div>
+          <div className="sidebar-line">
+            <History size={12} style={{ marginRight: 6, verticalAlign: "-1px" }} />
+            Conversation History
+          </div>
+          <div className="sidebar-line">
+            <Settings size={12} style={{ marginRight: 6, verticalAlign: "-1px" }} />
+            Automations
+          </div>
+          <div className="sidebar-line">
+            <Package size={12} style={{ marginRight: 6, verticalAlign: "-1px" }} />
+            Customizations
+          </div>
           <div className="sidebar-section-title">Projects</div>
-          <div className="sidebar-line indent">📁 science/biomolec...</div>
-          <div className="sidebar-line indent">📁 powerban</div>
-          <div className="sidebar-line indent-2">📄 schema.sql</div>
-          <div className="sidebar-line indent-2">📄 routes.php</div>
-          <div className="sidebar-line indent-2">📄 Board.jsx</div>
+          <div className="sidebar-line indent">
+            <Folder size={11} style={{ marginRight: 6, verticalAlign: "-1px" }} />
+            science/biomolec...
+          </div>
+          <div className="sidebar-line indent">
+            <Folder size={11} style={{ marginRight: 6, verticalAlign: "-1px" }} />
+            powerban
+          </div>
+          <div className="sidebar-line indent-2">
+            <FileText size={11} style={{ marginRight: 6, verticalAlign: "-1px" }} />
+            schema.sql
+          </div>
+          <div className="sidebar-line indent-2">
+            <FileText size={11} style={{ marginRight: 6, verticalAlign: "-1px" }} />
+            routes.php
+          </div>
+          <div className="sidebar-line indent-2">
+            <FileText size={11} style={{ marginRight: 6, verticalAlign: "-1px" }} />
+            Board.jsx
+          </div>
         </div>
 
         <div className="auth-backdrop-console">
           <div className="console-line highlight">VITE v5.4.21 ready in 133 ms</div>
-          <div className="console-line">➜ Local: http://localhost:5173/qibar/powerban/</div>
-          <div className="console-line">➜ Network: use --host to expose</div>
+          <div className="console-line">
+            <ArrowRight size={11} style={{ marginRight: 4, verticalAlign: "-1px" }} />
+            Local: http://localhost:5173/qibar/powerban/
+          </div>
+          <div className="console-line">
+            <ArrowRight size={11} style={{ marginRight: 4, verticalAlign: "-1px" }} />
+            Network: use --host to expose
+          </div>
           <div className="console-line muted">press h + enter to show help</div>
           <div className="console-line code">SELECT b.id, b.name, count(t.id) as total FROM boards b</div>
           <div className="console-line code">JOIN cards c ON c.board_id = b.id</div>
@@ -32,20 +63,27 @@ export default function AuthSurroundBackdrop() {
       {/* 3D Floating Sculptural Pebbles (matching references/login.png) */}
       {/* 1. Top-Right Floating Pebble (Warm Terracotta / Amber organic shape) */}
       <div className="floating-rock rock-top-right">
-        <svg width="220" height="220" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          width="240"
+          height="240"
+          viewBox="-20 -20 240 240"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{ overflow: "visible" }}
+        >
           <defs>
             <radialGradient id="rock-tr-grad" cx="35%" cy="30%" r="65%">
-              <stop offset="0%" stopColor="#ffb076" />
-              <stop offset="35%" stopColor="#e06530" />
-              <stop offset="70%" stopColor="#963c12" />
-              <stop offset="100%" stopColor="#4e1b04" />
+              <stop offset="0%" stopColor="#ffe6d5" />
+              <stop offset="35%" stopColor="#ffb288" />
+              <stop offset="70%" stopColor="#f58652" />
+              <stop offset="100%" stopColor="#e2662c" />
             </radialGradient>
             <radialGradient id="rock-tr-spec" cx="40%" cy="25%" r="30%">
-              <stop offset="0%" stopColor="rgba(255, 240, 225, 0.7)" />
-              <stop offset="100%" stopColor="rgba(255, 240, 225, 0)" />
+              <stop offset="0%" stopColor="rgba(255, 255, 255, 0.85)" />
+              <stop offset="100%" stopColor="rgba(255, 255, 255, 0)" />
             </radialGradient>
-            <filter id="shadow-tr" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="12" dy="24" stdDeviation="16" floodColor="#1a0a02" floodOpacity="0.35" />
+            <filter id="shadow-tr" x="-50%" y="-50%" width="200%" height="200%">
+              <feDropShadow dx="8" dy="16" stdDeviation="16" floodColor="#8c3a10" floodOpacity="0.22" />
             </filter>
           </defs>
           <path
@@ -60,22 +98,29 @@ export default function AuthSurroundBackdrop() {
         </svg>
       </div>
 
-      {/* 2. Mid-Right Floating Pebble (Deep Metallic Green / Amber organic stone) */}
+      {/* 2. Mid-Right Floating Pebble (Bright Spring Sage & Amber organic stone) */}
       <div className="floating-rock rock-mid-right">
-        <svg width="180" height="260" viewBox="0 0 160 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          width="200"
+          height="280"
+          viewBox="-20 -20 200 280"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{ overflow: "visible" }}
+        >
           <defs>
             <radialGradient id="rock-mr-grad" cx="40%" cy="35%" r="60%">
-              <stop offset="0%" stopColor="#c87b48" />
-              <stop offset="45%" stopColor="#7a421c" />
-              <stop offset="80%" stopColor="#314427" />
-              <stop offset="100%" stopColor="#15210e" />
+              <stop offset="0%" stopColor="#fef3c7" />
+              <stop offset="35%" stopColor="#fcd34d" />
+              <stop offset="70%" stopColor="#86efac" />
+              <stop offset="100%" stopColor="#34d399" />
             </radialGradient>
             <radialGradient id="rock-mr-spec" cx="45%" cy="30%" r="25%">
-              <stop offset="0%" stopColor="rgba(235, 245, 215, 0.6)" />
-              <stop offset="100%" stopColor="rgba(235, 245, 215, 0)" />
+              <stop offset="0%" stopColor="rgba(255, 255, 255, 0.75)" />
+              <stop offset="100%" stopColor="rgba(255, 255, 255, 0)" />
             </radialGradient>
-            <filter id="shadow-mr" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="14" dy="20" stdDeviation="18" floodColor="#0d140a" floodOpacity="0.4" />
+            <filter id="shadow-mr" x="-50%" y="-50%" width="200%" height="200%">
+              <feDropShadow dx="10" dy="16" stdDeviation="16" floodColor="#065f46" floodOpacity="0.2" />
             </filter>
           </defs>
           <path
@@ -90,27 +135,34 @@ export default function AuthSurroundBackdrop() {
         </svg>
       </div>
 
-      {/* 3. Bottom-Left Floating Pebble Cluster (Iridescent violet, emerald, and warm gold) */}
+      {/* 3. Bottom-Left Floating Pebble Cluster (Luminous pastel violet & warm gold) */}
       <div className="floating-rock rock-bottom-left">
-        <svg width="240" height="240" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          width="260"
+          height="260"
+          viewBox="-20 -20 280 280"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{ overflow: "visible" }}
+        >
           <defs>
             <radialGradient id="rock-bl-1" cx="30%" cy="30%" r="70%">
-              <stop offset="0%" stopColor="#e49058" />
-              <stop offset="50%" stopColor="#b44d18" />
-              <stop offset="100%" stopColor="#551a02" />
+              <stop offset="0%" stopColor="#ffedd5" />
+              <stop offset="50%" stopColor="#fb923c" />
+              <stop offset="100%" stopColor="#ea580c" />
             </radialGradient>
             <radialGradient id="rock-bl-2" cx="40%" cy="30%" r="65%">
-              <stop offset="0%" stopColor="#a3d69c" />
-              <stop offset="45%" stopColor="#578e72" />
-              <stop offset="85%" stopColor="#764789" />
-              <stop offset="100%" stopColor="#2c163b" />
+              <stop offset="0%" stopColor="#f3e8ff" />
+              <stop offset="40%" stopColor="#d8b4fe" />
+              <stop offset="75%" stopColor="#a78bfa" />
+              <stop offset="100%" stopColor="#7c3aed" />
             </radialGradient>
             <radialGradient id="rock-bl-spec" cx="45%" cy="35%" r="30%">
-              <stop offset="0%" stopColor="rgba(255, 255, 255, 0.75)" />
+              <stop offset="0%" stopColor="rgba(255, 255, 255, 0.85)" />
               <stop offset="100%" stopColor="rgba(255, 255, 255, 0)" />
             </radialGradient>
-            <filter id="shadow-bl" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="-10" dy="18" stdDeviation="16" floodColor="#180e22" floodOpacity="0.4" />
+            <filter id="shadow-bl" x="-50%" y="-50%" width="200%" height="200%">
+              <feDropShadow dx="-6" dy="14" stdDeviation="16" floodColor="#5b21b6" floodOpacity="0.22" />
             </filter>
           </defs>
 
