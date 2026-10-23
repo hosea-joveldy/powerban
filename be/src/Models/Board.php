@@ -160,8 +160,7 @@ class Board
         "INSERT INTO cards (board_id, name, position, card_type) VALUES (:b, :n, :p, :t)",
       );
       $defaults = [
-        ["Todo", "todo"],
-        ["Ongoing", "ongoing"],
+        ["Normal", "normal"],
         ["Completed", "completed"],
       ];
       foreach ($defaults as $i => [$cardName, $type]) {

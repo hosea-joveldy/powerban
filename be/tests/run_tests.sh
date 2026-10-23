@@ -92,9 +92,10 @@ GROUP=$(first_id)
 req "$A" POST /boards "{\"name\":\"Sprint\",\"group_id\":$GROUP}"; expect "create board in group" 201
 BOARD=$(first_id)
 has "board starts with completed card" '"card_type":"completed"'
-has "board starts with ongoing card" '"card_type":"ongoing"'
-has "board starts with todo card" '"card_type":"todo"'
-TODO=$(card_id todo); ONGOING=$(card_id ongoing); DONE=$(card_id completed)
+has "board starts with normal card" '"card_type":"normal"'
+NORMAL=$(card_id normal); DONE=$(card_id completed)
+req "$A" POST /boards/$BOARD/cards '{"name":"In Progress","card_type":"normal"}'; expect "create additional normal card" 201
+PROGRESS=$(first_id)
 req "$A" POST /boards '{"name":"Standalone"}';           expect "create standalone board" 201
 OTHER=$(first_id)
 req "$A" POST /boards '{"name":"Invalid","group_id":999999}'; expect "foreign/missing group is 404" 404
@@ -102,25 +103,26 @@ req "$A" PATCH /boards/$OTHER "{\"group_id\":$GROUP}";   expect "move board into
 req "$A" PATCH /boards/$OTHER '{"group_id":null}';       expect "make board standalone again" 200
 
 echo "== 3. Cards & WIP Limits =="
-req "$A" PATCH /cards/$TODO '{"wip_limit":3}';           expect "wip limit on todo card is 200" 200
+req "$A" PATCH /cards/$NORMAL '{"wip_limit":3}';         expect "wip limit on normal card is 200" 200
 req "$A" PATCH /cards/$DONE '{"wip_limit":3}';           expect "wip limit on completed card is 422" 422
-req "$A" PATCH /cards/$ONGOING '{"wip_limit":1}';        expect "wip limit on ongoing card is 200" 200
+req "$A" PATCH /cards/$PROGRESS '{"wip_limit":1}';       expect "wip limit on progress card is 200" 200
+req "$A" PATCH /cards/$NORMAL '{"card_type":"invalid"}'; expect "invalid card_type returns 422" 422
 
 echo "== 4. Tasks & Auto-Completion Rules =="
-req "$A" POST /cards/$ONGOING/tasks '{"title":"first"}'; expect "add task into ongoing" 201
+req "$A" POST /cards/$PROGRESS/tasks '{"title":"first"}'; expect "add task into normal card" 201
 T1=$(first_id)
-req "$A" POST /cards/$ONGOING/tasks '{"title":"second"}'; expect "WIP limit blocks adding to ongoing" 409
-req "$A" POST /cards/$TODO/tasks '{"title":"third"}';    expect "add task into todo" 201
+req "$A" POST /cards/$PROGRESS/tasks '{"title":"second"}'; expect "WIP limit blocks adding to normal card" 409
+req "$A" POST /cards/$NORMAL/tasks '{"title":"third"}';  expect "add task into first normal card" 201
 T3=$(first_id)
-req "$A" POST /tasks/$T3/move "{\"card_id\":$ONGOING}";  expect "move into full ongoing is 409" 409
+req "$A" POST /tasks/$T3/move "{\"card_id\":$PROGRESS}";  expect "move into full normal card is 409" 409
 req "$A" POST /tasks/$T1/move "{\"card_id\":$DONE}";     expect "move task into completed" 200
 has "task moved to completed forces is_finished=true" '"is_finished":true'
-req "$A" POST /tasks/$T3/move "{\"card_id\":$ONGOING}";  expect "ongoing has capacity now" 200
+req "$A" POST /tasks/$T3/move "{\"card_id\":$PROGRESS}";  expect "progress card has capacity now" 200
 req "$A" GET /boards/$BOARD/progress;                    has "flat progress computation is accurate" '"done":1,"total":2,"percent":50'
-req "$A" POST /tasks/$T1/move "{\"card_id\":$TODO}";     has "leaving completed card forces is_finished=false" '"is_finished":false'
+req "$A" POST /tasks/$T1/move "{\"card_id\":$NORMAL}";   has "leaving completed card forces is_finished=false" '"is_finished":false'
 
 # Nested Card/Board empty constraint verification
-req "$A" POST /cards/$TODO/tasks '{"title":"Card B","item_type":"card","subitems":["child item 1"]}'; expect "create nested card task" 201
+req "$A" POST /cards/$NORMAL/tasks '{"title":"Card B","item_type":"card","subitems":["child item 1"]}'; expect "create nested card task" 201
 NESTED=$(first_id)
 req "$A" POST /tasks/$NESTED/move "{\"card_id\":$DONE}"; expect "moving non-empty nested card to completed is 422" 422
 req "$A" PATCH /tasks/$NESTED '{"subitems":[]}';         expect "clear child items in nested card" 200
@@ -128,19 +130,19 @@ req "$A" POST /tasks/$NESTED/move "{\"card_id\":$DONE}"; expect "moving empty ne
 req "$A" DELETE /tasks/$NESTED;                          expect "cleanup nested task" 204
 
 echo "== 5. Linked Boards =="
-req "$A" POST /cards/$TODO/tasks "{\"title\":\"linked task\",\"linked_board_id\":$OTHER}"; expect "task linked to another board" 201
+req "$A" POST /cards/$NORMAL/tasks "{\"title\":\"linked task\",\"linked_board_id\":$OTHER}"; expect "task linked to another board" 201
 has "linked board details embedded" '"linked_board":{'
-req "$A" POST /cards/$TODO/tasks "{\"title\":\"self link\",\"linked_board_id\":$BOARD}"; expect "link to parent board is 422" 422
+req "$A" POST /cards/$NORMAL/tasks "{\"title\":\"self link\",\"linked_board_id\":$BOARD}"; expect "link to parent board is 422" 422
 
 echo "== 6. Cross-User Access & Ownership =="
 req "$B" GET /boards/$BOARD;                             expect "user B cannot read user A board" 404
 req "$B" PATCH /tasks/$T1 '{"title":"hax"}';             expect "user B cannot edit user A task" 404
-req "$B" DELETE /cards/$TODO;                            expect "user B cannot delete user A card" 404
+req "$B" DELETE /cards/$NORMAL;                          expect "user B cannot delete user A card" 404
 req "$B" GET /boards;                                    hasnt "user B board list hides user A boards" "Sprint"
 
 echo "== 7. Card Deletion & Constraints =="
 req "$A" POST /tasks/$T3/move "{\"card_id\":$DONE}";     expect "put task into completed" 200
-req "$A" PATCH /cards/$DONE '{"card_type":"todo"}';      expect "completed card converted to todo" 200
+req "$A" PATCH /cards/$DONE '{"card_type":"normal"}';    expect "completed card converted to normal" 200
 req "$A" GET /boards/$BOARD;                             hasnt "unfinishes all tasks when card type leaves completed" '"is_finished":true'
 req "$A" DELETE /cards/$DONE;                            expect "deleting card with tasks without force is 409" 409
 req "$A" DELETE "/cards/$DONE?force=1";                  expect "force delete card with tasks succeeds" 204

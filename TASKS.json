@@ -448,12 +448,12 @@
       "id": "T15",
       "title": "Two Card Types (Normal & Completed) System",
       "type": "build",
-      "status": "todo",
+      "status": "finished",
       "features": [
         {
           "id": "T15.1",
           "title": "Backend database schema, constraints, models, and tests for two card types",
-          "done": false,
+          "done": true,
           "done_when": [
             "PostgreSQL cards table check constraint permits only normal and completed",
             "Default card_type is normal",
@@ -466,7 +466,7 @@
         {
           "id": "T15.2",
           "title": "Frontend card type switcher, tag styling, and default normal type",
-          "done": false,
+          "done": true,
           "done_when": [
             "Card three-dots menu presents only Normal and Completed types",
             "Default type for new cards is normal",

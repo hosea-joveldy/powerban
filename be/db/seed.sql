@@ -17,21 +17,21 @@ WITH sys AS (
   INSERT INTO cards (board_id, name, position, card_type)
   SELECT board.id, v.name, v.pos, v.type
   FROM board, (VALUES
-    ('Todo', 0, 'todo'),
-    ('Ongoing', 1, 'ongoing'),
+    ('Todo', 0, 'normal'),
+    ('Ongoing', 1, 'normal'),
     ('Completed', 2, 'completed')
   ) AS v(name, pos, type)
-  RETURNING id, card_type
+  RETURNING id, name, card_type
 )
 INSERT INTO tasks (card_id, title, position, is_finished)
-SELECT card.id, t.title, t.pos, t.type = 'completed'
+SELECT card.id, t.title, t.pos, t.card = 'Completed'
 FROM card, (VALUES
-  ('todo', 'Write the project brief', 0),
-  ('todo', 'Set up the repository', 1),
-  ('ongoing', 'Design the homepage', 0),
-  ('completed', 'Kickoff meeting', 0)
-) AS t(type, title, pos)
-WHERE card.card_type = t.type;
+  ('Todo', 'Write the project brief', 0),
+  ('Todo', 'Set up the repository', 1),
+  ('Ongoing', 'Design the homepage', 0),
+  ('Completed', 'Kickoff meeting', 0)
+) AS t(card, title, pos)
+WHERE card.name = t.card;
 
 WITH sys AS (
   SELECT id FROM users WHERE email = 'system@powerban.local'
@@ -43,10 +43,10 @@ WITH sys AS (
   INSERT INTO cards (board_id, name, position, wip_limit, card_type)
   SELECT board.id, v.name, v.pos, v.wip, v.type
   FROM board, (VALUES
-    ('Backlog', 0, NULL::int, 'todo'),
-    ('Todo', 1, NULL::int, 'todo'),
-    ('In Progress', 2, 3, 'ongoing'),
-    ('Review', 3, NULL::int, 'todo'),
+    ('Backlog', 0, NULL::int, 'normal'),
+    ('Todo', 1, NULL::int, 'normal'),
+    ('In Progress', 2, 3, 'normal'),
+    ('Review', 3, NULL::int, 'normal'),
     ('Done', 4, NULL::int, 'completed')
   ) AS v(name, pos, wip, type)
   RETURNING id, name
@@ -72,17 +72,17 @@ WITH sys AS (
   INSERT INTO cards (board_id, name, position, card_type)
   SELECT board.id, v.name, v.pos, v.type
   FROM board, (VALUES
-    ('Someday', 0, 'todo'),
-    ('This Month', 1, 'ongoing'),
+    ('Someday', 0, 'normal'),
+    ('This Month', 1, 'normal'),
     ('Achieved', 2, 'completed')
   ) AS v(name, pos, type)
-  RETURNING id, card_type
+  RETURNING id, name, card_type
 )
 INSERT INTO tasks (card_id, title, position, is_finished)
-SELECT card.id, t.title, t.pos, t.type = 'completed'
+SELECT card.id, t.title, t.pos, t.card = 'Achieved'
 FROM card, (VALUES
-  ('todo', 'Learn a new skill', 0),
-  ('ongoing', 'Exercise 3x a week', 0),
-  ('completed', 'Set up a budget', 0)
-) AS t(type, title, pos)
-WHERE card.card_type = t.type;
+  ('Someday', 'Learn a new skill', 0),
+  ('This Month', 'Exercise 3x a week', 0),
+  ('Achieved', 'Set up a budget', 0)
+) AS t(card, title, pos)
+WHERE card.name = t.card;

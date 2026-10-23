@@ -101,22 +101,20 @@ if (!process.env.VITEST) {
       await expect(page).toHaveURL(/\/boards\/\d+/);
 
       // Verify columns rendered with uppercase headers
-      const todoCol = page.locator(".card-column", { hasText: "TODO" });
-      const ongoingCol = page.locator(".card-column", { hasText: "ONGOING" });
+      const normalCol = page.locator(".card-column", { hasText: "NORMAL" });
       const completedCol = page.locator(".card-column", { hasText: "COMPLETED" });
 
-      await expect(todoCol).toBeVisible();
-      await expect(ongoingCol).toBeVisible();
+      await expect(normalCol).toBeVisible();
       await expect(completedCol).toBeVisible();
 
-      // Add a task into TODO
-      await todoCol.getByRole("button", { name: "+ add task" }).click();
-      await todoCol.locator(".add-task-input").fill("Implement parser");
-      await todoCol.locator(".add-task-input").press("Enter");
-      await expect(todoCol.locator(".task-card-title", { hasText: "Implement parser" })).toBeVisible();
+      // Add a task into NORMAL
+      await normalCol.getByRole("button", { name: "+ add task" }).click();
+      await normalCol.locator(".add-task-input").fill("Implement parser");
+      await normalCol.locator(".add-task-input").press("Enter");
+      await expect(normalCol.locator(".task-card-title", { hasText: "Implement parser" })).toBeVisible();
 
       // Open Task Detail Modal by clicking the task card
-      const taskCard = todoCol.locator(".task-card", { hasText: "Implement parser" });
+      const taskCard = normalCol.locator(".task-card", { hasText: "Implement parser" });
       await taskCard.click();
 
       const detailDialog = page.getByRole("dialog");

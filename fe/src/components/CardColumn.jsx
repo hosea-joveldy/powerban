@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { Check, X, MoreVertical, Maximize2 } from "lucide-react";
 import TaskItem from "./TaskItem.jsx";
 
 export default function CardColumn({
@@ -117,21 +118,21 @@ export default function CardColumn({
               title="Expand card horizontally"
               aria-label="Expand card horizontally"
               onClick={() => setIsVertical(false)}
-              style={{ fontSize: 13, marginBottom: 4 }}
+              style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: 4 }}
             >
-              ⤢
+              <Maximize2 size={13} />
             </button>
           )}
 
           {/* Direct Delete button */}
           <button
             className="icon-btn"
-            style={{ fontSize: 12 }}
+            style={{ fontSize: 12, display: "inline-flex", alignItems: "center", justifyContent: "center" }}
             title="Delete card column"
             aria-label="Delete card column"
             onClick={() => onDeleteCard(card)}
           >
-            ×
+            <X size={13} />
           </button>
 
           {/* Three dots button */}
@@ -140,32 +141,24 @@ export default function CardColumn({
             title="Card options"
             aria-label="Card options"
             onClick={() => setMenuOpen((o) => !o)}
+            style={{ display: "inline-flex", alignItems: "center", justifyContent: "center" }}
           >
-            ⋮
+            <MoreVertical size={14} />
           </button>
 
           {menuOpen && (
             <div className="card-dropdown-menu" role="menu">
               <div className="menu-group-label">Card Type</div>
               <button
-                className={`menu-item ${card.card_type === "todo" ? "active" : ""}`}
+                className={`menu-item ${card.card_type === "normal" ? "active" : ""}`}
                 role="menuitem"
                 onClick={() => {
-                  onChangeCardType(card, "todo");
+                  onChangeCardType(card, "normal");
                   setMenuOpen(false);
                 }}
               >
-                {card.card_type === "todo" ? "✓ " : ""}Todo
-              </button>
-              <button
-                className={`menu-item ${card.card_type === "ongoing" ? "active" : ""}`}
-                role="menuitem"
-                onClick={() => {
-                  onChangeCardType(card, "ongoing");
-                  setMenuOpen(false);
-                }}
-              >
-                {card.card_type === "ongoing" ? "✓ " : ""}Ongoing
+                {card.card_type === "normal" && <Check size={13} style={{ marginRight: 6 }} />}
+                Normal
               </button>
               <button
                 className={`menu-item ${card.card_type === "completed" ? "active" : ""}`}
@@ -175,7 +168,8 @@ export default function CardColumn({
                   setMenuOpen(false);
                 }}
               >
-                {card.card_type === "completed" ? "✓ " : ""}Completed
+                {card.card_type === "completed" && <Check size={13} style={{ marginRight: 6 }} />}
+                Completed
               </button>
 
               <div className="menu-divider" />

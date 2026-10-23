@@ -35,7 +35,7 @@ CREATE TABLE cards (
     name TEXT NOT NULL,
     position INT NOT NULL DEFAULT 0,
     wip_limit INT,
-    card_type TEXT NOT NULL DEFAULT 'todo' CHECK (card_type IN ('todo', 'ongoing', 'completed')),
+    card_type TEXT NOT NULL DEFAULT 'normal' CHECK (card_type IN ('normal', 'completed')),
     CONSTRAINT wip_limit_not_for_completed CHECK (wip_limit IS NULL OR card_type != 'completed')
 );
 

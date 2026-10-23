@@ -9,7 +9,7 @@ use App\Positions;
 
 class Card
 {
-  public const TYPES = ["todo", "ongoing", "completed"];
+  public const TYPES = ["normal", "completed"];
 
   private const COLS = "id, board_id, name, position, wip_limit, card_type";
 
@@ -47,7 +47,7 @@ class Card
     if (!in_array($type, self::TYPES, true)) {
       throw new HttpException(
         422,
-        "card_type must be one of: todo, ongoing, completed",
+        "card_type must be one of: normal, completed",
       );
     }
   }
@@ -55,7 +55,7 @@ class Card
   public static function create(int $boardId, array $in): array
   {
     $name = Input::text($in, "name");
-    $type = $in["card_type"] ?? "todo";
+    $type = $in["card_type"] ?? "normal";
     self::assertType($type);
     $wip = Input::int($in, "wip_limit", false, 1);
     if ($wip !== null && $type === "completed") {

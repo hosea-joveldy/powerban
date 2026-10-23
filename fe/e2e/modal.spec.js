@@ -149,15 +149,15 @@ if (!process.env.VITEST) {
       await page.getByRole("link", { name: "Main Project" }).click();
       await expect(page).toHaveURL(/\/boards\/\d+/);
 
-      // Locate innermost Todo column
-      const todoHeader = page.getByText("Todo", { exact: true });
-      const todoCard = page.locator("div").filter({ has: todoHeader }).filter({
+      // Locate innermost Normal column
+      const normalHeader = page.getByText("Normal", { exact: true });
+      const normalCard = page.locator("div").filter({ has: normalHeader }).filter({
         has: page.getByRole("button", { name: "+ add task" }),
       }).last();
 
-      await todoCard.getByRole("button", { name: "+ add task" }).click();
-      await todoCard.locator("form input").fill("Build Accessible Navigation");
-      await todoCard.locator("form input").press("Enter");
+      await normalCard.getByRole("button", { name: "+ add task" }).click();
+      await normalCard.locator("form input").fill("Build Accessible Navigation");
+      await normalCard.locator("form input").press("Enter");
       await expect(page.getByText("Build Accessible Navigation")).toBeVisible();
 
       // Click task to open TaskDetailModal
