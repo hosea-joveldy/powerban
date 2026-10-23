@@ -73,6 +73,11 @@ $router->add(
 );
 
 $router->add(
+  "GET",
+  "/api/cards",
+  fn() => new CardController()->index(),
+);
+$router->add(
   "POST",
   "/api/boards/{id}/cards",
   fn($p) => new CardController()->store($p),

@@ -103,6 +103,7 @@ req "$A" PATCH /boards/$OTHER "{\"group_id\":$GROUP}";   expect "move board into
 req "$A" PATCH /boards/$OTHER '{"group_id":null}';       expect "make board standalone again" 200
 
 echo "== 3. Cards & WIP Limits =="
+req "$A" GET /cards;                                    has "list cards with board metadata" '"board_name":"Sprint"'
 req "$A" PATCH /cards/$NORMAL '{"wip_limit":3}';         expect "wip limit on normal card is 200" 200
 req "$A" PATCH /cards/$DONE '{"wip_limit":3}';           expect "wip limit on completed card is 422" 422
 req "$A" PATCH /cards/$PROGRESS '{"wip_limit":1}';       expect "wip limit on progress card is 200" 200
@@ -139,6 +140,7 @@ req "$B" GET /boards/$BOARD;                             expect "user B cannot r
 req "$B" PATCH /tasks/$T1 '{"title":"hax"}';             expect "user B cannot edit user A task" 404
 req "$B" DELETE /cards/$NORMAL;                          expect "user B cannot delete user A card" 404
 req "$B" GET /boards;                                    hasnt "user B board list hides user A boards" "Sprint"
+req "$B" GET /cards;                                     hasnt "user B does not see user A cards in GET /cards" "Sprint"
 
 echo "== 7. Card Deletion & Constraints =="
 req "$A" POST /tasks/$T3/move "{\"card_id\":$DONE}";     expect "put task into completed" 200

@@ -124,20 +124,27 @@ export default function Board() {
   }
 
   async function addNestedTask(cardId, type) {
-    const entity = type === "board" ? "Board" : "Card";
-    const title = await modal.showPrompt({
-      title: `Add Task as a ${entity}`,
-      label: `${entity} Title:`,
-      placeholder: `e.g. ${entity} B`,
-      confirmText: `Create ${entity}`,
+    const selected = await modal.showEntityPicker({
+      entityType: type,
+      currentBoardId: Number(id),
     });
-    if (!title || !title.trim()) return;
+    if (!selected) return;
+
     try {
-      await api.post(`/cards/${cardId}/tasks`, {
-        title: title.trim(),
-        item_type: type,
-        subitems: [],
-      });
+      if (type === "card") {
+        await api.post(`/cards/${cardId}/tasks`, {
+          title: selected.name,
+          item_type: "card",
+          subitems: Array.isArray(selected.task_titles) ? selected.task_titles : [],
+        });
+      } else {
+        await api.post(`/cards/${cardId}/tasks`, {
+          title: selected.name,
+          item_type: "board",
+          linked_board_id: selected.id,
+          subitems: [],
+        });
+      }
       load();
     } catch (err) {
       await modal.showAlert({ title: "Cannot Add Task", message: err.message });

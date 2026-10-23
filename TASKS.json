@@ -480,12 +480,12 @@
       "id": "T16",
       "title": "Add Task as Existing Card or Board with Cross-Board Attribution",
       "type": "build",
-      "status": "todo",
+      "status": "finished",
       "features": [
         {
           "id": "T16.1",
           "title": "Backend card listing endpoint with board metadata",
-          "done": false,
+          "done": true,
           "done_when": [
             "GET /api/cards returns all non-template cards owned by the authenticated user with board_id, board_name, and task_titles",
             "Ownership is strictly enforced"
@@ -494,7 +494,7 @@
         {
           "id": "T16.2",
           "title": "Existing card and board picker modal with search and board attribution",
-          "done": false,
+          "done": true,
           "done_when": [
             "Clicking Add Task as a Card opens a modal allowing search across existing cards",
             "Matching cards display card name and originating board name (e.g. Card Name (from board: Board Name))",

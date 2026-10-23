@@ -33,6 +33,27 @@ class Card
     return $stmt->fetch() ?: throw new HttpException(404, "Card not found");
   }
 
+  public static function listForUser(int $uid): array
+  {
+    $stmt = Db::connection()->prepare(
+      "SELECT c.id, c.board_id, c.name, c.card_type, b.name AS board_name,
+              (SELECT COALESCE(json_agg(t.title ORDER BY t.position, t.id), '[]'::json)
+               FROM tasks t WHERE t.card_id = c.id) AS task_titles
+       FROM cards c
+       JOIN boards b ON b.id = c.board_id
+       WHERE b.user_id = :u AND b.is_template = FALSE
+       ORDER BY b.name, c.position, c.id"
+    );
+    $stmt->execute(["u" => $uid]);
+    $rows = $stmt->fetchAll();
+    foreach ($rows as &$r) {
+      if (is_string($r["task_titles"])) {
+        $r["task_titles"] = json_decode($r["task_titles"], true);
+      }
+    }
+    return $rows;
+  }
+
   public static function taskCount(int $id): int
   {
     $stmt = Db::connection()->prepare(

@@ -39,3 +39,4 @@
 [planner] Phase 4 plan: spec, design system, and tasks T14-T17 defined for user requests 1-6.
 [qa] T14 round 1: verified black logo, social auth removal, brightened blobs with shadow fix, and emoji elimination; marked finished.
 [qa] T15 round 1: verified two card types (normal and completed), WIP limits on normal cards, and tests passing; marked finished.
+[qa] T16 round 1: verified GET /api/cards with board metadata and EntityPickerModal with search and originating board attribution; marked finished.

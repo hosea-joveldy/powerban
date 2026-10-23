@@ -3,6 +3,7 @@ import MessageModal from "./MessageModal.jsx";
 import ConfirmModal from "./ConfirmModal.jsx";
 import PromptModal from "./PromptModal.jsx";
 import TaskDetailModal from "./TaskDetailModal.jsx";
+import EntityPickerModal from "./EntityPickerModal.jsx";
 
 const ModalContext = createContext(null);
 
@@ -94,9 +95,27 @@ export function ModalProvider({ children }) {
     []
   );
 
+  const showEntityPicker = useCallback(
+    ({ entityType = "card", currentBoardId }) => {
+      const trigger = document.activeElement;
+      return new Promise((resolve) => {
+        resolveRef.current = resolve;
+        setModalState({
+          type: "entity-picker",
+          props: {
+            entityType,
+            currentBoardId,
+            triggerElement: trigger,
+          },
+        });
+      });
+    },
+    []
+  );
+
   return (
     <ModalContext.Provider
-      value={{ showAlert, showConfirm, showPrompt, openTaskDetail, closeModal }}
+      value={{ showAlert, showConfirm, showPrompt, openTaskDetail, showEntityPicker, closeModal }}
     >
       {children}
 
@@ -130,6 +149,15 @@ export function ModalProvider({ children }) {
         <TaskDetailModal
           isOpen={true}
           onClose={() => closeModal(undefined)}
+          {...modalState.props}
+        />
+      )}
+
+      {modalState?.type === "entity-picker" && (
+        <EntityPickerModal
+          isOpen={true}
+          onClose={() => closeModal(null)}
+          onSelect={(item) => closeModal(item)}
           {...modalState.props}
         />
       )}

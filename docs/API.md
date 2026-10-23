@@ -415,30 +415,38 @@ Instantiate a new working board from a template.
 
 ### 3.5 Cards (Columns)
 
+#### `GET /api/cards`
+List all non-template cards owned by the authenticated user across all boards with originating board metadata and task titles.
+
+**Responses:**
+- `200 OK`: Array of card objects with `id`, `board_id`, `board_name`, `name`, `card_type`, and `task_titles`.
+
+---
+
 #### `POST /api/boards/{id}/cards`
-Add a new column to a board.
+Add a new column to a board. Default `card_type` is `"normal"`.
 
 **Request Body:**
 ```json
 {
   "name": "In Review",
-  "card_type": "todo",
+  "card_type": "normal",
   "position": 2
 }
 ```
 
 **Responses:**
 - `201 Created`: Created card object.
-- `422 Unprocessable Entity`: Missing name, invalid card_type, or WIP limit provided for non-ongoing card.
+- `422 Unprocessable Entity`: Missing name, invalid card_type (must be `normal` or `completed`), or WIP limit provided for completed card.
 
 ---
 
 #### `PATCH /api/cards/{id}`
 Update card name, card_type, position, or wip_limit.
+- `card_type` must be `"normal"` or `"completed"`.
 - Setting `card_type = "completed"` automatically marks all tasks in this card as `is_finished = true`.
-- Changing `card_type` away from `"completed"` unfinishes all tasks (`is_finished = false`).
-- Changing `card_type` away from `"ongoing"` automatically clears `wip_limit`.
-- `wip_limit` can only be set on `ongoing` cards.
+- Changing `card_type` away from `"completed"` to `"normal"` unfinishes all tasks (`is_finished = false`).
+- `wip_limit` can be set on `"normal"` cards; completed cards cannot have WIP limits.
 
 **Request Body:**
 ```json
@@ -450,7 +458,7 @@ Update card name, card_type, position, or wip_limit.
 
 **Responses:**
 - `200 OK`: Updated card object.
-- `422 Unprocessable Entity`: Invalid WIP limit or attempting to set WIP limit on non-ongoing card.
+- `422 Unprocessable Entity`: Invalid WIP limit or attempting to set WIP limit on completed card.
 
 ---
 

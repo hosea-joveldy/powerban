@@ -9,6 +9,12 @@ use App\Models\Card;
 
 class CardController
 {
+  public function index(): void
+  {
+    $uid = Auth::requireUser();
+    Http::json(Card::listForUser($uid));
+  }
+
   public function store(array $p): void
   {
     $uid = Auth::requireUser();
