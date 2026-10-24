@@ -50,6 +50,11 @@ if (!process.env.VITEST) {
 
       // Go to settings and choose Forest Dark
       await page.goto("/settings");
+
+      // Initially in default stone-light: only dark logo is visible
+      await expect(page.locator(".topbar-logo-dark")).toBeVisible();
+      await expect(page.locator(".topbar-logo-light")).toBeHidden();
+
       await page.getByRole("button", { name: /Forest Dark/i }).click();
 
       // Verify document theme changed to forest-dark
@@ -74,12 +79,20 @@ if (!process.env.VITEST) {
       // Screenshot forest-dark theme
       await page.screenshot({ path: "../.run/screenshots/theme-forest-dark-desktop.png" });
 
+      // Verify logo visibility in forest-dark (only light logo visible)
+      await expect(page.locator(".topbar-logo-light")).toBeVisible();
+      await expect(page.locator(".topbar-logo-dark")).toBeHidden();
+
       // Reload page and verify theme stays forest-dark without flashing default
       await page.reload();
       const reloadedTheme = await page.evaluate(() =>
         document.documentElement.getAttribute("data-theme")
       );
       expect(reloadedTheme).toBe("forest-dark");
+
+      // Verify logo visibility remains correct after reload
+      await expect(page.locator(".topbar-logo-light")).toBeVisible();
+      await expect(page.locator(".topbar-logo-dark")).toBeHidden();
     });
   });
 }

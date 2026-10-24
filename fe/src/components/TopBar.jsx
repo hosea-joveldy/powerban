@@ -15,13 +15,11 @@ export default function TopBar({ crumb }) {
             src={logoDarkSvg}
             alt="Powerban"
             className="topbar-logo topbar-logo-dark"
-            style={{ height: "22px", width: "auto", display: "inline-block", verticalAlign: "middle" }}
           />
           <img
             src={logoLightSvg}
             alt="Powerban"
             className="topbar-logo topbar-logo-light"
-            style={{ height: "22px", width: "auto", verticalAlign: "middle" }}
           />
         </Link>
         {crumb && (

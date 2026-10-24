@@ -510,6 +510,14 @@
       "type": "qa",
       "status": "finished",
       "features": []
+    },
+    {
+      "id": "T18",
+      "title": "Fix logo visibility toggle in forest-dark theme",
+      "type": "fix",
+      "status": "finished",
+      "source": "user report",
+      "features": []
     }
   ]
 }
